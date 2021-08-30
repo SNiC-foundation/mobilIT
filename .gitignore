@@ -19,6 +19,7 @@
 **/matching.json
 *.csv
 mongo/
+.idea/
 
 # MacOS
 # General
