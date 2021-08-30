@@ -2,167 +2,254 @@ extends layout
 block above-content
 
 block header
-    div#home
-    header(id='particles-js' class='hero index particles')
-      //- img(class='logo' src='images/logo.svg' alt='DisruptIT')
-      div(class="main__logo")
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 817.71 255.38"><defs><style>.cls-1{fill:#e46767;}.cls-2{fill:#d64e4e;}.cls-3{fill:#39b34a;}.cls-4{fill:#e88483;}.cls-5{fill:#90ffb1;}.cls-6{fill:#4fde7b;}.cls-7{fill:#00ca33;}.cls-8{fill:#666;}</style><symbol id="Logo" data-name="Logo" viewBox="0 0 98.34 255.38"><path class="cls-1" d="M95.61,60.64c4.41,21,5.46,47.64-12.53,67.11a53.1,53.1,0,0,1-6.22,5.64l3.9-68.5s0,0,.07-.06Z"/><path class="cls-2" d="M95.61,60.64,80.83,64.83a44.1,44.1,0,0,0,6.45-17.59,76.31,76.31,0,0,0-.47-17.94C87.89,34.24,92.55,46.1,95.61,60.64Z"/><path class="cls-3" d="M86.79,29.2a7.25,7.25,0,0,1-.16-.88,1,1,0,0,1,0-.13C86.63,28.26,86.7,28.61,86.79,29.2Z"/><path class="cls-1" d="M78.9,33c2.35,13,3,28,1.86,31.84L38.48,104l2.61-55c0,.15.45,0,1.18-.54h0L78.9,33Z"/><path class="cls-4" d="M80.76,64.85s0,0,0,0l-3.9,68.5L38.48,104Z"/><path class="cls-2" d="M78.9,33h0L42.27,48.44c3.48-2.36,13.64-11.53,17.61-22.73S65-1.6,65.64.13c2.09,5.21,9.19,15.53,11.85,26.23C78,28.47,78.49,30.7,78.9,33Z"/><path class="cls-5" d="M76.86,133.39,25.41,144.16a125.09,125.09,0,0,1,4.46-17.89c2.38-7,8.42-21.81,8.61-22.27h0Z"/><path class="cls-6" d="M25.41,144.16l51.45-10.77c-11.52,9-26.56,15.54-34.6,33.9A76.77,76.77,0,0,0,37,183.6L25.41,144.17Z"/><path class="cls-7" d="M51.39,251.46l-6.52,3.92a202.69,202.69,0,0,1-11.74-24.8c-.3-.75-2.67-8.09-5.11-18.08l18.16,29.12A81.15,81.15,0,0,0,51.39,251.46Z"/><path class="cls-6" d="M46.18,241.62,28,212.5,37,183.63a68.35,68.35,0,0,0-1.22,9.11C34.42,212.12,41.13,230.72,46.18,241.62Z"/><path class="cls-2" d="M26.59,27.87s17.27,8.3,14.5,21.07L17.55,58.66C31.87,39.48,26.59,27.87,26.59,27.87Z"/><path class="cls-1" d="M41.09,48.94s0,0,0,0l-2.61,55L17.55,58.66Z"/><path class="cls-5" d="M17.55,58.66,38.48,104,0,104.56a58.75,58.75,0,0,1,.28-8.42C3.05,72,11,67.47,17.55,58.66Z"/><path class="cls-6" d="M38.48,104h0a69.92,69.92,0,0,0-12.94,16.59,81.64,81.64,0,0,0-6.66,22.63L.05,104.65a.28.28,0,0,1,0-.09Z"/><path class="cls-7" d="M37,183.6v0L28,212.5a215.51,215.51,0,0,1-5.23-29c-.67-6.9-.24-23.23,2.62-39.32L37,183.6Z"/><path class="cls-7" d="M.05,104.65l18.83,38.57a150,150,0,0,0-1.39,32.32S1,133,.05,104.65Z"/></symbol><symbol id="LogoDark" data-name="LogoDark" viewBox="0 0 817.71 255.38"><use width="98.34" height="255.38" xlink:href="#Logo"/><path class="cls-1" d="M816.87,106.05l-13.75.06-96.59.45c-1.26,0-1.7.2-1.7,1.47v24.3c0,.84.21,1,1,1L743.3,133c.17,7.71.3,18.82.42,31.22.31,34.89.42,80,.42,88.18a.56.56,0,0,0,.63.63c7.57,0,23.75-.21,30.69-.63.63,0,.84-.42.84-1.26-1.25-17.46-1.26-99-1.06-117.73,0-.22,0-.42,0-.62h.62c9.29,0,40.62,0,41.42-.63.42-.35.42-25,.42-25C817.71,106.26,817.5,106.05,816.87,106.05Z"/><path class="cls-1" d="M687.5,219.12l-.33-113.28c0-.63-.63-.84-1.89-.84l-29.65-.21c-.84,0-1.26.42-1.26,1l.84,144.84a1.12,1.12,0,0,0,1.27,1.26l26.89-.08c3.62-.14,4.22.29,4.22-.76Z"/><path class="cls-6" d="M637.34,224.82c0-1-.63-1.68-2.31-1.47l-54.87.42s.42-108.68.42-115.2c0-3.36-.85-3.39-2.32-3.39l-28.37.24c-.84,0-1.47,1-1.47,2.31l.74,125.75.1,17.83c0,1.05.42,1.47,1.89,1.47l56.79-.14,25.83-.07c3.36,0,3.78-.63,3.78-1.89Z"/><path class="cls-6" d="M519.75,224.13l-.34-118.29c0-.63-.63-.84-1.89-.84-4.84,0-27.75-.21-29.64-.21-.84,0-1.26.42-1.26,1l.63,108,.21,36.88a1.11,1.11,0,0,0,1.26,1.26l26.81-.08c3.57,0,4.3.29,4.3-.76Z"/><path class="cls-6" d="M462.44,188.88c-1.89-5.47-2.94-6.52-6.94-8-15.34-5.68-49.4-17.45-69.79-23.76,0,0,.42-18.5.63-25.43l44.57.84.21,23.75a1.18,1.18,0,0,0,1.26,1.05c9.67.21,20.81,1.27,29,1.27,1.68,0,2.31-.63,2.31-2.32,0-9.88-3.57-38.68-19.55-48.77a16.88,16.88,0,0,0-8.41-2.94c-3.57,0-46.24.21-53,.21a8.6,8.6,0,0,0-4.63,1.26c-11.14,5.89-23.75,28.8-23.75,49.61,0,7.07.69,12.75,2.08,16.56.14.39.29.75.44,1.1,1.26,2.73,1.68,3.58,7.57,6.1,26.28,11.14,46.67,15.76,66.85,23.33l-.84,23.34L387,225.67l-.63-22.92c0-.84-.21-1.26-1.26-1.26-1.89,0-26.91-.63-29.85-.63-1.05,0-1.47.84-1.47,4.83,0,14.72,8,35.95,22.49,45.2,3.36,2.1,5.05,2.31,8.62,2.31,8.62,0,50.66-.63,53.4-.63,5.25,0,7.14-1.26,12.82-7.56,8.57-9.51,12-22.64,12.69-38.67q.14-3.09.13-6.32A43.72,43.72,0,0,0,462.44,188.88Z"/><path class="cls-6" d="M272.82,133.17c17,.42,41.62.42,60.33.21a1,1,0,0,0,1.05-1L334,106.05c-.21-1-.84-1.26-1.89-1.26l-89.13.42c-1.05.21-1.26,1.26-1.26,2.52,0,1-.1,12.12-.25,27.92-.31,34.1-.8,90-.8,113.14,0,1.89.42,3.15,2.1,3.15,19.34,0,78.41.84,87.66,0,2.73-.21,2.38-.89,2.38-2.79,0-3.57.35-20.12-.07-22.85-.21-1.69-.84-2.11-2.73-2.11H271.77l-.21-32.79,61,1.26c1.26,0,1.2-.82,1.2-2.5,0-5.89-.15-18.1-.36-21.67-.14-2.43-.38-3.5-1-3.93l-.84-.27h-.28l-58.86-.63.25-18.08Z"/><path d="M332.38,164.56l-.84-.27A1.5,1.5,0,0,1,332.38,164.56Z"/><path class="cls-6" d="M222.37,251.52c-6.1-10.09-27.75-38.89-38.27-54.44,26.28-10.94,36.58-25.23,36.58-46.88a53,53,0,0,0-4.8-22.68,43.2,43.2,0,0,0-18.32-19.79,12.74,12.74,0,0,0-5.47-1.68c-5.42-.56-26.5-.64-45.37-.52-16.25.09-30.86.33-32.41.52-.84,0-1,1-1,2.31,0,15.35-1.05,121.72-1.05,143.16,0,.63.21.84,1.26,1,1.28.15,24.35.18,28.59,0,2.11-.08,2.52-.84,2.52-1.68-.84-15.34-.42-50.24-.63-62,10.3,15.76,33.43,49.4,41.42,62.85.84,1.26,1.26,1.47,2.52,1.47,8.83,0,29.85-.21,32.37-.21C222.58,253,223.21,252.78,222.37,251.52Zm-78.63-78.2V131.49c3.89,0,42.69.37,45.41.42,0,2.63-.66,37.85-.63,41.62C183.53,173.53,149.84,172.9,143.74,173.32Z"/><path class="cls-8" d="M121.83,76c0,.48-.3.75-.82.75H119.5c-.53,0-.82-.27-.82-.75V73.09l-.66-.6h-1.15l-.66.6v6.46l.66.6h2.49a1.37,1.37,0,0,1,1,.39l1.12,1a1.2,1.2,0,0,1,.42.94v8.14a1.2,1.2,0,0,1-.42.94l-1.12,1a1.37,1.37,0,0,1-1,.39h-3.8a1.39,1.39,0,0,1-1-.39l-1.12-1a1.2,1.2,0,0,1-.42-.94v-3.5c0-.48.29-.75.82-.75h1.51c.52,0,.82.27.82.75V90l.65.6h1.32l.65-.6V83.22l-.65-.6h-2.5a1.4,1.4,0,0,1-1-.39l-1.11-1a1.14,1.14,0,0,1-.43-.93V72.43a1.18,1.18,0,0,1,.43-.94l1.11-1a1.4,1.4,0,0,1,1-.39h3.65a1.36,1.36,0,0,1,1,.39l1.12,1a1.21,1.21,0,0,1,.43.94Z"/><path class="cls-8" d="M126.65,92.24c0,.48-.29.75-.82.75h-1.21c-.53,0-.82-.27-.82-.75V70.83c0-.48.29-.75.82-.75h1.83c.53,0,.83.21.92.66L130.82,86V70.83c0-.48.3-.75.82-.75h1.21c.53,0,.83.27.83.75V92.24c0,.48-.3.75-.83.75H131a.81.81,0,0,1-.92-.66l-3.45-15Z"/><path class="cls-8" d="M139,92.24c0,.48-.29.75-.82.75h-1.51c-.52,0-.82-.27-.82-.75V70.83c0-.48.3-.75.82-.75h1.51c.53,0,.82.27.82.75Z"/><path class="cls-8" d="M143.62,93a1.4,1.4,0,0,1-1-.39l-1.11-1a1.18,1.18,0,0,1-.43-.94V72.43a1.18,1.18,0,0,1,.43-.94l1.11-1a1.4,1.4,0,0,1,1-.39h3.68a1.4,1.4,0,0,1,1,.39l1.11,1a1.18,1.18,0,0,1,.43.94v3.86c0,.48-.3.75-.82.75h-1.51c-.53,0-.82-.27-.82-.75v-3.2l-.66-.6h-1.18l-.66.6V89.92l.66.6h1.18l.66-.6V86.75c0-.48.29-.75.82-.75H149c.52,0,.82.27.82.75v3.89a1.18,1.18,0,0,1-.43.94l-1.11,1a1.4,1.4,0,0,1-1,.39Z"/><path class="cls-8" d="M160.07,92.24c0,.48-.3.75-.82.75h-1.51c-.53,0-.82-.27-.82-.75V70.83c0-.48.29-.75.82-.75h5.71a1.36,1.36,0,0,1,1,.39l1.12,1a1.18,1.18,0,0,1,.43.94v9a1.15,1.15,0,0,1-.43.94l-1.12,1a1.33,1.33,0,0,1-1,.4h-3.38Zm2.79-11.43V73.09l-.66-.6h-2.13v8.92h2.13Z"/><path class="cls-8" d="M170.83,92.24c0,.48-.29.75-.82.75H168.5c-.52,0-.82-.27-.82-.75V70.83c0-.48.3-.75.82-.75h5.88a1.36,1.36,0,0,1,1,.39l1.12,1a1.18,1.18,0,0,1,.43.94v8.44a1.16,1.16,0,0,1-.43.94L175.2,83l1.8,9.17c.1.51-.16.81-.75.81h-1.38a.8.8,0,0,1-.89-.69l-1.8-9.08h-1.35Zm3-12V73.09l-.66-.6h-2.3v8.38h2.3Z"/><path class="cls-8" d="M187,92.24c0,.48-.29.75-.82.75H180c-.52,0-.82-.27-.82-.75V70.83c0-.48.3-.75.82-.75h6.14c.52,0,.82.27.82.75v1c0,.48-.3.75-.82.75h-3.81v7.6h3.22c.52,0,.82.27.82.75v1c0,.48-.3.75-.82.75h-3.22v7.9h3.87c.53,0,.82.27.82.75Z"/><path class="cls-8" d="M197,76c0,.48-.3.75-.82.75H194.7c-.53,0-.82-.27-.82-.75V73.09l-.66-.6h-1.15l-.66.6v6.46l.66.6h2.5a1.36,1.36,0,0,1,1,.39l1.12,1a1.21,1.21,0,0,1,.43.94v8.14a1.21,1.21,0,0,1-.43.94l-1.12,1a1.36,1.36,0,0,1-1,.39h-3.81a1.39,1.39,0,0,1-1-.39l-1.11-1a1.18,1.18,0,0,1-.43-.94v-3.5c0-.48.29-.75.82-.75h1.51c.52,0,.82.27.82.75V90l.66.6h1.31L194,90V83.22l-.65-.6h-2.5a1.36,1.36,0,0,1-1-.39l-1.12-1a1.14,1.14,0,0,1-.43-.93V72.43a1.18,1.18,0,0,1,.43-.94l1.12-1a1.36,1.36,0,0,1,1-.39h3.65a1.36,1.36,0,0,1,1,.39l1.12,1a1.18,1.18,0,0,1,.43.94Z"/><path class="cls-8" d="M206.84,92.24c0,.48-.29.75-.82.75h-6.2c-.53,0-.82-.27-.82-.75V70.83c0-.48.29-.75.82-.75H206c.53,0,.83.27.83.75v1c0,.48-.3.75-.83.75h-3.8v7.6h3.21c.53,0,.82.27.82.75v1c0,.48-.29.75-.82.75h-3.21v7.9H206c.53,0,.82.27.82.75Z"/><path class="cls-8" d="M211.37,92.24c0,.48-.29.75-.82.75h-1.21c-.53,0-.82-.27-.82-.75V70.83c0-.48.29-.75.82-.75h1.83c.53,0,.83.21.92.66L215.54,86V70.83c0-.48.3-.75.82-.75h1.21c.53,0,.83.27.83.75V92.24c0,.48-.3.75-.83.75h-1.83a.81.81,0,0,1-.92-.66l-3.45-15Z"/><path class="cls-8" d="M228.08,70.08c.52,0,.82.27.82.75v.91c0,.48-.3.75-.82.75h-2.17V92.24c0,.48-.29.75-.82.75h-1.51c-.52,0-.82-.27-.82-.75V72.49H220.6c-.53,0-.83-.27-.83-.75v-.91c0-.48.3-.75.83-.75Z"/><path class="cls-8" d="M238.68,76c0,.48-.29.75-.82.75h-1.51c-.52,0-.82-.27-.82-.75V73.09l-.66-.6h-1.14l-.66.6v6.46l.66.6h2.49a1.39,1.39,0,0,1,1,.39l1.11,1a1.18,1.18,0,0,1,.43.94v8.14a1.18,1.18,0,0,1-.43.94l-1.11,1a1.39,1.39,0,0,1-1,.39h-3.81a1.4,1.4,0,0,1-1-.39l-1.11-1a1.18,1.18,0,0,1-.43-.94v-3.5c0-.48.3-.75.82-.75h1.51c.53,0,.82.27.82.75V90l.66.6H235l.66-.6V83.22l-.66-.6h-2.49a1.39,1.39,0,0,1-1-.39l-1.12-1a1.17,1.17,0,0,1-.42-.93V72.43a1.2,1.2,0,0,1,.42-.94l1.12-1a1.39,1.39,0,0,1,1-.39h3.64a1.39,1.39,0,0,1,1,.39l1.12,1a1.2,1.2,0,0,1,.42.94Z"/><path class="cls-8" d="M243.11,80.33c.53,0,.82.27.82.75v2.41c0,.49-.29.76-.82.76h-1.64a.72.72,0,0,1-.82-.76V81.08c0-.48.3-.75.82-.75Zm0,8.74c.53,0,.82.27.82.76v2.41c0,.48-.29.75-.82.75h-1.64c-.52,0-.82-.27-.82-.75V89.83a.72.72,0,0,1,.82-.76Z"/></symbol></defs><title>Asset 1LeafLogo</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><use width="817.71" height="255.38" xlink:href="#LogoDark"/></g></g></svg>
-      div(class="main__area--date")
-        p 26 November 2019
-        div()
-          a(onclick="openCalendar()"): img(src='images/calendar.png')
-      //- div()
-      //-   a(href="/register")
-      //-     div(class="register-button") REGISTER
-      //- a( style="color: white;")
-      //-   i(href="#intro" class="arrow").fa.fa-angle-down.fa-5x.white
+  header#mobilit.fullscreen.snap.d-flex.align-items-end.justify-content-center(style='min-height: 90vh;')
+    figure.logo.container.px-5.m-0.position-absolute.top-50.start-50.translate-middle
+      svg#MOBILITLOGO(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', viewBox='0 0 895.8 205.9', style='enable-background:new 0 0 895.8 205.9;', xml:space='preserve')
+        style(type='text/css').
+          .st0 {
+            fill: #FFFFFF;
+          }
 
-      i(href="#intro" id="main_scroll" class="scroll__down" address="true")
-
-      div(class="homepage-sponsor-banner")
-        a(href="https://nedap.com/", target="_blank")
-          img(class="homepage-sponsor-logo main-sponsor" src='/images/partners/logo_NEDAP_hero_rgb.png')
-        a(href="https://quintor.nl/", target="_blank")
-          img(class="homepage-sponsor-logo" src='/images/partners/logo_Quintor.jpg')
-        a(href="https://topicus.com/", target="_blank")
-          img(class="homepage-sponsor-logo" src='/images/partners/logo_Topicus.png')
-        a(href="https://ing.nl/", target="_blank")
-          img(class="homepage-sponsor-logo" src='/images/partners/logo_ING.jpg')
-        a.nedap(href="https://www.ortec.com/", target="_blank")
-          img.nedap(class='homepage-sponsor-logo', src='/images/partners/logo_ORTEC_oyw.png')
-        a.nedap(href="https://www.dsw.nl/", target="_blank")
-          img.nedap(class='homepage-sponsor-logo', src='/images/partners/logo_DSW.png')
-        a.nedap(href="https://www.chipsoft.com/", target="_blank")
-          img.nedap(class='homepage-sponsor-logo', src='/images/partners/logo_Chipsoft.jpg')
-        a.nedap(href="http://thalescareers.nl", target="_blank")
-          img.nedap(class='homepage-sponsor-logo', src='/images/partners/logo_Thales.jpg')
-        a.nedap(href="https://www.dnb.nl/", target="_blank")
-          img.nedap(class='homepage-sponsor-logo', src='/images/partners/logo_DNB.jpg')
-        a(href="https://asml.com/", target="_blank")
-          img(class="homepage-sponsor-logo" src='/images/partners/logo_ASML.jpg')
-
-        div(id="silver_logo_container")
-          img(id="silver_logos" class="homepage-sponsor-logo")
-
-        div(id="bronze_logo_container")
-          img(id="bronze_logos" class="homepage-sponsor-logo")
+          .st1 {
+            fill: #D3A362;
+          }
+        g#MobilIT
+          polygon.st0(points='252.8,75.2 198,75.2 191.8,85.4 185.6,75.2 130.8,75.2 130.8,100 252.8,100 	')
+          polygon.st0(points='168.6,47.3 130.8,47.3 130.8,72.1 183.7,72.1 	')
+          polygon.st0(points='252.8,47.3 215,47.3 199.9,72.1 252.8,72.1 	')
+          path.st0(d='M372.5,155.7h60.1c24.5,0,38.5-10.2,41.1-24.8H372.5V155.7z')
+          path.st0(d='M432.5,47.3h-60.1v24.8h101.2C471,57.5,457.1,47.3,432.5,47.3')
+          path.st0(d='M456.4,100c10.7-4.1,17.3-11.1,17.3-23.6v-0.3c0-0.3,0-0.6,0-0.8H262.9c-4.3,7.6-6.7,16.1-6.9,24.8H456.4z')
+          rect.st0(x='476.8', y='47.3', width='36.2', height='24.8')
+          rect.st0(x='372.5', y='103.1', width='140.6', height='24.8')
+          rect.st0(x='476.8', y='130.9', width='36.2', height='24.8')
+          rect.st1(x='606.5', y='75.2', width='36.2', height='24.8')
+          rect.st1(x='606.5', y='103.1', width='36.2', height='24.8')
+          rect.st1(x='606.5', y='130.9', width='36.2', height='24.8')
+          rect.st1(x='606.5', y='47.3', width='139.4', height='24.8')
+          rect.st1(x='677.8', y='75.2', width='36.2', height='24.8')
+          rect.st1(x='677.8', y='103.1', width='36.2', height='24.8')
+          rect.st1(x='677.8', y='130.9', width='36.2', height='24.8')
+          rect.st0(x='516.2', y='47.3', width='36.2', height='24.8')
+          rect.st0(x='476.8', y='75.2', width='75.6', height='24.8')
+          rect.st0(x='516.2', y='103.1', width='36.2', height='24.8')
+          rect.st0(x='516.2', y='130.9', width='87.2', height='24.8')
+          path.st0(d='M312.8,47.3c-20.5,0-38,9.8-48,24.8h95.9C350.8,57.1,333.4,47.3,312.8,47.3')
+          path.st0(d='M312.5,155.7c20.5,0,38-9.8,48-24.8h-95.9C274.5,145.9,291.9,155.7,312.5,155.7')
+          path.st0(d='M88.8,103.1v24.8h273.6c4.3-7.6,6.7-16.1,6.9-24.8H88.8z')
+          rect.st0(x='193.4', y='130.9', width='59.5', height='24.8')
+          rect.st0(x='130.8', y='130.9', width='59.5', height='24.8')
+        g#SUBTITLE
+          g#SNIC
+            path.st0(d='M144.4,185.7c-1-2.4-2.6-3.6-4.8-3.6c-2.6,0-4.3,1.4-4.3,3.7c-0.1,1,0.4,2,1.3,2.5c1.3,0.7,2.8,1.2,4.2,1.5\
+                    c1.4,0.3,2.7,0.8,3.9,1.4c1.9,1,2.8,2.3,2.9,4.8c0,5-3.1,7.6-7.9,7.6c-4.6,0-8-2.5-8.9-7.1l2.8-1.1c0.9,3.5,3,5.3,6.1,5.3\
+                    s4.9-1.5,4.9-4.3c0-0.8-0.3-1.6-0.9-2.2c-0.3-0.3-0.7-0.5-1.1-0.6c-1.1-0.5-2.2-0.8-3.4-1.1c-1.3-0.3-2.6-0.7-3.8-1.3\
+                    c-1.9-1-2.9-2.5-3-5.3c-0.1-1.8,0.6-3.5,1.9-4.8c1.5-1.3,3.4-2,5.3-1.9c3.3-0.1,6.3,2,7.4,5.1L144.4,185.7z')
+            path.st0(d='M167.9,179.6h3v23.8h-3.3l-10-18.4v18.4h-3v-23.8h3.3l10,18.4L167.9,179.6z')
+            path.st0(d='M193.5,203.4H179v-2.6h5.7v-18.6H179v-2.6h14.5v2.6h-5.8v18.6h5.8L193.5,203.4z')
+            path.st0(d='M219.2,196.4c-1.1,4.4-4.1,7.2-8.5,7.2c-2.7,0.1-5.3-1.1-7.1-3.1c-1.8-2.1-2.8-5.1-2.8-9s0.9-7,2.8-9\
+                    c1.8-2,4.4-3.2,7.1-3.1c4.4,0,7.4,2.9,8.5,7.2l-2.8,0.9c-1.1-3.5-2.8-5.2-5.7-5.2c-4.2,0-6.7,3-6.7,9.3s2.5,9.3,6.7,9.3\
+                    c3,0,4.6-1.7,5.7-5.2L219.2,196.4z')
+          g#_x32_020_x2F_2021
+            path.st1(d='M225.2,202.3V201l8.8-10.9c1.4-1.8,1.8-2.8,1.8-4.2c0-0.9-0.3-1.8-0.8-2.6c-0.7-0.8-1.7-1.2-2.7-1.1\
+                    c-2.1,0-3.6,1.6-3.9,4.1l-2.7-0.5c0.1-1.7,0.9-3.2,2.2-4.4c1.2-1.1,2.8-1.8,4.5-1.8c1.8-0.1,3.6,0.6,4.9,2c1,1.2,1.5,2.7,1.4,4.2\
+                    c0,1.8-0.7,3.5-1.8,4.9l-7.2,9h9.4v2.6L225.2,202.3z')
+            path.st1(d='M253.6,202.5c-2.4,0.1-4.7-1.1-6-3.1c-1.4-2.1-2.1-4.9-2.1-8.4s0.7-6.3,2.1-8.3c2.4-3.3,7-4.1,10.3-1.7\
+                    c0.6,0.5,1.2,1,1.7,1.7c1.6,2.5,2.3,5.4,2.2,8.3c0.1,2.9-0.6,5.9-2.2,8.4C258.3,201.5,256,202.6,253.6,202.5z M249.4,197.2\
+                    l6.6-14.2c-0.7-0.5-1.6-0.7-2.5-0.7c-3.4,0-5.4,3.4-5.4,8.9C248.2,193.2,248.6,195.3,249.4,197.2z M259,191.1\
+                    c0.1-2.1-0.3-4.2-1.2-6.1l-6.6,14.2c0.7,0.5,1.6,0.7,2.5,0.7C257,200,259,196.6,259,191.1z')
+            path.st1(d='M269.9,202.3V201l8.8-10.9c1.4-1.8,1.8-2.8,1.8-4.2c0-0.9-0.3-1.8-0.8-2.6c-0.7-0.8-1.7-1.2-2.7-1.1\
+                    c-2.1,0-3.6,1.6-3.9,4.1l-2.7-0.5c0.3-3.4,3.2-6.1,6.6-6.1c1.8-0.1,3.6,0.6,4.9,2c1,1.2,1.5,2.7,1.4,4.2c0,1.8-0.6,3.5-1.8,4.9\
+                    l-7.2,9h9.4v2.6L269.9,202.3z')
+            path.st1(d='M298.3,202.5c-2.4,0.1-4.7-1.1-6-3.1c-1.5-2.5-2.3-5.4-2.1-8.4c0-3.5,0.7-6.3,2.1-8.3c1.3-2,3.6-3.2,6-3.1\
+                    c2.4-0.1,4.7,1.1,6,3.1c1.6,2.5,2.3,5.4,2.2,8.3c0.1,2.9-0.6,5.9-2.2,8.4C303,201.5,300.7,202.6,298.3,202.5z M294.2,197.2\
+                    l6.6-14.2c-0.7-0.5-1.6-0.7-2.5-0.7c-3.4,0-5.4,3.4-5.4,8.9C292.9,193.2,293.3,195.3,294.2,197.2z M303.7,191.1\
+                    c0.1-2.1-0.3-4.2-1.2-6.1l-6.6,14.2c0.7,0.5,1.6,0.7,2.5,0.7C301.8,200,303.7,196.6,303.7,191.1L303.7,191.1z')
+            path.st1(d='M325.7,178.3h2.8l-13,25.6h-2.7L325.7,178.3z')
+            path.st1(d='M337,202.3V201l8.8-10.9c1.4-1.8,1.8-2.8,1.8-4.2c0-0.9-0.3-1.8-0.8-2.6c-0.7-0.8-1.7-1.2-2.7-1.1\
+                    c-2.1,0-3.6,1.6-3.9,4.1l-2.7-0.5c0.1-1.7,0.9-3.2,2.2-4.4c1.2-1.1,2.8-1.8,4.5-1.8c1.8-0.1,3.6,0.6,4.9,2c1,1.2,1.5,2.7,1.4,4.2\
+                    c0,1.8-0.7,3.5-1.8,4.9l-7.2,9h9.4v2.6L337,202.3z')
+            path.st1(d='M365.4,202.5c-2.4,0.1-4.7-1.1-6-3.1c-1.4-2.1-2.1-4.9-2.1-8.4s0.7-6.3,2.1-8.3c2.4-3.3,7-4.1,10.3-1.7\
+                    c0.6,0.5,1.2,1,1.7,1.7c1.4,2,2.2,4.8,2.2,8.3c0.1,2.9-0.6,5.9-2.2,8.4C370.1,201.5,367.8,202.6,365.4,202.5z M361.2,197.2\
+                    l6.6-14.2c-0.7-0.5-1.6-0.7-2.5-0.7c-3.4,0-5.4,3.4-5.4,8.9C360,193.2,360.4,195.3,361.2,197.2z M370.8,191.1\
+                    c0.1-2.1-0.3-4.2-1.2-6.1l-6.6,14.2c0.7,0.5,1.6,0.7,2.5,0.7C368.8,200,370.8,196.6,370.8,191.1L370.8,191.1z')
+            path.st1(d='M381.7,202.3V201l8.8-10.9c1.4-1.8,1.8-2.8,1.8-4.2c0-0.9-0.3-1.8-0.8-2.6c-0.7-0.8-1.7-1.2-2.7-1.1\
+                    c-2.1,0-3.6,1.6-3.9,4.1l-2.7-0.5c0.1-1.7,0.9-3.2,2.2-4.4c1.2-1.1,2.8-1.8,4.5-1.8c1.8-0.1,3.6,0.6,4.9,2c1,1.2,1.5,2.7,1.4,4.2\
+                    c0,1.8-0.6,3.5-1.8,4.9l-7.2,9h9.4v2.6L381.7,202.3z')
+            path.st1(d='M411.4,179.9h1v19.9h5.8v2.4H404v-2.4h5.7V184l-5.6,3.3v-2.9L411.4,179.9z')
+        g#BLOCKS
+          rect.st0(x='516.2', width='102.5', height='24.8')
+          rect.st0(x='423.1', y='178.8', width='106.2', height='24.5')
+          rect.st0(x='768.2', y='130.9', width='127.6', height='24.8')
+          rect.st0(y='103.1', width='24.8', height='24.8')
+        g#BARS
+          g#Bar-1.rellax-horizontal(data-rellax-horizontal-speed='1', data-rellax-vertical-scroll-axis='x')
+            rect.st1(x='226.4', y='82.9', width='128.6', height='9.4')
+          g#Bar-2.rellax-horizontal(data-rellax-horizontal-speed='-0.5', data-rellax-vertical-scroll-axis='x')
+            rect.st1(x='322.4', y='7.7', width='128.6', height='9.4')
+          g#Bar-3.rellax-horizontal(data-rellax-horizontal-speed='-0.5', data-rellax-vertical-scroll-axis='x')
+            rect.st1(x='459.2', y='110.8', width='128.6', height='9.4')
+          g#Bar-4.rellax-horizontal(data-rellax-horizontal-speed='-1', data-rellax-vertical-scroll-axis='x')
+            rect.st1(x='631.6', y='173.5', width='128.6', height='9.4')
+          g#Bar-5.rellax-horizontal(data-rellax-horizontal-speed='2', data-rellax-vertical-scroll-axis='x')
+            rect.st0(x='687.3', y='82.9', width='128.6', height='9.4')
+          g#Bar-6.rellax-horizontal(data-rellax-horizontal-speed='1.5', data-rellax-vertical-scroll-axis='x')
+            rect.st1(x='36.2', y='138.6', width='128.6', height='9.4')
+    h2.mb-5
+      time(datetime='2021-11-23') 23 November
+  .banner
+    img(alt='Picnic', src='img/partners/picnic.svg')
+    img(alt='ANWB', src='img/partners/anwb.svg')
+    img(alt='Nedap', src='img/partners/nedap.png')
+    img.p-3(alt='ASML', src='img/partners/asml.svg')
+    img(alt='DSW', src='img/partners/dsw.svg')
+    img.p-3(alt='Chipsoft', src='img/partners/chipsoft.svg')
+    img(alt='Universiteit Leiden - LIACS', src='img/partners/ul-liacs.svg')
+    img.py-2(alt='Rijskuniversiteit Groningen', src='img/partners/rug.svg')
+    img(alt='Universiteit Twente', src='img/partners/utwente.svg')
+    img(alt='Radboud Universiteit - iCIS', src='img/partners/ru-icis.svg')
+    img(alt='Eindhoven University of Technology', src='img/partners/tue.svg')
+    img.p-3(alt='University of Amsterdam', src='img/partners/uva.svg')
 
 block content
-  // Short summary
-  header(id='particles-js-light' class='particles')
-  div(class="line-background")
-  section(id="intro" class='intro slanted')
-    .content
-      h2 Theme
-      p
-        | The theme of this year's conference is #[span(class="accent") ResilIT]:
-        | the impact of IT in preservation and recuperation of our society.
-        | During the past decennia humanity has made huge advancements and is
-        | slowly moving towards what researchers have dubbed #[span(class="accent") "Society 4.0"].
-        | However, how do we keep this society intact and how can we recover from
-        | disruptive events?
-
-      p
-        | With an increase in population size and
-        | complex IT systems, the state of our society is becoming increasingly #[span(class="accent") fragile].
-        | This has created the important but difficult task of maintaining the environment
-        | we have created. The congress will investigate different areas of this problem
-        | including disaster management, cyber threat management and in gneral at Society 4.0.
-        | With varying talks, the aim of ResilIT is to inspire visitors to rethink how fragile
-        | their position in the world is and how IT can be used to improve the safety of our society.
-
-  div(class="container__styler pane__variance tertiary")
-
-  section(class='')
-    div(id="speakers" class="skew-content")
-      section#speakers.slanted.twocolumn
-        .subpage(class="location-content primary")
-          .content(style="transform: skewY(-5deg);")
-            div(class="header-title" style="text-align: left; padding-left: 10px;") Speakers
-            div(class="speakers" style="float: left; text-align: left;")
-              p
-                | What problems are we facing as the society of #[span(class="accent") tomorrow]?
-                | How will IT impact the way in which we preserve society and
-                | recover from disasters?
-                | These questions will be answered by #[span(class="accent-logo") ResilIT]. <br><br>
-                | Academics, businesses and even stand-alone activists will present
-                | the problems they see for #[span(class="accent") society] and the role that IT
-                | will play in making our society more #[span(class="accent") resilient] for the future. <br> <br>
-                | Aside from the three keynote speakers there are three tracks to choose talks from
-                | in order to find a schedule that interests you the most.
-              a(href="/speakers", style="text-decoration:none")
-                div(class="announcement__box")
-                  i(class="fas fa-user-friends")
-                  p The current speaker list
-        .subpage.image
-
-
-  section#partner(class='intro slanted')
-      .content(style='padding-top: 3rem;')
-        div(class="header-title") Partners
+  section#theme.fullscreen.snap.blue.d-flex.align-items-center.justify-content-center
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 70vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
+    .white.block.position-absolute.rellax(data-rellax-speed=' 2', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
+    .brown.block.position-absolute.rellax(data-rellax-speed='-3', data-rellax-percentage='0.5', style='height: 50vh; width: 2vw; margin-left:  10%; margin-top: -35vh;')
+    .white.block.position-absolute.rellax(data-rellax-speed='10', data-rellax-percentage='0.5', style='height: 20vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-4', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
+    .container.backdrop.rellax.my-4.px-5(data-rellax-speed='5', data-rellax-percentage='0.5')
+      article
+        h2 Theme
         p
-          | For ResilIT, we partnered up with top IT companies that have customers
-          | from all around the world. The conference gives a lot of opportunity
-          | to get in touch with #[a(href="#partners") them] and meet up.
-        a(href="/partners", style="text-decoration:none")
-          div(class="announcement__box")
-            i(class="fas fa-user-friends")
-            p Company profiles
-
-  div(class="container__styler pane__variance tertiary")
-
-  section#location(class="skew-content slanted twocolumn" style="margin-bottom: -1px")
-    .subpage(class="primary")
-      .content(class="pane__undo__rotation")
-        div(class="header-title") Location
-        div(style="float: left; text-align: left;")
-          a(href="https://www.google.nl/maps/dir/''/''/@52.1594761,5.3224785,12z/data=!4m9!4m8!1m0!1m5!1m1!1s0x47c646993f3fd3b5:0x95cf14e8afd6a6ed!2m2!1d5.392518!2d52.1594968!3e3", target="_blank",style="text-decoration:none")
-            div(class="announcement__box")
-              i(class="fas fa-map-marker-alt")
-              p Flint Amersfoort
-    .subpage.image
-
-  div(style="position:relative;transform:skewY(5deg);overflow-y: hidden;")
-    div(class="container__styler pane__variance1 tertiary")
-    section(class='intro slanted pane__undo__rotation', id="about", style="margin-top: 5vh")
-      .content
-        h2 What is SNiC
+          | The focus of this edition of SNiC will be on the IT of mobility. For the past years there have been major leaps
+          | forward in the use of computers and AI in vehicles - think self driving cars, the optimisation of fuel usage in
+          | aeroplanes, or apps that perform diagnostics on the engine of your motorcycle. But MobilIT can be extended to
+          | much more than that: we can analyse the organisation of public transportation, or take a closer look at the
+          | latest innovations in bionics and cybernetics - tech that will open up a future of mobility for everyone.
         p
-          | #[span(class="accent") SNiC] is an acronym for
-          | Stichting Nationaal Informatica congres (Foundation National Computer Science Conference).
-          | The organisation was established in #[span(class="accent") 2004]
-          | with the purpose of stimulating the interest in IT knowledge,
-          | IT applications and the business side of it. Every year,
-          | a #[span(class="accent") conference] with an IT related subject
-          | is organised for academic Computer Science students from all over the Netherlands.
-          | For each conference one study association is chosen
-          | to take care of the organisation. This year, the organisation is
-          | in the hands of study assocation #[a(href='https://inter-actief.nl/') #[b Inter-<i>Actief</i>]].
-
-        <br>
-        h2 Contact
-
-        div#contact
-          p
-            b Email
-            span.contact-entry
-              a(href="mailto:committee@snic.nl") committee@snic.nl
-          p
-            b Phone
-            span.contact-entry
-              | (+31) (053) 489 3756
-          p
-            b Address
-            span.contact-entry
-              | Faculteit EWI
-            span.contact-entry
-              | Zilverling, room E208
-            span.contact-entry
-              | Drienerlolaan 5
-            span.contact-entry
-              | 7522 NB Enschede
-            span.contact-entry
-              | The Netherlands
-
-
-
+          | During SNiC 2020/2021 we will approach the future of mobility from a wide variety of angles: security is
+          | essential for high-tech transportation in an age of self driving cars and cyber-warfare; theoretical computing
+          | science is the core discipline behind route optimisation algorithms; Artificial limbs are almost completely
+          | computer driven; and of course Artificial Intelligence will play a starring role.
+  section#corona.fullscreen.snap.white.d-flex.align-items-center.justify-content-center
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 60vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
+    .blue.block.position-absolute.rellax(data-rellax-speed='-2', data-rellax-percentage='0.5', style='height:  8vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
+    .brown.block.position-absolute.rellax(data-rellax-speed='4', data-rellax-percentage='0.5', style='height: 40vh; width: 2vw; margin-left:  10%; margin-top: -35vh;')
+    .blue.block.position-absolute.rellax(data-rellax-speed='6', data-rellax-percentage='0.5', style='height: 15vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-1', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
+    .container.backdrop.rellax.my-4.px-5(data-rellax-speed='3', data-rellax-percentage='0.5')
+      article
+        h2 Corona
+        p
+          | Our conference has sadly been plagued by the corona virus. Last year we had to cancel the 2020 edition,
+          | because the corona measures simply did not allow a physical congress in any form.
+        p
+          strong This year we are more optimistic!
+        p
+          | We believe that with the vaccines being deployed faster and faster a normal conference in
+          | november 2021 will be entirely feasible. In the small chance that we cannot host 700 people, we will try to
+          | bring as many people as possible to our venue. We will then organize an online alternative for the people
+          | that are not able to join in Apeldoorn. This way we ensure that as many people can have a good conference,
+          | and sponsors will still be able to reach the students.
+  section#speakers.fullscreen.snap.blue.d-flex.align-items-center.justify-content-center
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 70vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
+    .white.block.position-absolute.rellax(data-rellax-speed=' 2', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
+    .brown.block.position-absolute.rellax(data-rellax-speed='-3', data-rellax-percentage='0.5', style='height: 50vh; width: 2vw; margin-left:  10%; margin-top: -35vh;')
+    .white.block.position-absolute.rellax(data-rellax-speed='10', data-rellax-percentage='0.5', style='height: 20vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-4', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
+    .container.backdrop.my-4.px-5.rellax(data-rellax-speed='5', data-rellax-percentage='0.5')
+      article
+        .d-flex.flex-row-reverse.flex-wrap.justify-content-evenly.align-items-center
+          .col-12.col-lg-5
+            h2 Speakers
+            p
+              | As always we are working on an amazing line-up of speakers to present at our conference. We are, however, still
+              | actively looking for more people that would like to give a talk. Thus if you would be interested in presenting
+              | an interesting subject that fits in our theme, do not hesitate to send us an email at
+              a(href='mailto:speakers@2020.snic.nl') speakers@2020.snic.nl
+              | .
+              We would very much like to hear about more amazing areas in MobilIT.
+          .col-12.col-sm-10.col-md-7.col-lg-6.m-lg-0.m-3
+            #speaker-carousel.carousel.slide(data-bs-ride='carousel')
+              .carousel-inner.ratio.ratio-4x3
+                .carousel-item.active
+                  img.d-block.h-100.w-100(src='img/location/spreker.jpg', alt='...')
+                .carousel-item
+                  img.d-block.h-100.w-100(src='img/location/rabobankzaal.jpg', alt='...')
+                .carousel-item
+                  img.d-block.h-100.w-100(src='img/location/altioszaal.jpg', alt='...')
+              button.carousel-control-prev(type='button', data-bs-target='#speaker-carousel', data-bs-slide='prev')
+                span.carousel-control-prev-icon(aria-hidden='true')
+                span.visually-hidden Previous
+              button.carousel-control-next(type='button', data-bs-target='#speaker-carousel', data-bs-slide='next')
+                span.carousel-control-next-icon(aria-hidden='true')
+                span.visually-hidden Next
+  section#partners.fullscreen.snap.white.d-flex.align-items-center.justify-content-center
+    .blue.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 70vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
+    .brown.block.position-absolute.rellax(data-rellax-speed=' 2', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
+    .blue.block.position-absolute.rellax(data-rellax-speed='-3', data-rellax-percentage='0.5', style='height: 50vh; width: 2vw; margin-left:  10%; margin-top: -35vh;')
+    .brown.block.position-absolute.rellax(data-rellax-speed='10', data-rellax-percentage='0.5', style='height: 20vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
+    .blue.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-4', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
+    .container.backdrop.my-4.px-5.rellax(data-rellax-speed='5', data-rellax-percentage='0.5')
+      article
+        .col-12
+          h2.text-center.mt-2.mb-0 Partners
+        .row.justify-content-evenly.align-items-center.my-4.mt-sm-5
+          .col-7.col-md-3.p-3
+            img.img-fluid(alt='ANWB', src='img/partners/anwb.svg')
+          .col-6.col-md-3.p-3
+            img.img-fluid(alt='Nedap', src='img/partners/nedap.png')
+        .row.justify-content-evenly.align-items-center.my-4.mt-sm-5
+          .col-4.col-md-2.p-3
+            img.img-fluid(alt='Chipsoft', src='img/partners/chipsoft.svg')
+          .col-4.col-md-2.p-3
+            img.img-fluid.p-1(alt='DSW', src='img/partners/dsw-ict.svg')
+          .col-4.col-md-2.p-3
+            img.img-fluid.p-4(alt='Picnic', src='img/partners/picnic.svg')
+        .row.justify-content-evenly.align-items-center.my-4.mt-sm-5
+          .col-4.col-md-2.p-3
+            img.img-fluid(alt='ASML', src='img/partners/asml.svg')
+  section#contact.fullscreen.snap.blue.d-flex.align-items-center.justify-content-center
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 70vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
+    .white.block.position-absolute.rellax(data-rellax-speed=' 2', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
+    .brown.block.position-absolute.rellax(data-rellax-speed='-3', data-rellax-percentage='0.5', style='height: 50vh; width: 2vw; margin-left:  10%; margin-top: -35vh;')
+    .white.block.position-absolute.rellax(data-rellax-speed='10', data-rellax-percentage='0.5', style='height: 20vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
+    .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-4', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
+    .container.backdrop.my-5.px-5.rellax(data-rellax-speed='0', data-rellax-percentage='0.5')
+      article
+        h2 About SNiC
+        p
+          | SNiC, Stichting Nationaal informatica Congres (which can be translated as the Foundation National Informatics
+          | Congress), was established in December 2004. 9 study associations from 7 cities in the Netherlands are
+          | affiliated. The aim of the foundation is to stimulate interest in knowledge of information and communication
+          | technology, and to promote contact between students and the business world.
+        p
+          | Every year one of the associations of the foundation organizes a congress with an IT related subject. On
+          time(datetime='2021-11-23') November 23rd in 2021
+          | , the congress will be organized by two study associations from the Radboud University in Nijmegen. These
+          | associations are Thalia (the study association for Computer Science and Information Science students) and
+          | CognAC (the study association for Artificial Intelligence students).
+        p
+          | Visitors are enthusiastic Computer Science and Artificial Intelligence bachelor and master students from all
+          | over the country. Over the past years the congress has grown considerably. Where in 2017 the congress was
+          | visited by 450 students, we expect around 700 visitors in 2021.
+        p
+          | Various talks will be held at the congress by speakers from both the business world and the academic world.
+          | The students are challenged to dive into a specific topic from different perspectives. We want to inspire them
+          | and invite them to think further than their current views.
+        p
+          | In addition, it is the chance for students to speak with many companies during the breaks and the drinks at
+          | the company fair, to connect with potential employers or to find a thesis or internship spot.
+        br
+        h3 Contact
+        p
+          a(href='mailto:committee@2020.snic.nl') committee@2020.snic.nl
+          br
+        p
+          | Toernooiveld 212, M1.0.08
+          br
+          | 6525 EC Nijmegen
+          br
+          | The Netherlands
+    .snap-end
