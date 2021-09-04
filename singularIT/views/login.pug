@@ -3,7 +3,7 @@ block above-content
 
 block header 
   header#mobilit.fullscreen.snap.d-flex.flex-column.align-items-center.justify-content-center(style='min-height: 100vh;')
-    figure.logo.container.col-6.px-5.m-0.mb-5
+    figure.logo.container.col-12.col-sm-10.col-md-8.col-lg-6.px-5.m-0.mb-5
       svg#MOBILITLOGO(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', viewBox='0 0 895.8 205.9', style='enable-background:new 0 0 895.8 205.9;', xml:space='preserve')
         style(type='text/css').
           .st0 {
@@ -95,29 +95,13 @@ block header
             rect.st0(x='687.3', y='82.9', width='128.6', height='9.4')
           g#Bar-6.rellax-horizontal(data-rellax-horizontal-speed='1.5', data-rellax-vertical-scroll-axis='x')
             rect.st1(x='36.2', y='138.6', width='128.6', height='9.4')
-    form.container.col-4.mt-5.text-center(method='post')
+    form.container.col-8.col-sm-6.col-lg-4.mt-5.text-center(method='post')
+      h4.mb-3 Login
       .mb-3
-        label.form-label(for='inputEmail') Email address
-        input#inputEmail.form-control(name='email' type='email', required='', autofocus='')
+        input#inputEmail.form-control(name='email' type='email', placeholder='Email address', required='', autofocus='')
       .mb-3
-        label.form-label(for='inputPassword') Password
-        input#inputPassword.form-control(name='password' type='password', required='')
+        input#inputPassword.form-control(name='password' type='password', placeholder='Password', required='')
       button.btn.btn-primary(type='submit') Login
-    div.m-3
-      a.mx-1.btn.btn-primary(href='/register') Activate your ticket
-      a.mx-1.btn.btn-primary(href='/forgot') Forgot your password?
-
-block content
-  .section.intro.slanted.margin-vert
-    .content.text-center
-      form.form.form-signin(method='post')
-        h2 Please sign in
-        .row
-          input#input_username.form-control(name='email', placeholder='email', type='text', required='', autofocus='')
-        .row 
-          input#input_password.form-control(name='password', placeholder='Password', type='password', required='')
-        button.button-primary.login(type='submit') Sign in
-      p.login-separator or
-      a.button.button-primary(href='/register') Activate your ticket
-      br
-      a(href='/forgot') Forgot your password?
+    div.mt-5
+      a.btn.btn-secondary(href='/forgot') Forgot your password?
+      a.btn.btn-secondary(href='/register') Activate your ticket

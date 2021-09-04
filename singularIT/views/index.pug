@@ -1,6 +1,4 @@
 extends layout
-block above-content
-
 block header
   header#mobilit.fullscreen.snap.d-flex.align-items-end.justify-content-center(style='min-height: 90vh;')
     figure.logo.container.px-5.m-0.position-absolute.top-50.start-50.translate-middle
@@ -119,19 +117,20 @@ block content
     .white.block.position-absolute.rellax(data-rellax-speed='10', data-rellax-percentage='0.5', style='height: 20vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
     .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-4', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
     .container.backdrop.rellax.my-4.px-5(data-rellax-speed='5', data-rellax-percentage='0.5')
-      article
-        h2 Theme
-        p
-          | The focus of this edition of SNiC will be on the IT of mobility. For the past years there have been major leaps
-          | forward in the use of computers and AI in vehicles - think self driving cars, the optimisation of fuel usage in
-          | aeroplanes, or apps that perform diagnostics on the engine of your motorcycle. But MobilIT can be extended to
-          | much more than that: we can analyse the organisation of public transportation, or take a closer look at the
-          | latest innovations in bionics and cybernetics - tech that will open up a future of mobility for everyone.
-        p
-          | During SNiC 2020/2021 we will approach the future of mobility from a wide variety of angles: security is
-          | essential for high-tech transportation in an age of self driving cars and cyber-warfare; theoretical computing
-          | science is the core discipline behind route optimisation algorithms; Artificial limbs are almost completely
-          | computer driven; and of course Artificial Intelligence will play a starring role.
+      article.d-flex.align-items-center.justify-content-center
+        .col-12.col-lg-8.mt-5
+          h2 Theme
+          p
+            | The focus of this edition of SNiC will be on the IT of mobility. For the past years there have been major leaps
+            | forward in the use of computers and AI in vehicles - think self driving cars, the optimisation of fuel usage in
+            | aeroplanes, or apps that perform diagnostics on the engine of your motorcycle. But MobilIT can be extended to
+            | much more than that: we can analyse the organisation of public transportation, or take a closer look at the
+            | latest innovations in bionics and cybernetics - tech that will open up a future of mobility for everyone.
+          p
+            | During SNiC 2020/2021 we will approach the future of mobility from a wide variety of angles: security is
+            | essential for high-tech transportation in an age of self driving cars and cyber-warfare; theoretical computing
+            | science is the core discipline behind route optimisation algorithms; Artificial limbs are almost completely
+            | computer driven; and of course Artificial Intelligence will play a starring role.
   section#corona.fullscreen.snap.white.d-flex.align-items-center.justify-content-center
     .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 60vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
     .blue.block.position-absolute.rellax(data-rellax-speed='-2', data-rellax-percentage='0.5', style='height:  8vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
@@ -139,19 +138,20 @@ block content
     .blue.block.position-absolute.rellax(data-rellax-speed='6', data-rellax-percentage='0.5', style='height: 15vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
     .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-1', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
     .container.backdrop.rellax.my-4.px-5(data-rellax-speed='3', data-rellax-percentage='0.5')
-      article
-        h2 Corona
-        p
-          | Our conference has sadly been plagued by the corona virus. Last year we had to cancel the 2020 edition,
-          | because the corona measures simply did not allow a physical congress in any form.
-        p
-          strong This year we are more optimistic!
-        p
-          | We believe that with the vaccines being deployed faster and faster a normal conference in
-          | november 2021 will be entirely feasible. In the small chance that we cannot host 700 people, we will try to
-          | bring as many people as possible to our venue. We will then organize an online alternative for the people
-          | that are not able to join in Apeldoorn. This way we ensure that as many people can have a good conference,
-          | and sponsors will still be able to reach the students.
+      article.d-flex.align-items-center.justify-content-center
+        .col-12.col-lg-8.mt-5
+          h2 Corona
+          p
+            | Our conference has sadly been plagued by the corona virus. Last year we had to cancel the 2020 edition,
+            | because the corona measures simply did not allow a physical congress in any form.
+          p
+            strong This year we are more optimistic!
+          p
+            | We believe that with the vaccines being deployed faster and faster a normal conference in
+            | november 2021 will be entirely feasible. In the small chance that we cannot host 700 people, we will try to
+            | bring as many people as possible to our venue. We will then organize an online alternative for the people
+            | that are not able to join in Apeldoorn. This way we ensure that as many people can have a good conference,
+            | and sponsors will still be able to reach the students.
   section#speakers.fullscreen.snap.blue.d-flex.align-items-center.justify-content-center
     .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 70vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
     .white.block.position-absolute.rellax(data-rellax-speed=' 2', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
@@ -168,8 +168,7 @@ block content
               | actively looking for more people that would like to give a talk. Thus if you would be interested in presenting
               | an interesting subject that fits in our theme, do not hesitate to send us an email at
               a(href='mailto:speakers@2020.snic.nl') speakers@2020.snic.nl
-              | .
-              We would very much like to hear about more amazing areas in MobilIT.
+              | . We would very much like to hear about more amazing areas in MobilIT.
           .col-12.col-sm-10.col-md-7.col-lg-6.m-lg-0.m-3
             #speaker-carousel.carousel.slide(data-bs-ride='carousel')
               .carousel-inner.ratio.ratio-4x3
@@ -217,39 +216,39 @@ block content
     .white.block.position-absolute.rellax(data-rellax-speed='10', data-rellax-percentage='0.5', style='height: 20vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
     .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-4', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
     .container.backdrop.my-5.px-5.rellax(data-rellax-speed='0', data-rellax-percentage='0.5')
-      article
-        h2 About SNiC
-        p
-          | SNiC, Stichting Nationaal informatica Congres (which can be translated as the Foundation National Informatics
-          | Congress), was established in December 2004. 9 study associations from 7 cities in the Netherlands are
-          | affiliated. The aim of the foundation is to stimulate interest in knowledge of information and communication
-          | technology, and to promote contact between students and the business world.
-        p
-          | Every year one of the associations of the foundation organizes a congress with an IT related subject. On
-          time(datetime='2021-11-23') November 23rd in 2021
-          | , the congress will be organized by two study associations from the Radboud University in Nijmegen. These
-          | associations are Thalia (the study association for Computer Science and Information Science students) and
-          | CognAC (the study association for Artificial Intelligence students).
-        p
-          | Visitors are enthusiastic Computer Science and Artificial Intelligence bachelor and master students from all
-          | over the country. Over the past years the congress has grown considerably. Where in 2017 the congress was
-          | visited by 450 students, we expect around 700 visitors in 2021.
-        p
-          | Various talks will be held at the congress by speakers from both the business world and the academic world.
-          | The students are challenged to dive into a specific topic from different perspectives. We want to inspire them
-          | and invite them to think further than their current views.
-        p
-          | In addition, it is the chance for students to speak with many companies during the breaks and the drinks at
-          | the company fair, to connect with potential employers or to find a thesis or internship spot.
-        br
-        h3 Contact
-        p
-          a(href='mailto:committee@2020.snic.nl') committee@2020.snic.nl
+      article.d-flex.align-items-center.justify-content-center
+        .col-12.col-lg-8.mt-5
+          h2 About SNiC
+          p
+            | SNiC, Stichting Nationaal informatica Congres (which can be translated as the Foundation National Informatics
+            | Congress), was established in December 2004. 9 study associations from 7 cities in the Netherlands are
+            | affiliated. The aim of the foundation is to stimulate interest in knowledge of information and communication
+            | technology, and to promote contact between students and the business world.
+          p
+            | Every year one of the associations of the foundation organizes a congress with an IT related subject. On
+            time(datetime='2021-11-23') November 23rd in 2021
+            | , the congress will be organized by two study associations from the Radboud University in Nijmegen. These
+            | associations are Thalia (the study association for Computer Science and Information Science students) and
+            | CognAC (the study association for Artificial Intelligence students).
+          p
+            | Visitors are enthusiastic Computer Science and Artificial Intelligence bachelor and master students from all
+            | over the country. Over the past years the congress has grown considerably. Where in 2017 the congress was
+            | visited by 450 students, we expect around 700 visitors in 2021.
+          p
+            | Various talks will be held at the congress by speakers from both the business world and the academic world.
+            | The students are challenged to dive into a specific topic from different perspectives. We want to inspire them
+            | and invite them to think further than their current views.
+          p
+            | In addition, it is the chance for students to speak with many companies during the breaks and the drinks at
+            | the company fair, to connect with potential employers or to find a thesis or internship spot.
           br
-        p
-          | Toernooiveld 212, M1.0.08
-          br
-          | 6525 EC Nijmegen
-          br
-          | The Netherlands
-    .snap-end
+          h3 Contact
+          p
+            a(href='mailto:committee@2020.snic.nl') committee@2020.snic.nl
+            br
+          p
+            | Toernooiveld 212, M1.0.08
+            br
+            | 6525 EC Nijmegen
+            br
+            | The Netherlands

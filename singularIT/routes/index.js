@@ -155,6 +155,8 @@ router.get('/profile', auth, async function (req, res) {
   // Do it in the template
   var visitorCounts = await getVisitorCounts();
 
+  console.log(config)
+
   res.render('profile', {
     userHasBus: config.verenigingen[user.vereniging].bus,
     providePreferences: config.providePreferences,
@@ -1063,6 +1065,7 @@ router.get('/tickets/:id/barcode', function (req, res) {
 });
 
 router.get('/reload', adminAuth, function (req, res){
+  config = JSON.parse(fs.readFileSync('config.json'));
   speakerinfo = JSON.parse(fs.readFileSync('speakers.json'));
   partnerinfo = JSON.parse(fs.readFileSync('partners.json'));
   timetable = loadTimetableJSON(speakerinfo);

@@ -43,7 +43,7 @@ module.exports = function (config) {
   passport.deserializeUser(User.deserializeUser());
 
   router.get('/login', function (req,res) {
-    res.render('login', {ticketSaleStarts:config.ticketSaleStarts});
+    res.render('login');
   });
 
   router.post('/login', function (req, res) {

@@ -1,91 +1,66 @@
-extends layout
+extends normal_page
 
-block above-content
-
-block header
-  header.hero.register
-    h2 Register
-
-block content
-  .section.intro.slanted
-    .content
-      .register
-        p You can buy a ticket with an activation code at your study association. You can print out your ticket after you've registered. Preferences for lectures, diets and other remarks can be changed after the registration has been completed.
-
-      if new Date(ticketSaleStarts).getTime() < Date.now()
-        form.form-register(method='POST')
-          legend(hidden) Registration
-          .form-group.center
-            label(for='code') Ticketcode
-            input.form-control( type='text', name='code', autofocus, required, value=body.code)
-          .form-group
-            label(for='firstname') First name
-            input.form-control( type='text', name='firstname', required, value=body.firstname)
-          .form-group
-            label(for='surname') Surname
-            input.form-control( type='text', name='surname', required, value=body.surname)
-          .form-group
-            label(for='vereniging') Association
-            .select-wrapper
-              select.form-control(id='vereniging', required, name='vereniging')
-                option(value='', selected) Select...
-                each vereniging, shortName in verenigingen
-                  option(value=shortName, selected = body.vereniging==shortName ? 'selected' : undefined)=vereniging.name
-          .form-group(style='display:none', id="bus-form-group")
-              .checkbox
-                label(for='bus')
-                  input#bus(type='checkbox', name='bus', checked=body.bus?'checked': undefined)
-                  | I would like to use the arranged bus at my study association
-          .form-group(id='programme-group')
-            label(for='programme') Study programme
-            .select-wrapper
-              select.form-control(id='programme', required, name='programme')
-                option(value='', selected) Select...
-                each programme in studyProgrammes
-                  option(value=programme, selected = body.programme==programme ? 'selected' : undefined)=programme
-                option(value="other" id="study-programme-other", selected = body.programmeOther ? 'selected': undefined) Other
-          .form-group(style='display:none', id='programme-other-group')
-            label Please enter the name of your study programme
-            input.form-control(type='text', name='programmeOther', value=body.programmeOther)
-          .form-group(style='display:none', id='company-name-group')
-            label Company name
-            input.form-control(type='text', name='companyName', id='company-name', value=body.companyName)
-          .form-group
-            .checkbox
-              label(for='vegetarian')
-                input#vegetarian(type='checkbox',name='vegetarian', checked=body.vegetarian? "checked": undefined)
-                | I am a vegetarian
-          .form-group
-            label(for='specialNeeds') Other remarks (e.g. veganism, allergies)
-            input.form-control(type='text', name="specialNeeds", value=body.specialNeeds)
-          .form-group
-            label(for='email') Email
-            input.form-control( type='email', name='email', required, value=body.email)
-          .form-group
-            label(for='password') Password
-            input.form-control(required. type='password', required, name='password')
-          .form-group
-            label(for='confirm') Confirm password
-            input.form-control( type='password', required, name='confirm')
-          .form-group
-              .checkbox
-                label(for='privacyPolicyAgree')
-                  input#privacyPolicyAgree(type='checkbox', name='privacyPolicyAgree', checked=body.privacyPolicyAgree? "checked" : undefined)
-                  | I agree with the #[a(href='/Privacy_Policy.pdf', target='_blank') Privacy Policy].
-          .form-group
-            .checkbox
-              label(for='subscribe')
-                input#subscribe(type='checkbox',name='subscribe', checked='checked')
-                | Subscribe for the mailinglist. We will mail you when you can enroll for sessions and last minute practical information. (You can deregister at any moment)
-          button.button.special(type='submit') Register now
-
-      else
-        .alert.alert-info
-          .icon.fa.fa-info
-
-          - months = ['january', 'february', 'march', 'april', 'may','june','july','august', 'september','november','december'];
-
-          div= 'You can activate your ticket here from ' +  {date: new Date(ticketSaleStarts).getDate() + ' ' + months[new Date(ticketSaleStarts).getMonth()] } + ' onwards!'
+block page-content
+  if new Date(ticketSaleStarts).getTime() < Date.now()
+    form.text-center
+      legend(hidden) Registration
+      h2 Register
+      p
+        | You can buy a ticket with an activation code at your study association. You can print out your ticket after you&apos;ve registered. Preferences for lectures, diets and other remarks can be changed after the registration has been completed.
+      .row
+        .col-12.col-md-6
+          .mb-3
+            input#code.form-control(type='text', name='code', required, placeholder='Ticket code' value=body.code)
+          .mb-3.input-group
+            input#firstname.form-control(type='text', name='firstname', required, placeholder='First name', value=body.firstname)
+            input#surname.form-control(type='text', name='surname', required, placeholder='Last name', value=body.surname)
+          .mb-3
+            input#email.form-control(type='email', name='email', required, placeholder='Email', value=body.email)
+          .mb-3
+            input#password.form-control(type='password', name='password', required, placeholder='Password')
+          .mb-3
+            input#confirmPassword.form-control(type='password', name='confirm', required, placeholder='Confirm password')
+        .col-12.col-md-6
+          .mb-3
+            select#association.form-control(required, name='association')
+              option(value='', selected, disabled) Select association...
+              each vereniging, shortName in verenigingen
+                option(value=shortName, selected = body.vereniging === shortName ? 'selected': undefined)=vereniging.name
+          .mb-3.form-check#bus-form-group(style='display:none')
+            input#bus.form-check-input(type='checkbox', name='bus', checked=body.bus?'checked': undefined)
+            label.form-check-label(for='bus')
+              | I would like to use the arranged bus at my study association
+          .mb-3
+            select#programme.form-control(required, name='programme')
+              option(value='', selected, disabled) Select study programme...
+              each programme in studyProgrammes
+                option(value=programme, selected = body.programme === programme ? 'selected': undefined)=programme
+              option(value="other" id="study-programme-other", selected = body.programmeOther ? 'selected': undefined) Other
+          .mb-3#programme-other-group(style='display:none')
+            input#programme-other.form-control(type='text', name='programmeOther', placeholder='Other study programme', value=body.programmeOther)
+          .mb-3#company-name-group(style='display:none')
+            input#company-name.form-control(type='text', name='companyName', placeholder='Company name', value=body.companyName)
+          .mb-3.form-check
+            input#vegetarian.form-check-input(type='checkbox', name='vegetarian', checked=body.vegetarian? "checked": undefined)
+            label.form-check-label(for='vegetarian')
+              | I am a vegetarian
+          .mb-3
+            input#specialNeeds.form-control(type='text', name='specialNeeds', placeholder='Other remarks (e.g. veganism, allergies)')
+          .mb-3.form-check
+            input#subscribe.form-check-input(type='checkbox', name='subscribe', checked)
+            label.form-check-label(for='subscribe')
+              | Subscribe for the mailinglist. We will mail you when you can enroll for sessions and last minute practical information. (You can deregister at any moment)
+          .mb-3.form-check
+            input#privacyPolicy.form-check-input(type='checkbox', name='privacyPolicyAgree', required, checked=body.privacyPolicyAgree? "checked" : undefined)
+            label.form-check-label(for='privacyPolicy')
+              | I agree with the
+              a(href='/Privacy_Policy.pdf', target='_blank') Privacy Policy
+      button.btn.btn-primary.mt-3(type='submit') Register now
+  else
+    .alert.alert-info
+      .icon.fa.fa-info
+      - months = ['January', 'February', 'March', 'April', 'May','June','July','August', 'September','November','December'];
+      div= 'You can activate your ticket here from ' + new Date(ticketSaleStarts).getDate() + ' ' + months[new Date(ticketSaleStarts).getMonth()] + ' onwards!'
 
 block footer
   if new Date(ticketSaleStarts).getTime() < Date.now()
@@ -94,7 +69,7 @@ block footer
       var bus = $("#bus-form-group");
 
       function updateVisibility() {
-        var index = $("#vereniging").val();
+        var index = $("#association").val();
         var vereniging = verenigingen[index];
         if (vereniging && vereniging.bus)
           bus.show();
@@ -126,7 +101,7 @@ block footer
       }
 
       $(document).ready(function () {
-        $("#vereniging").on('change', updateVisibility);
+        $("#association").on('change', updateVisibility);
         $("#programme").on('change', updateVisibility);
 
         updateVisibility();
