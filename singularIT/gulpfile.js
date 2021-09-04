@@ -1,9 +1,9 @@
 // require('dotenv').config()
 
-const gulp = require('gulp')
-const nodemon = require('gulp-nodemon')
-const livereload = require('gulp-livereload')
-const sass = require('gulp-sass');
+const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
+const livereload = require('gulp-livereload');
+const sass = require('gulp-sass')(require('sass'));
 const rename = require('gulp-rename');
 
 
