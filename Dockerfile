@@ -10,11 +10,6 @@ RUN apk del tzdata
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/
 
-RUN npm install gulp -g
-RUN npm install gulp-nodemon -g
-RUN npm install nodemon -g
-RUN npm rebuild node-sass
-
 COPY entrypoint.development.sh entrypoint.production.sh /usr/src/
 
 
@@ -31,7 +26,6 @@ WORKDIR /usr/src/app/
 
 RUN rm -rvf node_modules
 RUN npm install
-RUN npm install gulp-nodemon
 RUN npm link gulp
 RUN npm link gulp-nodemon
 RUN gulp sass
