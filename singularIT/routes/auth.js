@@ -90,12 +90,13 @@ module.exports = function (config) {
     req.checkBody('email',     'Emailaddress is not valid.').isEmail();
     req.checkBody('password',  'Password needs to be atleast 6 characters long.').len(6);
     req.checkBody('password',  'Passwords are not equal.').equals(req.body.confirm);
-    req.checkBody('vereniging','No association provided.').notEmpty();
-    req.checkBody('vereniging','No valid association provided.').isIn(Object.keys(config.verenigingen));
+    req.checkBody('association','No association provided.').notEmpty();
+    req.checkBody('association','No valid association provided.').isIn(Object.keys(config.verenigingen));
 
-    var association = config.verenigingen[req.body.vereniging];
-    if (association)
+    var association = config.verenigingen[req.body.association];
+    if (association) {
       association = association.name;
+    }
 
     req.body.vegetarian = req.body.vegetarian || false;
     req.body.subscribe = req.body.subscribe || false;

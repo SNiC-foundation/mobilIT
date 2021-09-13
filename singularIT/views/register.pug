@@ -2,7 +2,7 @@ extends normal_page
 
 block page-content
   if new Date(ticketSaleStarts).getTime() < Date.now()
-    form.text-center
+    form.text-center(method='post')
       legend(hidden) Registration
       h2 Register
       p

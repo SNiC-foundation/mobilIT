@@ -1,4 +1,3 @@
-// var debug = require('debug')('disruptit');
 var express = require('express');
 var bwipjs = require('bwip-js');
 var Ticket = require('../models/Ticket');
@@ -9,7 +8,6 @@ var ScannerResult = require('../models/ScannerResult');
 var SpeedDateTimeSlot   = require('../models/SpeedDateTimeSlot');
 var _      = require('underscore');
 var async  = require('async');
-var i18n   = require('i18next');
 const CSV = require('csv-string');
 var moment = require('moment');
 
@@ -23,10 +21,10 @@ function loadTimetableJSON(speakers) {
   var startTime = new Date(tmtble.date + tmtble.startTime);
   var endTime = new Date(tmtble.date + tmtble.endTime);
   var intervalAmount = Math.abs(endTime - startTime) / intervalInMs;
-  var intervals = []
+  var intervals = [];
   for(var i = 0; i <= intervalAmount; i++) {
     var date = new Date(startTime.getTime() + i * intervalInMs);
-    date = date.toLocaleTimeString("en-GB", dateTimeSettings)
+    date = date.toLocaleTimeString("en-GB", dateTimeSettings);
     intervals.push(date);
   }
   tmtble.intervals = intervals;
@@ -41,7 +39,7 @@ function loadTimetableJSON(speakers) {
       talk.endTimeDisplay = talk.endTime.toLocaleTimeString("en-GB", dateTimeSettings);
       talk.length = Math.abs(talk.endTime - talk.startTime) / intervalInMs;
       if(talk.speakerId) {
-        talk.speaker = speakers.speakers.find(item=>item.id==talk.speakerId);
+        talk.speaker = speakers.speakers.find(item=>item.id === talk.speakerId);
       }
     }
   }
@@ -80,14 +78,13 @@ function adminAuth(req, res, next) {
  * Count the amount of people enrolled for a session and returns object with sessionid
  */
 async function countEnrolls(sessionslot, sessionID) {
-  var result;
   var query = {};
   query[sessionslot] = sessionID;
-  var result = await User.find(query).count()
+  var result = await User.find(query).count();
   return {
     'id' : sessionID,
     'count': result
-  }
+  };
 }
 
 /**
@@ -95,7 +92,7 @@ async function countEnrolls(sessionslot, sessionID) {
  */
 async function getVisitorCounts(){
   // Query database to check how many people are going to each session
-  promises = [];
+  var promises = [];
   for (var sessionidx = Object.keys(speakerinfo.speakerids).length - 1; sessionidx >= 0; sessionidx--) {
     var session = Object.keys(speakerinfo.speakerids)[sessionidx];
     // Filter out the plenary sessions
@@ -155,8 +152,6 @@ router.get('/profile', auth, async function (req, res) {
   // Do it in the template
   var visitorCounts = await getVisitorCounts();
 
-  console.log(config)
-
   res.render('profile', {
     userHasBus: config.verenigingen[user.vereniging].bus,
     providePreferences: config.providePreferences,
@@ -181,7 +176,7 @@ if(config.starthelper && config.starthelper.url) {
   router.post('/api/' + config.starthelper.url, async function(req, res) {
     var tmpconfig = JSON.parse(fs.readFileSync('config.json'));
     if(tmpconfig.starthelper.active) {
-      params = {rev: 1};
+      var params = {rev: 1};
       var ticket = new Ticket(params);
       var ticket_id = ticket._id;
       ticket.save(function(err) {
@@ -310,12 +305,12 @@ router.get('/api/talks/enrolled/:id', auth, async function(req, res) {
           if(!result) {
             enrolled = false;
           }
-          res.json({success: true, enrolled: enrolled})
+          res.json({success: true, enrolled: enrolled});
         }
       });
     }
   });
-})
+});
 
 /**
  * Add a favorite talk to the user.
@@ -343,7 +338,9 @@ router.post('/api/favorite/remove/:id', auth, async function (req, res) {
     if (!err){
       if(user.favorites) {
         for( var i = user.favorites.length; i--;){
-            if ( user.favorites[i] == req.params.id) user.favorites.splice(i, 1);
+            if ( user.favorites[i] === req.params.id) {
+              user.favorites.splice(i, 1);
+            }
         }
         user.save();
       }
@@ -395,7 +392,7 @@ router.get('/api/favorite/:id', auth, async function (req, res) {
       res.json({"success": false, "message": "Could not find user!"});
     }
   });
-})
+});
 
 /**
  * This function is used to determine if there is still room for someone to
@@ -407,16 +404,16 @@ async function canEnrollForSession(sessionslot, sessionid, useremail){
     return false;
   }
 
-  if(typeof sessionid == "undefined" || sessionid == "" || sessionid == null){
+  if(typeof sessionid === "undefined" || sessionid === "" || sessionid == null){
     return true;
   }
 
   var session = speakerinfo.speakers.filter(function(speaker){
-    return speaker.id == sessionid;
+    return speaker.id === sessionid;
   });
 
   // session not found
-  if (session.length != 1) {
+  if (session.length !== 1) {
     return false;
   }
 
@@ -455,7 +452,7 @@ router.post('/profile', auth, async function (req, res) {
     req.body.session2 = '';
   }
 
-  if(typeof req.body.session3 == 'undefined'){
+  if(typeof req.body.session3 === 'undefined'){
     req.body.session3 = '';
   }
 
@@ -495,7 +492,7 @@ router.post('/profile', auth, async function (req, res) {
       var canEnrollSession3 = await canEnrollForSession("session3", req.body.session3,
         req.session.passport.user);
 
-      var tracksClosed = Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime()
+      var tracksClosed = Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime();
 
       // naar functie zetten en samenvoegen
       if( canEnrollSession1 ){
@@ -519,10 +516,10 @@ router.post('/profile', auth, async function (req, res) {
         err = true;
       }
 
-      user.vegetarian   = req.body.vegetarian ? true : false;
-      user.bus          = req.body.bus ? true : false;
+      user.vegetarian   = !!req.body.vegetarian;
+      user.bus          = !!req.body.bus;
       user.specialNeeds = req.body.specialNeeds;
-      user.allowBadgeScanning  = req.body.allowBadgeScanning ? true: false;
+      user.allowBadgeScanning  = !!req.body.allowBadgeScanning;
 
       if (req.body.speedDateTimeSlot) {
         var spTimeSlot = await SpeedDateTimeSlot.findById(req.body.speedDateTimeSlot);
@@ -600,8 +597,8 @@ router.get('/users', adminAuth, function (req,res,next) {
   if (req.query.surname) {
     query.surname = { $regex: new RegExp(req.query.surname, 'i') };
   }
-  if (req.query.vereniging) {
-    query.vereniging = { $regex: new RegExp(req.query.vereniging, 'i') };
+  if (req.query.association) {
+    query.vereniging = { $regex: new RegExp(req.query.association, 'i') };
   }
   if (req.query.ticket) {
     query.ticket = { $regex: new RegExp(req.query.ticket, 'i') };
@@ -612,7 +609,7 @@ router.get('/users', adminAuth, function (req,res,next) {
 
   User.find(query).sort({'vereniging':1,'firstname':1}).exec( function (err, results) {
     if (err) { return next(err); }
-    res.render('users',{users:results, verenigingen:config.verenigingen});
+    res.render('users',{users:results, associations:config.verenigingen});
   });
 });
 
@@ -644,7 +641,7 @@ router.get('/speeddate/export-csv', adminAuth,
       ['Slot', 'Name', 'Email', 'Study programme', 'Association']
     ];
 
-    var slots = await SpeedDateTimeSlot.find().sort({'startTime':1})
+    var slots = await SpeedDateTimeSlot.find().sort({'startTime':1});
 
     for (var i = 0; i < slots.length; i++) {
       var slot = slots[i];
@@ -652,7 +649,7 @@ router.get('/speeddate/export-csv', adminAuth,
       var users = await User.find({'speedDateTimeSlot': slot.id});
       var userData = users.map(user => [
         slot.name, user.firstname + ' ' + user.surname, user.email, user.studyProgramme, config.verenigingen[user.vereniging].name
-      ])
+      ]);
 
       if (userData.length > 0) {
         data.push(userData);
@@ -722,8 +719,7 @@ router.get('/badge-scanning/export-csv/:id', adminAuth,
         ];
       })));
 
-    var filename = scannerUser.display_name.replace(/ /g, '_')
-          + '_badge_scans.csv';
+    var filename = scannerUser.display_name.replace(/ /g, '_') + '_badge_scans.csv';
 
     res.set('Content-Type', 'text/plain');
     res.set('Content-Disposition', 'attachment; filename="' + filename + '"');
@@ -782,12 +778,12 @@ router.post('/aanmelden', adminAuth, async function (req, res) {
 
   await user.save();
 
-  req.flash('success', res.locals.ucfirst(user.firstname) + ' ' + user.surname
-    +' ('+ res.locals.verenigingen[user.vereniging].name +') has registered his ticket');
+  req.flash('success', res.locals.ucfirst(user.firstname) + ' ' + user.surname +
+      ' ('+ res.locals.verenigingen[user.vereniging].name +') has registered his ticket');
 
   if (user.speedDateTimeSlot) {
-    req.flash('warning', '!safe:The user has registered for speed dating in slot: <b>'
-      + user.speedDateTimeSlot.name + '</b>.');
+    req.flash('warning', '!safe:The user has registered for speed dating in slot: <b>' +
+        user.speedDateTimeSlot.name + '</b>.');
   }
 
   res.redirect('/users');
@@ -830,8 +826,8 @@ router.get('/users/export-csv/all', adminAuth,
           var spEnd = "";
 
           if (u.speedDateTimeSlot) {
-            spStart = moment(u.speedDateTimeSlot.startTime).format('HH:mm')
-            spEnd = moment(u.speedDateTimeSlot.endTime).format('HH:mm')
+            spStart = moment(u.speedDateTimeSlot.startTime).format('HH:mm');
+            spEnd = moment(u.speedDateTimeSlot.endTime).format('HH:mm');
           }
 
           return [
@@ -879,8 +875,7 @@ router.get('/users/export-csv/:association', adminAuth, async function (req, res
         ];
       })));
 
-    var filename = associationName.replace(/ /g, '_')
-          + '_registered_users.csv';
+    var filename = associationName.replace(/ /g, '_') + '_registered_users.csv';
 
     res.set('Content-Type', 'text/plain');
     res.set('Content-Disposition', 'attachment; filename="' + filename + '"');
@@ -911,20 +906,17 @@ router.get('/connect/:id', auth, function(req, res, next){
         }
       });
     }
-  })
+  });
 });
 
 /**
  * Session choices displayed for administrators
  */
 router.get('/choices', adminAuth, function (req,res,next) {
-  var opts = {reduce: function(a,b){ b.total++;}, initial: {total: 0}};
-
-
-
   User.aggregate([{ $group: { _id: '$session1', count: {$sum: 1} }}], function (err, session1) {
     User.aggregate([{ $group: { _id: '$session2', count: {$sum: 1} }}], function (err, session2) {
       User.aggregate([{ $group: { _id: '$session3', count: {$sum: 1} }}], function (err, session3) {
+        console.log(session1, session2, session3);
         res.render('choices', { session1 : session1, session2 : session2, session3 : session3  });
       });
     });
@@ -936,13 +928,13 @@ async function getMatchingStats(){
   // based on https://github.com/Automattic/mongoose/blob/master/examples/mapreduce/mapreduce.js
   var map = function(){
     for (var i = this.matchingterms.length - 1; i >= 0; i--) {
-      emit(this.matchingterms[i], 1)
+      emit(this.matchingterms[i], 1);
     }
-  }
+  };
 
   var reduce = function(key, values){
     return Array.sum(values);
-  }
+  };
 
   // map-reduce command
   var command = {
@@ -999,7 +991,7 @@ router.post('/tickets', adminAuth, function (req, res, next) {
     console.log(n + ' tickets generated!');
     res.redirect('/tickets');
   });
-})
+});
 
 router.post('/speeddate', adminAuth, function(req, res, next) {
   console.log('Creating ' + req.body.startTime + '-' + req.body.endTime);
@@ -1014,13 +1006,13 @@ router.post('/speeddate', adminAuth, function(req, res, next) {
     return res.redirect('/speeddate');
   },function(err) {
       console.log(err);
-      return next(error);
+      return next(err);
   });
-})
+});
 
 router.get('/api/timetable', adminAuth, function(req, res, next) {
   res.json(timetable);
-})
+});
 
 router.get('/timetable', adminAuth, function(req, res) {
   var enrollment_start_time = new Date(config.enroll_start_time);
@@ -1029,7 +1021,7 @@ router.get('/timetable', adminAuth, function(req, res) {
   var enrollment_possible = enrollment_start_time < today && today < enrollment_end_time;
 
   res.render('timetable', {timetable: timetable, enrollment_possible: enrollment_possible});
-})
+});
 
 router.get('/ticket', auth, function(req, res, next){
   User.findOne({email: req.session.passport.user}, function(err, doc) {
@@ -1084,7 +1076,7 @@ router.get('/reload/:file', adminAuth, function (req, res) {
     return res.redirect('/timetable');
   }
   return res.redirect('/');
-})
+});
 
  return router;
 };

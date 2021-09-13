@@ -23,12 +23,12 @@ block page-content
             option Ticket
         .col-8#searchFieldsWrap
           input.form-control(type='email', name='email', placeholder='Email', style='display:none;')
-          input.form-control(type='text', name='firstname', placeholder='Voornaam')
-          input.form-control(type='text', name='surname', placeholder='Achternaam', style='display:none;')
-          select(name='vereniging', style='display:none;')
+          input.form-control(type='text', name='firstname', placeholder='First name')
+          input.form-control(type='text', name='surname', placeholder='Last name', style='display:none;')
+          select.form-control(name='association', style='display:none;')
             option(value='', disabled) Choose association
-            each vereniging, shortName in verenigingen
-              option(value=shortName)=vereniging.name
+            each association, shortName in associations
+              option(value=shortName)=association.name
           input.form-control(type='text', name='ticket', placeholder='Ticket', style='display:none;')
         .col-2
           button.btn.btn-primary(type='submit') Search
@@ -66,7 +66,7 @@ block page-content
 block footer
   script.
     $('#typeSelect').change(function() {
-      let choice = $(this).selectedIndex;
+      let choice = $(this).prop('selectedIndex');
       $('#searchFieldsWrap > *').hide();
       $('#searchFieldsWrap > *:nth-child(' + (choice + 1) + ')').show();
     });
