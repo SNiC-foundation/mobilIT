@@ -7,7 +7,7 @@ var User = require("./models/User");
 mongoose.connect(config.mongodb.url);
 
 User.find({ $or: [{ specialNeeds: { $ne: "" } }, { vegetarian: true }] })
-  .sort({ vereniging: 1, firstname: 1 })
+  .sort({ association: 1, firstname: 1 })
   .exec(function (err, results) {
     if (err) {
       return err;

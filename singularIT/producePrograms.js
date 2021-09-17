@@ -71,7 +71,7 @@ async function processUser(user, list) {
   // Basic info
   badge.ticketcode = user.ticket;
   badge.fullname = user.firstname + " " + user.surname;
-  badge.association = config.associations[user.vereniging].name;
+  badge.association = config.associations[user.association].name;
 
   // session info
   var session1 = sessionInformation(user, "session1");

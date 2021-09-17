@@ -37,7 +37,7 @@ Configuration files are not included in this repository. You will need to add a 
   // List of associations that take part.
   // List used to create the dropdown options when registering, therefore partner
   // bus indicates whether or not that association gets a bus
-  "verenigingen": [
+  "associations": [
     {
       "name": "Cover",
       "bus": true

@@ -1,51 +1,26 @@
-// extreme comment
 var compress = require("compression");
 var express = require("express");
 var path = require("path");
-var app = express();
-
-// const debug = require('debug')('disruptit')
-
 var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
 var session = require("express-session");
 var flash = require("express-flash");
 var mongoose = require("mongoose");
 var fs = require("fs");
 var passport = require("passport");
 var expressValidator = require("express-validator");
-
 var MongoStore = require("connect-mongo")(session);
 
-const Sentry = require("@sentry/node");
+var app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /// load configuration
-var config = JSON.parse(fs.readFileSync("config.json"));
+const config = require("./config.json");
 
 /// configure database
 mongoose.connect(config.mongodb.url);
 mongoose.Promise = require("q").Promise;
-
-var routes = require("./routes/index")(config);
-var auth = require("./routes/auth")(config);
-var scanner_api_routes = require("./routes/scanner")(config);
-
-// Sentry
-var sentry_enabled = false;
-if (config.sentry && config.sentry.dsn) {
-  sentry_enabled = true;
-}
-
-if (sentry_enabled) {
-  Sentry.init({
-    dsn: config.sentry.dsn,
-    environment: config.sentry.environment,
-  });
-
-  app.use(Sentry.Handlers.requestHandler());
-}
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -67,6 +42,7 @@ app.use(morgan("combined"));
 
 // This must come BEFORE the bodyParser stuff, so the scanner API route
 // can have its own bodyParser and handle its errors
+var scanner_api_routes = require("./routes/scanner")(config);
 app.use("/scanner/api/", scanner_api_routes);
 
 app.use(bodyParser.json());
@@ -94,7 +70,7 @@ app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
 
-// // set up locals that we use in every template
+// set up locals that we use in every template
 app.use(function (req, res, next) {
   res.locals.path = req.path;
   res.locals.user = req.user;
@@ -115,12 +91,23 @@ app.use(function (req, res, next) {
   next();
 });
 
+const routes = require("./routes/index");
+const auth = require("./routes/auth");
+const partners = require("./routes/parteners");
+const admin = require("./routes/admin");
+const profile = require("./routes/profile");
+const qrScanner = require("./routes/qrScanner");
+const talksApi = require("./routes/talksApi");
+const ticket = require("./routes/ticket");
+
 app.use("/", routes);
 app.use("/", auth);
-
-if (sentry_enabled) {
-  app.use(Sentry.Handlers.errorHandler());
-}
+app.use("/", partners);
+app.use("/", admin);
+app.use("/", profile);
+app.use("/", qrScanner);
+app.use("/", talksApi);
+app.use("/", ticket);
 
 /// catch 404 and forward to error handler
 app.use(function (req, res, next) {

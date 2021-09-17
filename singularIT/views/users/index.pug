@@ -53,12 +53,12 @@ block page-content
             td=row.surname
             td=row.email
             td=row.ticket
-            if(associations[row.vereniging])
-              td=associations[row.vereniging].name
+            if(associations[row.association])
+              td=associations[row.association].name
             else
               td='Partner'
             td
-              if row.aanwezig
+              if row.present
                 span.fa.fa-check(style='color:#79bf46;')
               else
                 span.fa.fa-close(style='color:#bf464c;')

@@ -14,7 +14,7 @@ for (var i = speakers.length - 1; i >= 0; i--) {
   var user = new User({
     firstname: speaker.firstname,
     surname: speaker.surname,
-    vereniging: "partner",
+    association: "partner",
     email: speaker.email,
     vegetarian: false,
     ticket: speaker.ticketcode,

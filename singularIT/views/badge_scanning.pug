@@ -30,7 +30,7 @@ block content
                 td
                   a(href='/users/' + scan.user._id)= scan.user.firstname + ' ' + scan.user.surname
                 td= scan.user.studyProgramme
-                td= associations[scan.user.vereniging].name
+                td= associations[scan.user.association].name
                 td= scan.comment
 
         a.button.button-primary(href='/badge-scanning/export-csv/' + account.id) Export CSV

@@ -28,9 +28,9 @@ block content
                   td=user.surname
                   td=user.email
                   td=user.ticket
-                  td=associations[user.vereniging].name
+                  td=associations[user.association].name
                   td
-                    input#aanwezig(type='checkbox', name='aanwezig', checked=user.aanwezig?'checked':undefined)
+                    input#present(type='checkbox', name='present', checked=user.present?'checked':undefined)
                   td
                     input#admin(type='checkbox', name='admin', checked=user.admin?'checked':undefined)
 

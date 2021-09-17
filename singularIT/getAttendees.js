@@ -7,7 +7,7 @@ var User = require("./models/User");
 mongoose.connect(config.mongodb.url);
 
 User.find({})
-  .sort({ vereniging: 1, firstname: 1 })
+  .sort({ association: 1, firstname: 1 })
   .exec(function (err, results) {
     if (err) {
       return err;
@@ -18,7 +18,7 @@ User.find({})
           " " +
           user.surname +
           " " +
-          config.associations[user.vereniging].name
+          config.associations[user.association].name
       );
     });
   });
