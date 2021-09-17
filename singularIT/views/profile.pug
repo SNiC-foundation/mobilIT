@@ -24,7 +24,7 @@ mixin fixedEnrollment(session, sessionids, selectedSpeakerId)
 
 block page-content
   .mb-5
-    h2= ucfirst(user.firstname) + ' ' + user.surname +' ('+ verenigingen[user.vereniging].name +')'
+    h2= ucfirst(user.firstname) + ' ' + user.surname +' ('+ associations[user.vereniging].name +')'
 
   form#settings(method='post')
     .mb-4

@@ -24,8 +24,8 @@ block page-content
           .mb-3
             select#association.form-control(required, name='association')
               option(value='', selected, disabled) Select association...
-              each vereniging, shortName in verenigingen
-                option(value=shortName, selected = body.vereniging === shortName ? 'selected': undefined)=vereniging.name
+              each association, shortName in associations
+                option(value=shortName, selected = body.association === shortName ? 'selected': undefined)=association.name
           .mb-3.form-check#bus-form-group(style='display:none')
             input#bus.form-check-input(type='checkbox', name='bus', checked=body.bus?'checked': undefined)
             label.form-check-label(for='bus')
@@ -65,18 +65,18 @@ block page-content
 block footer
   if new Date(ticketSaleStarts).getTime() < Date.now()
     script(type="text/javascript").
-      var verenigingen = !{JSON.stringify(verenigingen)};
+      var associations = !{JSON.stringify(associations)};
       var bus = $("#bus-form-group");
 
       function updateVisibility() {
         var index = $("#association").val();
-        var vereniging = verenigingen[index];
-        if (vereniging && vereniging.bus)
+        var association = associations[index];
+        if (association && association.bus)
           bus.show();
        else
           bus.hide();
 
-        var isPartner = vereniging && vereniging.name === 'Partner'
+        var isPartner = association && association.name === 'Partner'
         if (isPartner) {
           $("#company-name-group").show();
           $("#company-name").prop("required", true);

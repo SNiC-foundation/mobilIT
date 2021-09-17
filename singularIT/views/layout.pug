@@ -118,33 +118,6 @@ html(lang=locale)
       // Error messages and stuff
       block above-content
 
-      .container
-        .row
-          .offset-by-three.six.columns
-            if messages.error
-              each msg in messages.error
-                .alert.alert-danger.alert-dismissable
-                  +showMessage(msg)
-                  a.close(href='#', data-dismiss='alert', aria-label='close') &times;
-
-            if messages.info
-              each msg in messages.info
-                .alert.alert-info.alert-dismissable
-                  +showMessage(msg)
-                  a.close(href='#', data-dismiss='alert', aria-label='close') &times;
-
-            if messages.success
-              each msg in messages.success
-                .alert.alert-success.alert-dismissable
-                  +showMessage(msg)
-                  a.close(href='#', data-dismiss='alert', aria-label='close') &times;
-
-            if messages.warning
-              each msg in messages.warning
-                .alert.alert-warning.alert-dismissable
-                  +showMessage(msg)
-                  a.close(href='#', data-dismiss='alert', aria-label='close') &times;
-
       // content of the page
       block content
 

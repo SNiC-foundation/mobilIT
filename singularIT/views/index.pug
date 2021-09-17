@@ -216,6 +216,23 @@ block content
     .white.block.position-absolute.rellax(data-rellax-speed='10', data-rellax-percentage='0.5', style='height: 20vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
     .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-4', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
     .container.backdrop.my-5.px-5.rellax(data-rellax-speed='0', data-rellax-percentage='0.5')
+      if messages.error
+        each msg in messages.error
+          .alert.alert-danger
+            +showMessage(msg)
+      if messages.info
+        each msg in messages.info
+          .alert.alert-info
+            +showMessage(msg)
+      if messages.success
+        each msg in messages.success
+          .alert.alert-success
+            +showMessage(msg)
+      if messages.warning
+        each msg in messages.warning
+          .alert.alert-warning
+            +showMessage(msg)
+
       article.d-flex.align-items-center.justify-content-center
         .col-12.col-lg-8.mt-5
           h2 About SNiC

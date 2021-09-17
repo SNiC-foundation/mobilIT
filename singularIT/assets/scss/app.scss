@@ -44,8 +44,6 @@ a  {
   color: var(--brown);
 }
 
-
-
 body {
   width: 100vw;
   max-width: 100vw;
@@ -118,7 +116,6 @@ header:not(.fullscreen) {
   transform: translateX(1px);
 }
 
-
 /* Blocks and backdrop */
 .backdrop::before {
   content: "";
@@ -155,8 +152,6 @@ section {
 .block {
   z-index: 1;
 }
-
-
 
 /* Partner banner */
 
@@ -219,8 +214,6 @@ section {
   width: 300px;
 }
 
-
-
 /* FORMS */
 
 .form-control {
@@ -238,10 +231,15 @@ section {
   border-color: var(--blue);
 }
 
-
-
 /* CARDS */
 
 .card {
+  border: 0;
+  border-radius: 0;
+}
+
+/* ALERTS */
+.alert {
+  border: 0;
   border-radius: 0;
 }

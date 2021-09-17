@@ -153,7 +153,7 @@ router.get('/profile', auth, async function (req, res) {
   var visitorCounts = await getVisitorCounts();
 
   res.render('profile', {
-    userHasBus: config.verenigingen[user.vereniging].bus,
+    userHasBus: config.associations[user.vereniging].bus,
     providePreferences: config.providePreferences,
     speakerids: speakerinfo.speakerids,
     speakers: speakerinfo.speakers,
@@ -440,6 +440,7 @@ async function canEnrollForSession(sessionslot, sessionid, useremail){
 }
 
 router.post('/profile', auth, async function (req, res) {
+  console.log(req.body);
   req.sanitize('vegetarian').toBoolean();
   req.sanitize('bus').toBoolean();
   req.sanitize('allowBadgeScanning').toBoolean();
@@ -456,6 +457,7 @@ router.post('/profile', auth, async function (req, res) {
     req.body.session3 = '';
   }
 
+  console.log(req.body);
 
   if(req.body.session1 !== "" && req.body.session1 !== null && !speakerinfo.speakerids.session1.includes(req.body.session1)){
     req.flash('error', "session1 went wrong!");
@@ -494,7 +496,6 @@ router.post('/profile', auth, async function (req, res) {
 
       var tracksClosed = Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime();
 
-      // naar functie zetten en samenvoegen
       if( canEnrollSession1 ){
         user.session1 = req.body.session1;
       } else if(!tracksClosed) {
@@ -609,7 +610,7 @@ router.get('/users', adminAuth, function (req,res,next) {
 
   User.find(query).sort({'vereniging':1,'firstname':1}).exec( function (err, results) {
     if (err) { return next(err); }
-    res.render('users',{users:results, associations:config.verenigingen});
+    res.render('users',{users:results});
   });
 });
 
@@ -648,7 +649,7 @@ router.get('/speeddate/export-csv', adminAuth,
 
       var users = await User.find({'speedDateTimeSlot': slot.id});
       var userData = users.map(user => [
-        slot.name, user.firstname + ' ' + user.surname, user.email, user.studyProgramme, config.verenigingen[user.vereniging].name
+        slot.name, user.firstname + ' ' + user.surname, user.email, user.studyProgramme, config.associations[user.vereniging].name
       ]);
 
       if (userData.length > 0) {
@@ -693,7 +694,6 @@ router.get('/badge-scanning', adminAuth, async function (req, res) {
     badgeScanningAllowed: badgeScanningAllowed,
     totalUsers: totalUsers,
     scannerAccounts: scannerAccounts,
-    associations: config.verenigingen
   });
 });
 
@@ -733,7 +733,7 @@ router.get('/badge-scanning/export-csv/:id', adminAuth,
 router.get('/diet', adminAuth, function (req, res, next) {
   User.find({$or: [{'specialNeeds': {$ne: ""}}, {'vegetarian': true}]}).sort({'vereniging':1,'firstname':1}).exec( function (err, results) {
     if (err) { return next(err); }
-    res.render('diet',{users:results, verenigingen:config.verenigingen});
+    res.render('diet',{users:results});
   });
 });
 
@@ -757,54 +757,6 @@ router.post('/users/:id', adminAuth, function (req,res,next) {
       req.flash('success', "User edited!");
       return res.redirect('/users/'+req.params.id);
     });
-  });
-});
-
-router.post('/aanmelden', adminAuth, async function (req, res) {
-  var ticket = req.body.ticket;
-  var user = await User.findOne({ticket:ticket}).populate('speedDateTimeSlot');
-
-  if (!user) {
-    req.flash('error', "Ticket not found. Try finding it manually." );
-    return res.redirect('/users');
-  }
-
-  if (user.aanwezig) {
-    req.flash('error', "This ticket is already marked as present.");
-    return res.redirect('/users');
-  }
-
-  user.aanwezig = true;
-
-  await user.save();
-
-  req.flash('success', res.locals.ucfirst(user.firstname) + ' ' + user.surname +
-      ' ('+ res.locals.verenigingen[user.vereniging].name +') has registered his ticket');
-
-  if (user.speedDateTimeSlot) {
-    req.flash('warning', '!safe:The user has registered for speed dating in slot: <b>' +
-        user.speedDateTimeSlot.name + '</b>.');
-  }
-
-  res.redirect('/users');
-});
-
-/**
- * List of people present, per association
- */
-router.get('/aanwezig', adminAuth, function (req,res,next) {
-  var namen = _.keys(config.verenigingen);
-
-  var findTickets = function (naam,cb) {
-    User.find({vereniging:naam},{firstname:1,surname:1,email:1,bus:1,aanwezig:1,companyName:1},function(err, results) {
-      if (err) { return cb(err); }
-
-      cb(null, {name:naam, rows:results});
-    });
-  };
-  async.map(namen, findTickets, function (err, result) {
-    if (err) { return next(err); }
-    res.render('aanwezig', { tables : result });
   });
 });
 
@@ -835,7 +787,7 @@ router.get('/users/export-csv/all', adminAuth,
             u.surname,
             u.email,
             u.bus,
-            config.verenigingen[u.vereniging].name,
+            config.associations[u.vereniging].name,
             u.ticket,
             session1,
             session2,
@@ -856,7 +808,7 @@ router.get('/users/export-csv/:association', adminAuth, async function (req, res
       ['First Name', 'Surname', 'Email', 'Bus', 'Ticket code']
     ];
 
-    var association = config.verenigingen[req.params.association];
+    var association = config.associations[req.params.association];
     if (!association) {
         req.flash('error', 'Association does not exist');
         return res.redirect('/users');
@@ -894,7 +846,6 @@ router.get('/users/export-csv/:association', adminAuth, async function (req, res
 router.get('/connect/:id', auth, function(req, res, next){
   User.findOne({ticket: req.params.id}, function(err, user){
     if (err || !user) {
-      // debug(err);
       res.render('connect', {connected: false, error: 'Ticket id is not valid'});
     } else {
       User.findOneAndUpdate({email:req.session.passport.user}, {$addToSet: {connectlist: req.params.id}},function(err, doc){

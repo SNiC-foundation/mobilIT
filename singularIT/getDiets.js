@@ -19,5 +19,5 @@ User.find({$or: [{'specialNeeds': {$ne: ""}}, {'vegetarian': true}]}).sort({'ver
     }
     console.log(description);
   });
-  // res.render('diet',{users:results, verenigingen:config.verenigingen});
+  // res.render('diet',{users:results});
 });

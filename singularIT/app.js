@@ -90,7 +90,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
   res.locals.path = req.path;
   res.locals.user = req.user;
-  res.locals.verenigingen = config.verenigingen;
+  res.locals.associations = config.associations;
   res.locals.hideMenu = config.hideMenu;
   res.locals.ucfirst = function(value) {
     return value.charAt(0).toUpperCase() + value.slice(1);

@@ -10,21 +10,19 @@ const rename = require('gulp-rename');
 gulp.task('sass', function () {
     return gulp.src('./assets/scss/*.scss')
     .pipe(sass().on('error', sass.logError))
-    // .pipe(minifycss())
     .pipe(rename('style.css'))
     .pipe(gulp.dest('./public/css'));
 });
 
-// .pipe(rename('app.js'))
 gulp.task('js', function () {
-    return gulp.src('./assets/js/resil-it.js')
+    return gulp.src('./assets/js/*.js')
     .pipe(rename('app.js'))
     .pipe(gulp.dest('./public/js'));
 });
 
 
 gulp.task('serve', () => {
-    livereload.listen()
+    livereload.listen();
 
     gulp.watch('./assets/scss/*.scss', gulp.series('sass'));
     gulp.watch('./assets/js/*.js', gulp.series('js'));
@@ -42,6 +40,6 @@ gulp.task('serve', () => {
     .on('restart', () => {
         gulp
         .src('bin/www')
-        .pipe(livereload())
-    })
-})
+        .pipe(livereload());
+    });
+});

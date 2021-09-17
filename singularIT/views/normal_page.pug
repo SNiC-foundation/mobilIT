@@ -97,6 +97,23 @@ block content
         .blue.block.position-absolute.rellax(data-rellax-speed='6', data-rellax-percentage='0.5', style='height: 15vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
         .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-1', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
         .container.backdrop.rellax.my-4.px-5(data-rellax-speed='3', data-rellax-percentage='0.5')
+            if messages.error
+                each msg in messages.error
+                    .alert.alert-danger
+                        +showMessage(msg)
+            if messages.info
+                each msg in messages.info
+                    .alert.alert-info
+                        +showMessage(msg)
+            if messages.success
+                each msg in messages.success
+                    .alert.alert-success
+                        +showMessage(msg)
+            if messages.warning
+                each msg in messages.warning
+                    .alert.alert-warning
+                        +showMessage(msg)
+
             article.d-flex.align-items-center.justify-content-center
                 .col-12.col-lg-8.mt-5
                     block page-content

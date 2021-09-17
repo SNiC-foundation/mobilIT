@@ -20,7 +20,7 @@ block content
           for row in users
             tr
               td=row.firstname + " " + row.surname
-              td=verenigingen[row.vereniging].name
+              td=associations[row.vereniging].name
               td.text-center
                 if row.vegetarian
                   span.fa.fa-check(style='color:#79bf46;') 1

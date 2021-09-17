@@ -9,6 +9,6 @@ mongoose.connect(config.mongodb.url);
 User.find({}).sort({'vereniging':1,'firstname':1}).exec( function (err, results) {
   if (err) { return err; }
   results.forEach(user=>{
-    console.log(user.firstname + ' ' + user.surname + ' ' + config.verenigingen[user.vereniging].name);
+    console.log(user.firstname + ' ' + user.surname + ' ' + config.associations[user.vereniging].name);
   });
 });

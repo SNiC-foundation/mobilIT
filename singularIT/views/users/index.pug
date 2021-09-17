@@ -36,12 +36,12 @@ block page-content
       thead
         tr
           th #
-          th Voornaam
-          th Achternaam
+          th First name
+          th Last name
           th Email
           th Ticket
-          th Vereniging
-          th Aanwezig
+          th Association
+          th Present
       tbody
         -var i = 1;
         for row in users
@@ -53,8 +53,8 @@ block page-content
             td=row.surname
             td=row.email
             td=row.ticket
-            if(verenigingen[row.vereniging])
-              td=verenigingen[row.vereniging].name
+            if(associations[row.vereniging])
+              td=associations[row.vereniging].name
             else
               td='Partner'
             td
