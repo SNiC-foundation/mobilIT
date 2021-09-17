@@ -1,11 +1,11 @@
-var express         = require('express');
-var _               = require('underscore');
-var async           = require('async');
-var User            = require('../models/User');
-var ScannerUser     = require('../models/ScannerUser');
-var ScannerResult   = require('../models/ScannerResult');
+var express = require("express");
+var _ = require("underscore");
+var async = require("async");
+var User = require("../models/User");
+var ScannerUser = require("../models/ScannerUser");
+var ScannerResult = require("../models/ScannerResult");
 
-var bodyParser      = require('body-parser');
+var bodyParser = require("body-parser");
 
 module.exports = function (config) {
   var router = express.Router();
@@ -19,21 +19,21 @@ module.exports = function (config) {
   var token_expiry_time = 12 * 60 * 60 * 1000;
 
   function createToken(scannerUser) {
-    var chars = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    var chars =
+      "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     var token;
 
     do {
       var str = [];
-      for(var i = 0; i < 18; i++){
+      for (var i = 0; i < 18; i++) {
         str[i] = chars[Math.floor(Math.random() * chars.length)];
       }
       token = str.join("");
-
     } while (tokens[token]);
 
     tokens[token] = {
       created_timestamp: new Date(),
-      scanner_user_id: scannerUser._id
+      scanner_user_id: scannerUser._id,
     };
 
     return token;
@@ -56,7 +56,8 @@ module.exports = function (config) {
     var tokenInfo = tokens[token];
     if (tokenInfo) {
       return new Date(
-        tokenInfo.created_timestamp.getTime() + token_expiry_time);
+        tokenInfo.created_timestamp.getTime() + token_expiry_time
+      );
     }
 
     return null;
@@ -80,7 +81,7 @@ module.exports = function (config) {
   function success(res, body) {
     res.send({
       success: true,
-      result: body
+      result: body,
     });
   }
 
@@ -107,23 +108,24 @@ module.exports = function (config) {
   }
 
   router.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods',
-      'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers',
-      'Content-Type, Authorization, Content-Length, X-Requested-With');
-    res.type('json');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, Content-Length, X-Requested-With"
+    );
+    res.type("json");
 
     next();
   });
 
-  router.options('/*', function(req, res) {
+  router.options("/*", function (req, res) {
     res.sendStatus(200);
   });
 
-  router.post('/token', function (req, res, next) {
-    var username =  req.body.username;
-    var password =  req.body.password;
+  router.post("/token", function (req, res, next) {
+    var username = req.body.username;
+    var password = req.body.password;
 
     if (!username || !password) {
       throw unauthorized("Username and/or password were not provided.");
@@ -132,33 +134,36 @@ module.exports = function (config) {
     var authenticate = ScannerUser.authenticate();
     var body = {};
 
-    async.waterfall([
-      function (next) {
-        authenticate(username, password, function (result, scannerUser, err) {
-          if (err) {
-            next(unauthorized(err.message), scannerUser);
-          } else {
-            next(null, scannerUser);
-          }
-        });
-      },
-      function (scannerUser, next) {
-        var token = createToken(scannerUser);
-        var body = {
-          display_name: scannerUser.display_name,
-          token: token
-        };
-        success(res, body);
-        next();
+    async.waterfall(
+      [
+        function (next) {
+          authenticate(username, password, function (result, scannerUser, err) {
+            if (err) {
+              next(unauthorized(err.message), scannerUser);
+            } else {
+              next(null, scannerUser);
+            }
+          });
+        },
+        function (scannerUser, next) {
+          var token = createToken(scannerUser);
+          var body = {
+            display_name: scannerUser.display_name,
+            token: token,
+          };
+          success(res, body);
+          next();
+        },
+      ],
+      function (err) {
+        if (err) {
+          return next(err);
+        }
       }
-    ], function (err) {
-      if (err) {
-        return next(err);
-      }
-    });
+    );
   });
 
-  router.get('/token', function (req, res) {
+  router.get("/token", function (req, res) {
     var token = req.query.token;
 
     if (!token) {
@@ -166,24 +171,23 @@ module.exports = function (config) {
     }
 
     var valid = isTokenValid(token);
-    var result = {valid: valid};
+    var result = { valid: valid };
 
     if (valid) {
       result.valid_until = getTokenValidUntil(token).toISOString();
     }
 
     success(res, result);
-
   });
 
-  router.post('/ticketinfo', function (req, res, next) {
+  router.post("/ticketinfo", function (req, res, next) {
     var token = req.query.token;
 
     if (!token) {
       throw badRequest("No token provided.");
     }
 
-    if(!isTokenValid(token)) {
+    if (!isTokenValid(token)) {
       throw unauthorized("Invalid token provided.");
     }
 
@@ -195,80 +199,84 @@ module.exports = function (config) {
       throw badRequest("No ticket ID provided.");
     }
 
-    async.waterfall([
-      function (next) {
-        User.findOne({'ticket': ticket_id}).exec(function (err, user) {
-          if (err || user === null || user === undefined) {
-            next(notFound("Unknown ticket ID provided."), user);
-          } else {
-            next(null, user);
-          }
-        });
-      },
-      function (user, next) {
-        ScannerResult.findOne({ scanner_user: scanner_user_id, user: user._id }).exec(
-          function (err, scanner_result) {
+    async.waterfall(
+      [
+        function (next) {
+          User.findOne({ ticket: ticket_id }).exec(function (err, user) {
+            if (err || user === null || user === undefined) {
+              next(notFound("Unknown ticket ID provided."), user);
+            } else {
+              next(null, user);
+            }
+          });
+        },
+        function (user, next) {
+          ScannerResult.findOne({
+            scanner_user: scanner_user_id,
+            user: user._id,
+          }).exec(function (err, scanner_result) {
             if (err) {
               next(null, null, user);
             } else {
               next(null, scanner_result, user);
             }
           });
-      },
-      function (scanner_result, user, next) {
-        if (!user.allowBadgeScanning) {
-          next(forbidden("User does not allow badge scanning."));
-          return;
-        }
-
-        if (!scanner_result) {
-          scanner_result = new ScannerResult({
-            scanner_user: scanner_user_id,
-            user: user._id
-          });
-        }
-
-        if (req.body.comment !== undefined) {
-          if (req.body.comment === null || req.body.comment === "") {
-            scanner_result.comment = undefined;
-          } else {
-            scanner_result.comment = req.body.comment;
+        },
+        function (scanner_result, user, next) {
+          if (!user.allowBadgeScanning) {
+            next(forbidden("User does not allow badge scanning."));
+            return;
           }
-        }
 
-        scanner_result.save(function (err) {
-          next(err, scanner_result, user);
-        });
-      },
-      function (scanner_result, user, next) {
-        success(res, {
-          ticket: {
-            name: user.firstname + " " + user.surname,
-            email: user.email,
-            study_programme: user.studyProgramme || ""
-          },
-          comment: scanner_result.comment
-        });
-      }
-    ],
+          if (!scanner_result) {
+            scanner_result = new ScannerResult({
+              scanner_user: scanner_user_id,
+              user: user._id,
+            });
+          }
+
+          if (req.body.comment !== undefined) {
+            if (req.body.comment === null || req.body.comment === "") {
+              scanner_result.comment = undefined;
+            } else {
+              scanner_result.comment = req.body.comment;
+            }
+          }
+
+          scanner_result.save(function (err) {
+            next(err, scanner_result, user);
+          });
+        },
+        function (scanner_result, user, next) {
+          success(res, {
+            ticket: {
+              name: user.firstname + " " + user.surname,
+              email: user.email,
+              study_programme: user.studyProgramme || "",
+            },
+            comment: scanner_result.comment,
+          });
+        },
+      ],
       function (err) {
         if (err) {
           return next(err);
         }
-      });
+      }
+    );
   });
 
   // 404 catcher
-  router.use(function(req, res, next) {
+  router.use(function (req, res, next) {
     // throw error and forward to error handler
     next(notFound("Invalid API route"));
   });
 
-  router.use(function(err, req, res, next) {
+  router.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.send({
       success: false,
-      error: err.message
+      error: err.message,
     });
   });
 

@@ -1,655 +1,775 @@
-var express = require('express');
-var bwipjs = require('bwip-js');
-var Ticket = require('../models/Ticket');
-var User   = require('../models/User');
-var TalkEnrollment = require('../models/TalkEnrollment');
-var ScannerUser = require('../models/ScannerUser');
-var ScannerResult = require('../models/ScannerResult');
-var SpeedDateTimeSlot   = require('../models/SpeedDateTimeSlot');
-var _      = require('underscore');
-var async  = require('async');
-const CSV = require('csv-string');
-var moment = require('moment');
+var express = require("express");
+var bwipjs = require("bwip-js");
+var Ticket = require("../models/Ticket");
+var User = require("../models/User");
+var TalkEnrollment = require("../models/TalkEnrollment");
+var ScannerUser = require("../models/ScannerUser");
+var ScannerResult = require("../models/ScannerResult");
+var SpeedDateTimeSlot = require("../models/SpeedDateTimeSlot");
+var _ = require("underscore");
+var async = require("async");
+const CSV = require("csv-string");
+var moment = require("moment");
+var fs = require("fs");
 
 function loadTimetableJSON(speakers) {
-  var dateTimeSettings = {hour:'2-digit', minute:'2-digit', hour12:false};
+  var dateTimeSettings = { hour: "2-digit", minute: "2-digit", hour12: false };
 
-  var tmtble = JSON.parse(fs.readFileSync('timetable.json'));
-  var intervalInMs = tmtble.timeInterval * 60 * 1000;
+  var timetable = JSON.parse(fs.readFileSync("timetable.json"));
+  var intervalInMs = timetable.timeInterval * 60 * 1000;
 
   // Add time intervals to be used in the webpage.
-  var startTime = new Date(tmtble.date + tmtble.startTime);
-  var endTime = new Date(tmtble.date + tmtble.endTime);
+  var startTime = new Date(timetable.date + timetable.startTime);
+  var endTime = new Date(timetable.date + timetable.endTime);
   var intervalAmount = Math.abs(endTime - startTime) / intervalInMs;
   var intervals = [];
-  for(var i = 0; i <= intervalAmount; i++) {
+  for (var i = 0; i <= intervalAmount; i++) {
     var date = new Date(startTime.getTime() + i * intervalInMs);
     date = date.toLocaleTimeString("en-GB", dateTimeSettings);
     intervals.push(date);
   }
-  tmtble.intervals = intervals;
+  timetable.intervals = intervals;
 
-  for(var track in tmtble.tracks) {
-    for(var talk in tmtble.tracks[track].talks) {
-      talk = tmtble.tracks[track].talks[talk];
+  for (var track in timetable.tracks) {
+    for (var talk in timetable.tracks[track].talks) {
+      talk = timetable.tracks[track].talks[talk];
       // Add the length in multiple of 15 minutes. (30 min talk = 2)
-      talk.startTime = new Date(tmtble.date + talk.startTime);
-      talk.endTime = new Date(tmtble.date + talk.endTime);
-      talk.startTimeDisplay = talk.startTime.toLocaleTimeString("en-GB", dateTimeSettings);
-      talk.endTimeDisplay = talk.endTime.toLocaleTimeString("en-GB", dateTimeSettings);
+      talk.startTime = new Date(timetable.date + talk.startTime);
+      talk.endTime = new Date(timetable.date + talk.endTime);
+      talk.startTimeDisplay = talk.startTime.toLocaleTimeString(
+        "en-GB",
+        dateTimeSettings
+      );
+      talk.endTimeDisplay = talk.endTime.toLocaleTimeString(
+        "en-GB",
+        dateTimeSettings
+      );
       talk.length = Math.abs(talk.endTime - talk.startTime) / intervalInMs;
-      if(talk.speakerId) {
-        talk.speaker = speakers.speakers.find(item=>item.id === talk.speakerId);
+      if (talk.speakerId) {
+        talk.speaker = speakers.speakers.find(
+          (item) => item.id === talk.speakerId
+        );
       }
     }
   }
-  return tmtble;
+  return timetable;
 }
 
 // Load speaker information from speakers.json
-var fs = require('fs');
-var speakerinfo = JSON.parse(fs.readFileSync('speakers.json'));
-var partnerinfo = JSON.parse(fs.readFileSync('partners.json'));
+var speakerinfo = JSON.parse(fs.readFileSync("speakers.json"));
+var partnerinfo = JSON.parse(fs.readFileSync("partners.json"));
 var timetable = loadTimetableJSON(speakerinfo);
 
 module.exports = function (config) {
-var router = express.Router();
+  var router = express.Router();
 
-
-function auth(req, res, next) {
-  if (!req.user) {
-    req.session.lastPage = req.path;
-    req.flash('info', 'You have to log in to visit page ' + req.path );
-    return res.redirect('/login');
+  function auth(req, res, next) {
+    if (!req.user) {
+      req.session.lastPage = req.path;
+      req.flash("info", "You have to log in to visit page " + req.path);
+      return res.redirect("/login");
+    }
+    next();
   }
-  next();
-}
 
-function adminAuth(req, res, next) {
-  if (!req.user || !req.user.admin) {
-    req.session.lastPage = req.path;
-    req.flash('info', 'You have to log in to visit page ' + req.path );
-    return res.redirect('/login');
+  function adminAuth(req, res, next) {
+    if (!req.user || !req.user.admin) {
+      req.session.lastPage = req.path;
+      req.flash("info", "You have to log in to visit page " + req.path);
+      return res.redirect("/login");
+    }
+    next();
   }
-  next();
-}
 
-/**
- * Count the amount of people enrolled for a session and returns object with sessionid
- */
-async function countEnrolls(sessionslot, sessionID) {
-  var query = {};
-  query[sessionslot] = sessionID;
-  var result = await User.find(query).count();
-  return {
-    'id' : sessionID,
-    'count': result
-  };
-}
+  /**
+   * Count the amount of people enrolled for a session and returns object with sessionid
+   */
+  async function countEnrolls(sessionslot, sessionID) {
+    var query = {};
+    query[sessionslot] = sessionID;
+    var result = await User.find(query).count();
+    return {
+      id: sessionID,
+      count: result,
+    };
+  }
 
-/**
- * Queries the database to get all the visitor counts for non plenary sessions.
- */
-async function getVisitorCounts(){
-  // Query database to check how many people are going to each session
-  var promises = [];
-  for (var sessionidx = Object.keys(speakerinfo.speakerids).length - 1; sessionidx >= 0; sessionidx--) {
-    var session = Object.keys(speakerinfo.speakerids)[sessionidx];
-    // Filter out the plenary sessions
-    if ( speakerinfo.speakerids[session] instanceof Array) {
-      for (var speakeridx = speakerinfo.speakerids[session].length - 1; speakeridx >= 0; speakeridx--) {
-        var speaker = speakerinfo.speakerids[session][speakeridx];
-        promises.push(countEnrolls(session, speaker));
+  /**
+   * Queries the database to get all the visitor counts for non plenary sessions.
+   */
+  async function getVisitorCounts() {
+    // Query database to check how many people are going to each session
+    var promises = [];
+    for (
+      var sessionidx = Object.keys(speakerinfo.speakerids).length - 1;
+      sessionidx >= 0;
+      sessionidx--
+    ) {
+      var session = Object.keys(speakerinfo.speakerids)[sessionidx];
+      // Filter out the plenary sessions
+      if (speakerinfo.speakerids[session] instanceof Array) {
+        for (
+          var speakeridx = speakerinfo.speakerids[session].length - 1;
+          speakeridx >= 0;
+          speakeridx--
+        ) {
+          var speaker = speakerinfo.speakerids[session][speakeridx];
+          promises.push(countEnrolls(session, speaker));
+        }
       }
     }
+
+    // Gather all the data and make a dict with
+    return Promise.all(promises);
   }
 
-  // Gather all the data and make a dicht with
-  return Promise.all(promises);
-}
-
-router.get('/', function (req, res) {
-  res.render('index', { title: '', ticketSaleStarts:config.ticketSaleStarts });
-});
-
-router.get('//', function (req, res) {
-  res.render('index', { title: '', ticketSaleStarts:config.ticketSaleStarts });
-});
-
-router.get('/partners', function (req,res) {
-  res.render('partners/index',{title:'Partners |', partners: partnerinfo});
-});
-
-router.get('/partners/:partner',  function (req, res) {
-  res.render('partners/partner', {partner: partnerinfo.partners[req.params.partner]});
-});
-
-router.get('/profile', auth, async function (req, res) {
-  var user = await User.findOne({email:req.session.passport.user});
-  var spTimeSlot = null;
-  var allSpTimeSlots = null;
-  var freeSpTimeSlots = null;
-
-  if (user.speedDateTimeSlot) {
-    spTimeSlot = await SpeedDateTimeSlot.findById(user.speedDateTimeSlot);
-  } else {
-    allSpTimeSlots = await SpeedDateTimeSlot.find().sort({'startTime':1});
-
-    allSpTimeSlots = await Promise.all(allSpTimeSlots.map(
-      async function (ts) {
-        var userCount = await User.find(
-          {speedDateTimeSlot: ts.id}).count();
-
-        ts.isFree = userCount < ts.capacity;
-
-        return ts;
-      }));
-
-      freeSpTimeSlots = allSpTimeSlots.filter(ts => ts.isFree);
-  }
-
-  // Don't try to unescape here, it's not stored in user.
-  // Do it in the template
-  var visitorCounts = await getVisitorCounts();
-
-  res.render('profile', {
-    userHasBus: config.associations[user.vereniging].bus,
-    providePreferences: config.providePreferences,
-    speakerids: speakerinfo.speakerids,
-    speakers: speakerinfo.speakers,
-    matchingterms:config.matchingterms,
-    visitorCounts: visitorCounts,
-    spTimeSlot: spTimeSlot,
-    allSpTimeSlots: allSpTimeSlots,
-    freeSpTimeSlots: freeSpTimeSlots,
-    provideTrackPreferencesEnd: config.provideTrackPreferencesEnd
+  router.get("/", function (req, res) {
+    res.render("index", {
+      title: "",
+      ticketSaleStarts: config.ticketSaleStarts,
+    });
   });
-});
 
-router.get('/api/user', auth, async function (req, res) {
-  var user = await User.findOne({email:req.session.passport.user});
-  res.json(user);
-});
+  router.get("//", function (req, res) {
+    res.render("index", {
+      title: "",
+      ticketSaleStarts: config.ticketSaleStarts,
+    });
+  });
 
+  router.get("/partners", function (req, res) {
+    res.render("partners/index", {
+      title: "Partners |",
+      partners: partnerinfo,
+    });
+  });
 
-if(config.starthelper && config.starthelper.url) {
-  router.post('/api/' + config.starthelper.url, async function(req, res) {
-    var tmpconfig = JSON.parse(fs.readFileSync('config.json'));
-    if(tmpconfig.starthelper.active) {
-      var params = {rev: 1};
-      var ticket = new Ticket(params);
-      var ticket_id = ticket._id;
-      ticket.save(function(err) {
-        if(err) {
-          return res.json({"success": false, "error": err});
-        } else {
-          return res.json({"success": true, "ticket_id": ticket_id});
-        }
-      });
+  router.get("/partners/:partner", function (req, res) {
+    res.render("partners/partner", {
+      partner: partnerinfo.partners[req.params.partner],
+    });
+  });
+
+  router.get("/profile", auth, async function (req, res) {
+    var user = await User.findOne({ email: req.session.passport.user });
+    var spTimeSlot = null;
+    var allSpTimeSlots = null;
+    var freeSpTimeSlots = null;
+
+    if (user.speedDateTimeSlot) {
+      spTimeSlot = await SpeedDateTimeSlot.findById(user.speedDateTimeSlot);
     } else {
-      return res.json({"success": false});
+      allSpTimeSlots = await SpeedDateTimeSlot.find().sort({ startTime: 1 });
+
+      allSpTimeSlots = await Promise.all(
+        allSpTimeSlots.map(async function (ts) {
+          var userCount = await User.find({ speedDateTimeSlot: ts.id }).count();
+
+          ts.isFree = userCount < ts.capacity;
+
+          return ts;
+        })
+      );
+
+      freeSpTimeSlots = allSpTimeSlots.filter((ts) => ts.isFree);
     }
-  });
-  router.post('/api/' + config.starthelper.url +"/:username", async function(req, res) {
-    var tmpconfig = JSON.parse(fs.readFileSync('config.json'));
-    if(tmpconfig.starthelper.active) {
-      var user = await User.findOne({email:req.params.username});
-      user.admin = true;
-      user.save(function(err) {
-        if(err) {
-          res.json({"success": false, "user": user});
-        } else {
-          res.json({"success": true, "user": user});
-        }
-      });
-    } else {
-      res.json({"success": false});
-    }
-  });
-}
 
-/**
- * Enroll for a talk for this user.
- */
-router.post('/api/talks/enroll/:id', auth, async function(req, res) {
-  User.findOne({email:req.session.passport.user}).exec(async function (err, user) {
-    if(err) {
-      res.json({"success": false});
-    } else {
-      var newTalkEnrollment = new TalkEnrollment({
-        user: user,
-        talk: req.params.id
-      });
-      newTalkEnrollment.save(function(err) {
-        if(err) {
-          res.json({"success": false});
-        } else {
-          res.json({"success": true});
-        }
-      });
-    }
-  });
-});
+    // Don't try to unescape here, it's not stored in user.
+    // Do it in the template
+    var visitorCounts = await getVisitorCounts();
 
-router.post('/api/talks/unenroll/:id', auth, async function(req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if(err) {
-      res.json({"success": false});
-    } else {
-      TalkEnrollment.deleteOne({user: user, talk: req.params.id}, function(err) {
-        if(err) {
-          res.json({"success": false});
-        } else {
-          res.json({"success": true});
-        }
-      });
-    }
+    res.render("profile", {
+      userHasBus: config.associations[user.vereniging].bus,
+      providePreferences: config.providePreferences,
+      speakerids: speakerinfo.speakerids,
+      speakers: speakerinfo.speakers,
+      matchingterms: config.matchingterms,
+      visitorCounts: visitorCounts,
+      spTimeSlot: spTimeSlot,
+      allSpTimeSlots: allSpTimeSlots,
+      freeSpTimeSlots: freeSpTimeSlots,
+      provideTrackPreferencesEnd: config.provideTrackPreferencesEnd,
+    });
   });
-});
 
-/**
- * Enroll for all favorites of the user.
- */
-router.post('/api/talks/enroll_favorites', auth, async function(req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if(err) {
-      res.json({success: false});
-    } else {
-      var amountOfFavorites = user.favorites.length;
-      var errors = 0;
-      for (var i = 0; i < amountOfFavorites; i++) {
-        var newTalkEnrollment = new TalkEnrollment({
-          user: user,
-          talk: user.favorites[i]
-        });
-        await newTalkEnrollment.save(function(err) {
-          if(err) {
-            errors += 1;
+  router.get("/api/user", auth, async function (req, res) {
+    var user = await User.findOne({ email: req.session.passport.user });
+    res.json(user);
+  });
+
+  if (config.starthelper && config.starthelper.url) {
+    router.post("/api/" + config.starthelper.url, async function (req, res) {
+      var tmpconfig = JSON.parse(fs.readFileSync("config.json"));
+      if (tmpconfig.starthelper.active) {
+        var params = { rev: 1 };
+        var ticket = new Ticket(params);
+        var ticket_id = ticket._id;
+        ticket.save(function (err) {
+          if (err) {
+            return res.json({ success: false, error: err });
+          } else {
+            return res.json({ success: true, ticket_id: ticket_id });
           }
         });
-      }
-      if(errors > 0) {
-        res.json({success: false, errors, amountOfFavorites});
       } else {
-        res.json({success: true});
+        return res.json({ success: false });
       }
-    }
-  });
-});
+    });
+    router.post(
+      "/api/" + config.starthelper.url + "/:username",
+      async function (req, res) {
+        var tmpconfig = JSON.parse(fs.readFileSync("config.json"));
+        if (tmpconfig.starthelper.active) {
+          var user = await User.findOne({ email: req.params.username });
+          user.admin = true;
+          user.save(function (err) {
+            if (err) {
+              res.json({ success: false, user: user });
+            } else {
+              res.json({ success: true, user: user });
+            }
+          });
+        } else {
+          res.json({ success: false });
+        }
+      }
+    );
+  }
 
-/**
- * Get all talks this user is enrolled for.
- */
-router.get('/api/talks/', auth, async function(req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    TalkEnrollment.find({user: user}).exec(async function (err, talks) {
-      if(err) {
-        res.json({success: false});
+  /**
+   * Enroll for a talk for this user.
+   */
+  router.post("/api/talks/enroll/:id", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (err) {
+        res.json({ success: false });
       } else {
-        res.json({success: true, talks: talks});
+        var newTalkEnrollment = new TalkEnrollment({
+          user: user,
+          talk: req.params.id,
+        });
+        newTalkEnrollment.save(function (err) {
+          if (err) {
+            res.json({ success: false });
+          } else {
+            res.json({ success: true });
+          }
+        });
       }
     });
   });
-});
 
-router.get('/api/talks/enrolled/:id', auth, async function(req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if(err) {
-      res.json({success: false});
-    } else {
-      TalkEnrollment.findOne({user: user, talk: req.params.id}, function(err, result) {
-        if(err) {
-          res.json({success: false});
-        } else {
-          var enrolled = true;
-          if(!result) {
-            enrolled = false;
+  router.post("/api/talks/unenroll/:id", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (err) {
+        res.json({ success: false });
+      } else {
+        TalkEnrollment.deleteOne(
+          { user: user, talk: req.params.id },
+          function (err) {
+            if (err) {
+              res.json({ success: false });
+            } else {
+              res.json({ success: true });
+            }
           }
-          res.json({success: true, enrolled: enrolled});
+        );
+      }
+    });
+  });
+
+  /**
+   * Enroll for all favorites of the user.
+   */
+  router.post("/api/talks/enroll_favorites", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (err) {
+        res.json({ success: false });
+      } else {
+        var amountOfFavorites = user.favorites.length;
+        var errors = 0;
+        for (var i = 0; i < amountOfFavorites; i++) {
+          var newTalkEnrollment = new TalkEnrollment({
+            user: user,
+            talk: user.favorites[i],
+          });
+          await newTalkEnrollment.save(function (err) {
+            if (err) {
+              errors += 1;
+            }
+          });
+        }
+        if (errors > 0) {
+          res.json({ success: false, errors, amountOfFavorites });
+        } else {
+          res.json({ success: true });
+        }
+      }
+    });
+  });
+
+  /**
+   * Get all talks this user is enrolled for.
+   */
+  router.get("/api/talks/", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      TalkEnrollment.find({ user: user }).exec(async function (err, talks) {
+        if (err) {
+          res.json({ success: false });
+        } else {
+          res.json({ success: true, talks: talks });
         }
       });
-    }
+    });
   });
-});
 
-/**
- * Add a favorite talk to the user.
- */
-router.post('/api/favorite/add/:id', auth, async function (req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if (!err){
-      if(!user.favorites) {
-        user.favorites =[];
+  router.get("/api/talks/enrolled/:id", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (err) {
+        res.json({ success: false });
+      } else {
+        TalkEnrollment.findOne(
+          { user: user, talk: req.params.id },
+          function (err, result) {
+            if (err) {
+              res.json({ success: false });
+            } else {
+              var enrolled = true;
+              if (!result) {
+                enrolled = false;
+              }
+              res.json({ success: true, enrolled: enrolled });
+            }
+          }
+        );
       }
-      user.favorites.push(req.params.id);
-      user.save();
-      res.json({"success": true});
-    } else {
-      res.json({"success": false, "message": "Could not find user!"});
-    }
+    });
   });
-});
 
-/**
- * Remove a favorite from the current user.
- */
-router.post('/api/favorite/remove/:id', auth, async function (req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if (!err){
-      if(user.favorites) {
-        for( var i = user.favorites.length; i--;){
-            if ( user.favorites[i] === req.params.id) {
+  /**
+   * Add a favorite talk to the user.
+   */
+  router.post("/api/favorite/add/:id", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (!err) {
+        if (!user.favorites) {
+          user.favorites = [];
+        }
+        user.favorites.push(req.params.id);
+        user.save();
+        res.json({ success: true });
+      } else {
+        res.json({ success: false, message: "Could not find user!" });
+      }
+    });
+  });
+
+  /**
+   * Remove a favorite from the current user.
+   */
+  router.post("/api/favorite/remove/:id", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (!err) {
+        if (user.favorites) {
+          for (var i = user.favorites.length; i--; ) {
+            if (user.favorites[i] === req.params.id) {
               user.favorites.splice(i, 1);
             }
+          }
+          user.save();
         }
-        user.save();
+
+        res.json({ success: true });
+      } else {
+        res.json({ success: false, message: "Could not find user!" });
       }
-
-      res.json({"success": true});
-    } else {
-      res.json({"success": false, "message": "Could not find user!"});
-    }
+    });
   });
-});
 
-/**
- * Remove all favorites from the user.
- */
-router.post('/api/favorite/remove', auth, async function (req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if (!err){
-      user.favorites = [];
+  /**
+   * Remove all favorites from the user.
+   */
+  router.post("/api/favorite/remove", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (!err) {
+        user.favorites = [];
 
-      user.save();
-      res.json({"success": true});
-    } else {
-      res.json({"success": false, "message": "Could not find user!"});
-    }
+        user.save();
+        res.json({ success: true });
+      } else {
+        res.json({ success: false, message: "Could not find user!" });
+      }
+    });
   });
-});
 
-/**
- * Get all favorites of this user.
- */
-router.get('/api/favorite', auth, async function (req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if (!err){
-      res.json({"success": true, "favorite": user.favorites});
-    } else {
-      res.json({"success": false, "message": "Could not find user!"});
-    }
+  /**
+   * Get all favorites of this user.
+   */
+  router.get("/api/favorite", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (!err) {
+        res.json({ success: true, favorite: user.favorites });
+      } else {
+        res.json({ success: false, message: "Could not find user!" });
+      }
+    });
   });
-});
 
-/**
- * Check if a talk is a favorite.
- */
-router.get('/api/favorite/:id', auth, async function (req, res) {
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-    if (!err){
-      res.json({"success": true, "favorite": user.favorites.includes(parseInt(req.params.id))});
-    } else {
-      res.json({"success": false, "message": "Could not find user!"});
-    }
+  /**
+   * Check if a talk is a favorite.
+   */
+  router.get("/api/favorite/:id", auth, async function (req, res) {
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (!err) {
+        res.json({
+          success: true,
+          favorite: user.favorites.includes(parseInt(req.params.id)),
+        });
+      } else {
+        res.json({ success: false, message: "Could not find user!" });
+      }
+    });
   });
-});
 
-/**
- * This function is used to determine if there is still room for someone to
- * enroll and takes in to account if someone is already enrolled.
- * TODO: possibly combine with countEnrolls?
- */
-async function canEnrollForSession(sessionslot, sessionid, useremail){
-  if (Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime()) {
-    return false;
-  }
+  /**
+   * This function is used to determine if there is still room for someone to
+   * enroll and takes in to account if someone is already enrolled.
+   * TODO: possibly combine with countEnrolls?
+   */
+  async function canEnrollForSession(sessionslot, sessionid, useremail) {
+    if (Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime()) {
+      return false;
+    }
 
-  if(typeof sessionid === "undefined" || sessionid === "" || sessionid == null){
+    if (
+      typeof sessionid === "undefined" ||
+      sessionid === "" ||
+      sessionid == null
+    ) {
+      return true;
+    }
+
+    var session = speakerinfo.speakers.filter(function (speaker) {
+      return speaker.id === sessionid;
+    });
+
+    // session not found
+    if (session.length !== 1) {
+      return false;
+    }
+
+    session = session[0];
+
+    // Check if there is a limit and if so, if it has been reached
+    if (session.limit) {
+      var query = {};
+      query[sessionslot] = sessionid;
+      var result;
+
+      await User.find(query)
+        .where("email")
+        .ne(useremail)
+        .count()
+        .then(function (res) {
+          result = res;
+        });
+      return result < session.limit;
+    }
+
     return true;
   }
 
-  var session = speakerinfo.speakers.filter(function(speaker){
-    return speaker.id === sessionid;
-  });
+  router.post("/profile", auth, async function (req, res) {
+    console.log(req.body);
+    req.sanitize("vegetarian").toBoolean();
+    req.sanitize("bus").toBoolean();
+    req.sanitize("allowBadgeScanning").toBoolean();
 
-  // session not found
-  if (session.length !== 1) {
-    return false;
-  }
+    if (typeof req.body.session1 === "undefined") {
+      req.body.session1 = "";
+    }
 
-  session = session[0];
+    if (typeof req.body.session2 === "undefined") {
+      req.body.session2 = "";
+    }
 
-  // Check if there is a limit and if so, if it has been reached
-  if (session.limit) {
-    var query = {};
-    query[sessionslot] = sessionid;
-    var result;
+    if (typeof req.body.session3 === "undefined") {
+      req.body.session3 = "";
+    }
 
-    await User
-      .find(query)
-      .where('email')
-      .ne(useremail)
-      .count()
-      .then(function(res){
-        result = res;
-      });
-    return result < session.limit;
-  }
+    console.log(req.body);
 
-  return true;
-}
+    if (
+      req.body.session1 !== "" &&
+      req.body.session1 !== null &&
+      !speakerinfo.speakerids.session1.includes(req.body.session1)
+    ) {
+      req.flash("error", "session1 went wrong!");
+      return res.redirect("/profile");
+    }
+    if (
+      req.body.session2 !== "" &&
+      req.body.session2 !== null &&
+      !speakerinfo.speakerids.session2.includes(req.body.session2)
+    ) {
+      req.flash("error", "session2 went wrong!");
+      return res.redirect("/profile");
+    }
+    if (
+      req.body.session3 !== "" &&
+      req.body.session3 !== null &&
+      !speakerinfo.speakerids.session3.includes(req.body.session3)
+    ) {
+      req.flash("error", "session3 went wrong!");
+      return res.redirect("/profile");
+    }
 
-router.post('/profile', auth, async function (req, res) {
-  console.log(req.body);
-  req.sanitize('vegetarian').toBoolean();
-  req.sanitize('bus').toBoolean();
-  req.sanitize('allowBadgeScanning').toBoolean();
+    User.findOne({ email: req.session.passport.user }).exec(async function (
+      err,
+      user
+    ) {
+      if (!err) {
+        /*******************************************************************************
+         * There is some form of race condition possible. the check if the session is
+         * full can be done after someone else has been checked but before he has been
+         * enrolled.
+         *
+         * Best would be to do a conditional update, however, Mongo does not support
+         * this feature in mongo 3.4.
+         *
+         * For now this is not as big as a problem because one person extra is not
+         * that big of a problem. However, watch carefully if people actively abuse
+         * this
+         ******************************************************************************/
 
-  if(typeof req.body.session1 === 'undefined'){
-    req.body.session1 = '';
-  }
+        var canEnrollSession1 = await canEnrollForSession(
+          "session1",
+          req.body.session1,
+          req.session.passport.user
+        );
+        var canEnrollSession2 = await canEnrollForSession(
+          "session2",
+          req.body.session2,
+          req.session.passport.user
+        );
+        var canEnrollSession3 = await canEnrollForSession(
+          "session3",
+          req.body.session3,
+          req.session.passport.user
+        );
 
-  if(typeof req.body.session2 === 'undefined'){
-    req.body.session2 = '';
-  }
+        var tracksClosed =
+          Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime();
 
-  if(typeof req.body.session3 === 'undefined'){
-    req.body.session3 = '';
-  }
-
-  console.log(req.body);
-
-  if(req.body.session1 !== "" && req.body.session1 !== null && !speakerinfo.speakerids.session1.includes(req.body.session1)){
-    req.flash('error', "session1 went wrong!");
-    return res.redirect('/profile');
-  }
-  if(req.body.session2 !== "" && req.body.session2 !== null && !speakerinfo.speakerids.session2.includes(req.body.session2)){
-    req.flash('error', "session2 went wrong!");
-    return res.redirect('/profile');
-  }
-  if(req.body.session3 !== "" && req.body.session3 !== null && !speakerinfo.speakerids.session3.includes(req.body.session3)){
-    req.flash('error', "session3 went wrong!");
-    return res.redirect('/profile');
-  }
-
-  User.findOne({email:req.session.passport.user}).exec( async function (err, user) {
-  if (!err){
-/*******************************************************************************
- * There is some form of race condition possible. the check if the session is
- * full can be done after someone else has been checked but before he has been
- * enrolled.
- *
- * Best would be to do a conditional update, however, Mongo does not support
- * this feature in mongo 3.4.
- *
- * For now this is not as big as a problem because one person extra is not
- * that big of a problem. However, watch carefully if people actively abuse
- * this
- ******************************************************************************/
-
-      var canEnrollSession1 = await canEnrollForSession("session1", req.body.session1,
-        req.session.passport.user);
-      var canEnrollSession2 = await canEnrollForSession("session2", req.body.session2,
-        req.session.passport.user);
-      var canEnrollSession3 = await canEnrollForSession("session3", req.body.session3,
-        req.session.passport.user);
-
-      var tracksClosed = Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime();
-
-      if( canEnrollSession1 ){
-        user.session1 = req.body.session1;
-      } else if(!tracksClosed) {
-        req.flash('error', "It is not possible to sign up for the talk you chose for the first session. It's possibly full.");
-        err = true;
-      }
-
-      if( canEnrollSession2 ){
-        user.session2 = req.body.session2;
-      } else if(!tracksClosed) {
-        req.flash('error', "It is not possible to sign up for the talk you chose for the second session. It's possibly full.");
-        err = true;
-      }
-
-      if (canEnrollSession3){
-        user.session3 = req.body.session3;
-      } else if(!tracksClosed) {
-        req.flash('error', "It is not possible to sign up for the talk you chose for the third session. It's possibly full.");
-        err = true;
-      }
-
-      user.vegetarian   = !!req.body.vegetarian;
-      user.bus          = !!req.body.bus;
-      user.specialNeeds = req.body.specialNeeds;
-      user.allowBadgeScanning  = !!req.body.allowBadgeScanning;
-
-      if (req.body.speedDateTimeSlot) {
-        var spTimeSlot = await SpeedDateTimeSlot.findById(req.body.speedDateTimeSlot);
-        if (!spTimeSlot) {
-          req.flash('error', "Invalid speed date timeslot chosen");
+        if (canEnrollSession1) {
+          user.session1 = req.body.session1;
+        } else if (!tracksClosed) {
+          req.flash(
+            "error",
+            "It is not possible to sign up for the talk you chose for the first session. It's possibly full."
+          );
           err = true;
-        } else {
+        }
 
-          var userCount = await User.find({speedDateTimeSlot: spTimeSlot.id}).count();
+        if (canEnrollSession2) {
+          user.session2 = req.body.session2;
+        } else if (!tracksClosed) {
+          req.flash(
+            "error",
+            "It is not possible to sign up for the talk you chose for the second session. It's possibly full."
+          );
+          err = true;
+        }
 
-          if (userCount >= spTimeSlot.capacity) {
-            req.flash('error', "The speed date timeslot you chose is already full.");
+        if (canEnrollSession3) {
+          user.session3 = req.body.session3;
+        } else if (!tracksClosed) {
+          req.flash(
+            "error",
+            "It is not possible to sign up for the talk you chose for the third session. It's possibly full."
+          );
+          err = true;
+        }
+
+        user.vegetarian = !!req.body.vegetarian;
+        user.bus = !!req.body.bus;
+        user.specialNeeds = req.body.specialNeeds;
+        user.allowBadgeScanning = !!req.body.allowBadgeScanning;
+
+        if (req.body.speedDateTimeSlot) {
+          var spTimeSlot = await SpeedDateTimeSlot.findById(
+            req.body.speedDateTimeSlot
+          );
+          if (!spTimeSlot) {
+            req.flash("error", "Invalid speed date timeslot chosen");
             err = true;
           } else {
-            user.speedDateTimeSlot = spTimeSlot.id;
+            var userCount = await User.find({
+              speedDateTimeSlot: spTimeSlot.id,
+            }).count();
+
+            if (userCount >= spTimeSlot.capacity) {
+              req.flash(
+                "error",
+                "The speed date timeslot you chose is already full."
+              );
+              err = true;
+            } else {
+              user.speedDateTimeSlot = spTimeSlot.id;
+            }
           }
-
         }
-      }
 
-
-      var matching = [];
-      for (var i = 0; i < config.matchingterms.length; i++) {
-        if (req.body[config.matchingterms[i]]){
-          matching.push(config.matchingterms[i]);
+        var matching = [];
+        for (var i = 0; i < config.matchingterms.length; i++) {
+          if (req.body[config.matchingterms[i]]) {
+            matching.push(config.matchingterms[i]);
+          }
         }
-      }
-      user.matchingterms = matching;
-      user.save();
+        user.matchingterms = matching;
+        user.save();
 
-      if(!err){
-        req.flash('success', 'Profile edited');
+        if (!err) {
+          req.flash("success", "Profile edited");
+        }
+        res.redirect("/profile");
+      } else {
+        // debug(err);
+        console.log(err);
+        req.flash("error", "Something went wrong!");
+        res.redirect("/profile");
       }
-      res.redirect('/profile');
-    } else {
-      // debug(err);
-      console.log(err);
-      req.flash('error', 'Something went wrong!');
-      res.redirect('/profile');
+    });
+  });
+
+  router.get("/location", adminAuth, function (req, res) {
+    res.render("location", { title: "Location |" });
+  });
+  /*
+   * Still needs its proper replacement, will come when bus times are available
+   * Maybe include in the location or timetable page aswell.
+   */
+  router.get("/buses", adminAuth, function (req, res) {
+    res.render("buses", { title: "Buses | " });
+  });
+
+  router.get("/speakers", function (req, res) {
+    var s = speakerinfo.speakers.filter(function (speaker) {
+      return !speaker.hidden;
+    });
+    var p = speakerinfo.presenters.filter(function (presenter) {
+      return !presenter.hidden;
+    });
+    res.render("speakers/index", {
+      speakers: s,
+      presenters: p,
+      speakerids: speakerinfo.speakerids,
+      settings: {
+        tracks: speakerinfo.tracks,
+        showTrackNames: speakerinfo.showTrackNames,
+      },
+    });
+  });
+
+  router.get("/users", adminAuth, function (req, res, next) {
+    var query = {};
+
+    if (req.query.email) {
+      query.email = { $regex: new RegExp(req.query.email, "i") };
     }
+    if (req.query.firstname) {
+      query.firstname = { $regex: new RegExp(req.query.firstname, "i") };
+    }
+    if (req.query.surname) {
+      query.surname = { $regex: new RegExp(req.query.surname, "i") };
+    }
+    if (req.query.association) {
+      query.vereniging = { $regex: new RegExp(req.query.association, "i") };
+    }
+    if (req.query.ticket) {
+      query.ticket = { $regex: new RegExp(req.query.ticket, "i") };
+    }
+    if (req.query.aanwezig) {
+      query.aanwezig = { $regex: new RegExp(req.query.aanwezig, "i") };
+    }
+
+    User.find(query)
+      .sort({ vereniging: 1, firstname: 1 })
+      .exec(function (err, results) {
+        if (err) {
+          return next(err);
+        }
+        res.render("users", { users: results });
+      });
   });
-});
 
-router.get('/location', adminAuth, function (req, res) {
-  res.render('location', {title: 'Location |'});
-});
-/*
- * Still needs its proper replacement, will come when bus times are available
- * Maybe include in the location or timetable page aswell.
- */
-router.get('/buses', adminAuth, function (req, res) {
-  res.render('buses', {title: 'Buses | '});
-});
+  router.get("/speeddate", adminAuth, async function (req, res) {
+    var timeslots = await SpeedDateTimeSlot.find().sort({ startTime: 1 });
 
-
-router.get('/speakers', function (req, res) {
-  var s = speakerinfo.speakers.filter(function(speaker){
-    return !speaker.hidden;
-  });
-  var p = speakerinfo.presenters.filter(function(presenter){
-    return !presenter.hidden;
-  });
-  res.render('speakers/index', {speakers: s, presenters: p, speakerids: speakerinfo.speakerids, settings: {tracks: speakerinfo.tracks, showTrackNames: speakerinfo.showTrackNames}});
-});
-
-router.get('/users', adminAuth, function (req,res,next) {
-  var query = {};
-
-  if (req.query.email) {
-    query.email = { $regex: new RegExp(req.query.email, 'i') };
-  }
-  if (req.query.firstname) {
-    query.firstname = { $regex: new RegExp(req.query.firstname, 'i') };
-  }
-  if (req.query.surname) {
-    query.surname = { $regex: new RegExp(req.query.surname, 'i') };
-  }
-  if (req.query.association) {
-    query.vereniging = { $regex: new RegExp(req.query.association, 'i') };
-  }
-  if (req.query.ticket) {
-    query.ticket = { $regex: new RegExp(req.query.ticket, 'i') };
-  }
-  if (req.query.aanwezig) {
-    query.aanwezig = { $regex: new RegExp(req.query.aanwezig, 'i') };
-  }
-
-  User.find(query).sort({'vereniging':1,'firstname':1}).exec( function (err, results) {
-    if (err) { return next(err); }
-    res.render('users',{users:results});
-  });
-});
-
-router.get('/speeddate', adminAuth, async function (req, res) {
-  var timeslots = await SpeedDateTimeSlot.find().sort({'startTime':1});
-
-  var createSlot = async function (slot) {
-    var users = await User.find({'speedDateTimeSlot': slot.id});
-    return {
-      'name': slot.name,
-      'capacity': slot.capacity,
-      'usersRegistered': users,
-      'id': slot.id
+    var createSlot = async function (slot) {
+      var users = await User.find({ speedDateTimeSlot: slot.id });
+      return {
+        name: slot.name,
+        capacity: slot.capacity,
+        usersRegistered: users,
+        id: slot.id,
+      };
     };
-  };
 
-  var result = await Promise.all(timeslots.map(createSlot));
+    var result = await Promise.all(timeslots.map(createSlot));
 
-  res.render('speeddate', {timeslots: result});
-});
+    res.render("speeddate", { timeslots: result });
+  });
 
-router.get('/admin', adminAuth, async function(req, res) {
-  res.render('admin');
-});
+  router.get("/admin", adminAuth, async function (req, res) {
+    res.render("admin");
+  });
 
-router.get('/speeddate/export-csv', adminAuth,
-  async function (req, res) {
-    var data = [
-      ['Slot', 'Name', 'Email', 'Study programme', 'Association']
-    ];
+  router.get("/speeddate/export-csv", adminAuth, async function (req, res) {
+    var data = [["Slot", "Name", "Email", "Study programme", "Association"]];
 
-    var slots = await SpeedDateTimeSlot.find().sort({'startTime':1});
+    var slots = await SpeedDateTimeSlot.find().sort({ startTime: 1 });
 
     for (var i = 0; i < slots.length; i++) {
       var slot = slots[i];
 
-      var users = await User.find({'speedDateTimeSlot': slot.id});
-      var userData = users.map(user => [
-        slot.name, user.firstname + ' ' + user.surname, user.email, user.studyProgramme, config.associations[user.vereniging].name
+      var users = await User.find({ speedDateTimeSlot: slot.id });
+      var userData = users.map((user) => [
+        slot.name,
+        user.firstname + " " + user.surname,
+        user.email,
+        user.studyProgramme,
+        config.associations[user.vereniging].name,
       ]);
 
       if (userData.length > 0) {
@@ -657,119 +777,155 @@ router.get('/speeddate/export-csv', adminAuth,
       }
     }
 
-    res.set('Content-Type', 'text/plain');
-    res.set('Content-Disposition', 'attachment; filename="speeddating_participants.csv"');
+    res.set("Content-Type", "text/plain");
+    res.set(
+      "Content-Disposition",
+      'attachment; filename="speeddating_participants.csv"'
+    );
     res.send(CSV.stringify(data));
-  }
-);
+  });
 
-router.get('/speeddate/remove/:id', adminAuth, async function(req, res) {
-  console.log('Removing speeddate: ' + req.params.id);
-  res.redirect('/speeddate');
-});
+  router.get("/speeddate/remove/:id", adminAuth, async function (req, res) {
+    console.log("Removing speeddate: " + req.params.id);
+    res.redirect("/speeddate");
+  });
 
-router.get('/badge-scanning', adminAuth, async function (req, res) {
-  var badgeScanningAllowed = await User.find(
-    {'allowBadgeScanning': true, 'type': 'student'}).count();
-  var totalUsers = await User.find({'type': 'student'}).count();
+  router.get("/badge-scanning", adminAuth, async function (req, res) {
+    var badgeScanningAllowed = await User.find({
+      allowBadgeScanning: true,
+      type: "student",
+    }).count();
+    var totalUsers = await User.find({ type: "student" }).count();
 
-  var scannerAccounts =
-    await Promise.all((await ScannerUser.find().sort({'displayName': 1})).map(
-      async function (account) {
-        var scans = await ScannerResult
-          .find({'scanner_user': account._id})
-          .populate('user')
-          .sort({'user.studyProgramme': 1});
+    var scannerAccounts = await Promise.all(
+      (
+        await ScannerUser.find().sort({ displayName: 1 })
+      ).map(async function (account) {
+        var scans = await ScannerResult.find({ scanner_user: account._id })
+          .populate("user")
+          .sort({ "user.studyProgramme": 1 });
 
         return {
-          'id': account._id,
-          'display_name': account.display_name,
-          'username': account.username,
-          'scans': scans
+          id: account._id,
+          display_name: account.display_name,
+          username: account.username,
+          scans: scans,
         };
-      }
-    ));
+      })
+    );
 
-  res.render('badge_scanning', {
-    badgeScanningAllowed: badgeScanningAllowed,
-    totalUsers: totalUsers,
-    scannerAccounts: scannerAccounts,
-  });
-});
-
-router.get('/badge-scanning/export-csv/:id', adminAuth,
-  async function (req, res) {
-    var data = [
-      ['Time', 'Email', 'Name', 'Study programme', 'Comments']
-    ];
-
-    var scannerUser = await ScannerUser.findById(req.params.id);
-
-    data.push(await Promise.all((await ScannerResult
-      .find({'scanner_user': req.params.id})
-      .populate('user')
-      .sort({'user.surname': 1, 'user.firstname': 1}))
-      .map(async function (r) {
-        return [
-          r.scan_time_string,
-          r.user.email,
-          r.user.firstname + ' ' + r.user.surname,
-          r.user.studyProgramme,
-          r.comment
-        ];
-      })));
-
-    var filename = scannerUser.display_name.replace(/ /g, '_') + '_badge_scans.csv';
-
-    res.set('Content-Type', 'text/plain');
-    res.set('Content-Disposition', 'attachment; filename="' + filename + '"');
-    res.send(CSV.stringify(data));
-  }
-);
-
-/**
- * Output all dietary wishes provided by users
- */
-router.get('/diet', adminAuth, function (req, res, next) {
-  User.find({$or: [{'specialNeeds': {$ne: ""}}, {'vegetarian': true}]}).sort({'vereniging':1,'firstname':1}).exec( function (err, results) {
-    if (err) { return next(err); }
-    res.render('diet',{users:results});
-  });
-});
-
-router.get('/users/:id', adminAuth, function (req,res,next) {
-  User.findOne({_id:req.params.id}, function (err, result) {
-    if (err) { return next(err); }
-    res.render('users/edit', {user:result});
-  });
-});
-
-router.post('/users/:id', adminAuth, function (req,res,next) {
-  User.findOne({_id:req.params.id}, function (err, result) {
-    if (err) { return next(err); }
-
-    result.aanwezig = req.body.aanwezig;
-    result.admin = req.body.admin;
-
-    result.save(function(err) {
-      if (err) {return next(err); }
-
-      req.flash('success', "User edited!");
-      return res.redirect('/users/'+req.params.id);
+    res.render("badge_scanning", {
+      badgeScanningAllowed: badgeScanningAllowed,
+      totalUsers: totalUsers,
+      scannerAccounts: scannerAccounts,
     });
   });
-});
 
-router.get('/users/export-csv/all', adminAuth,
-  async function (req, res) {
+  router.get(
+    "/badge-scanning/export-csv/:id",
+    adminAuth,
+    async function (req, res) {
+      var data = [["Time", "Email", "Name", "Study programme", "Comments"]];
+
+      var scannerUser = await ScannerUser.findById(req.params.id);
+
+      data.push(
+        await Promise.all(
+          (
+            await ScannerResult.find({ scanner_user: req.params.id })
+              .populate("user")
+              .sort({ "user.surname": 1, "user.firstname": 1 })
+          ).map(async function (r) {
+            return [
+              r.scan_time_string,
+              r.user.email,
+              r.user.firstname + " " + r.user.surname,
+              r.user.studyProgramme,
+              r.comment,
+            ];
+          })
+        )
+      );
+
+      var filename =
+        scannerUser.display_name.replace(/ /g, "_") + "_badge_scans.csv";
+
+      res.set("Content-Type", "text/plain");
+      res.set("Content-Disposition", 'attachment; filename="' + filename + '"');
+      res.send(CSV.stringify(data));
+    }
+  );
+
+  /**
+   * Output all dietary wishes provided by users
+   */
+  router.get("/diet", adminAuth, function (req, res, next) {
+    User.find({ $or: [{ specialNeeds: { $ne: "" } }, { vegetarian: true }] })
+      .sort({ vereniging: 1, firstname: 1 })
+      .exec(function (err, results) {
+        if (err) {
+          return next(err);
+        }
+        res.render("diet", { users: results });
+      });
+  });
+
+  router.get("/users/:id", adminAuth, function (req, res, next) {
+    User.findOne({ _id: req.params.id }, function (err, result) {
+      if (err) {
+        return next(err);
+      }
+      res.render("users/edit", { user: result });
+    });
+  });
+
+  router.post("/users/:id", adminAuth, function (req, res, next) {
+    User.findOne({ _id: req.params.id }, function (err, result) {
+      if (err) {
+        return next(err);
+      }
+
+      result.aanwezig = req.body.aanwezig;
+      result.admin = req.body.admin;
+
+      result.save(function (err) {
+        if (err) {
+          return next(err);
+        }
+
+        req.flash("success", "User edited!");
+        return res.redirect("/users/" + req.params.id);
+      });
+    });
+  });
+
+  router.get("/users/export-csv/all", adminAuth, async function (req, res) {
     var data = [
-      ['First Name', 'Surname', 'Email', 'Bus', 'Association', 'Ticket code',
-        'Session 1', 'Session 2', 'Session 3', 'Speeddate start', 'Speeddate end']
+      [
+        "First Name",
+        "Surname",
+        "Email",
+        "Bus",
+        "Association",
+        "Ticket code",
+        "Session 1",
+        "Session 2",
+        "Session 3",
+        "Speeddate start",
+        "Speeddate end",
+      ],
     ];
 
-    data.push(await Promise.all(
-      (await User.find().sort([['firstname', 1], ['lastname', 1]]).populate('speedDateTimeSlot'))
-        .map(async function (u) {
+    data.push(
+      await Promise.all(
+        (
+          await User.find()
+            .sort([
+              ["firstname", 1],
+              ["lastname", 1],
+            ])
+            .populate("speedDateTimeSlot")
+        ).map(async function (u) {
           var session1 = u.session1 ? u.session1 : "";
           var session2 = u.session2 ? u.session2 : "";
           var session3 = u.session3 ? u.session3 : "";
@@ -778,8 +934,8 @@ router.get('/users/export-csv/all', adminAuth,
           var spEnd = "";
 
           if (u.speedDateTimeSlot) {
-            spStart = moment(u.speedDateTimeSlot.startTime).format('HH:mm');
-            spEnd = moment(u.speedDateTimeSlot.endTime).format('HH:mm');
+            spStart = moment(u.speedDateTimeSlot.startTime).format("HH:mm");
+            spEnd = moment(u.speedDateTimeSlot.endTime).format("HH:mm");
           }
 
           return [
@@ -793,241 +949,293 @@ router.get('/users/export-csv/all', adminAuth,
             session2,
             session3,
             spStart,
-            spEnd
+            spEnd,
           ];
-      }))
+        })
+      )
     );
 
-    res.set('Content-Type', 'text/plain');
-    res.set('Content-Disposition', 'attachment; filename="all_registered_users.csv"');
+    res.set("Content-Type", "text/plain");
+    res.set(
+      "Content-Disposition",
+      'attachment; filename="all_registered_users.csv"'
+    );
     res.send(CSV.stringify(data));
-});
-
-router.get('/users/export-csv/:association', adminAuth, async function (req, res) {
-    var data = [
-      ['First Name', 'Surname', 'Email', 'Bus', 'Ticket code']
-    ];
-
-    var association = config.associations[req.params.association];
-    if (!association) {
-        req.flash('error', 'Association does not exist');
-        return res.redirect('/users');
-    }
-    var associationName = association.name;
-
-    data.push(await Promise.all(
-      (await User.find({'vereniging': req.params.association}))
-      .map(async function (u) {
-        return [
-          u.firstname,
-          u.surname,
-          u.email,
-          u.bus,
-          u.ticket
-        ];
-      })));
-
-    var filename = associationName.replace(/ /g, '_') + '_registered_users.csv';
-
-    res.set('Content-Type', 'text/plain');
-    res.set('Content-Disposition', 'attachment; filename="' + filename + '"');
-    res.send(CSV.stringify(data));
-});
-
-/*******************************************************************************
- * Triggered if someone requests this page. This will be printed on the badge of
- * an attendee in the form of a QR code. Can be scanned with generic QR code
- * scanners. When url has been gotten, can be opened in browser.
- *
- * Will create a list of all people to connected with during the event per user.
- * After the event, this can be used to send an email to everyone who
- * participated to exchange contact details.
- ******************************************************************************/
-router.get('/connect/:id', auth, function(req, res, next){
-  User.findOne({ticket: req.params.id}, function(err, user){
-    if (err || !user) {
-      res.render('connect', {connected: false, error: 'Ticket id is not valid'});
-    } else {
-      User.findOneAndUpdate({email:req.session.passport.user}, {$addToSet: {connectlist: req.params.id}},function(err, doc){
-        if(err){
-          res.render('connect', {connected: false, error: 'Could not connect with ' + user.firstname});
-          console.log(req.params.id + "could not be added to the connectlist!");
-        } else {
-          res.render('connect', {connected: true, connectee: user});
-        }
-      });
-    }
   });
-});
 
-/**
- * Session choices displayed for administrators
- */
-router.get('/choices', adminAuth, function (req,res,next) {
-  User.aggregate([{ $group: { _id: '$session1', count: {$sum: 1} }}], function (err, session1) {
-    User.aggregate([{ $group: { _id: '$session2', count: {$sum: 1} }}], function (err, session2) {
-      User.aggregate([{ $group: { _id: '$session3', count: {$sum: 1} }}], function (err, session3) {
-        console.log(session1, session2, session3);
-        res.render('choices', { session1 : session1, session2 : session2, session3 : session3  });
-      });
-    });
-  });
-});
+  router.get(
+    "/users/export-csv/:association",
+    adminAuth,
+    async function (req, res) {
+      var data = [["First Name", "Surname", "Email", "Bus", "Ticket code"]];
 
-
-async function getMatchingStats(){
-  // based on https://github.com/Automattic/mongoose/blob/master/examples/mapreduce/mapreduce.js
-  var map = function(){
-    for (var i = this.matchingterms.length - 1; i >= 0; i--) {
-      emit(this.matchingterms[i], 1);
-    }
-  };
-
-  var reduce = function(key, values){
-    return Array.sum(values);
-  };
-
-  // map-reduce command
-  var command = {
-    map: map, // a function for mapping
-    reduce: reduce, // a function  for reducing
-  };
-
-  return User.mapReduce(command);
-}
-
-router.get('/matchingstats', adminAuth, function(req,res,next){
-  getMatchingStats().then(results =>{
-    console.log(results);
-    res.render('matchingstats', {interests: results});
-  }).catch(function(err){
-    res.render('matchingstats', {error: err});
-  });
-});
-
-/**
- * Output alle tickets die nog niet geownt zijn door gebruikers
- */
-router.get('/tickets', adminAuth, function (req, res, next) {
-  Ticket.find({rev:1, ownedBy:undefined}, function (err, tickets) {
-    if (err) { return next(err); }
-    res.render('tickets', {tickets: tickets});
-  });
-});
-
-router.post('/tickets', adminAuth, function (req, res, next) {
-  var tasks = [];
-
-  var n = + req.body.amount;
-
-  for (var i = 0; i < n; i++) {
-    tasks.push(function(callback) {
-      var params;
-      if (req.body.type === 'partner'){
-        params = {type: process.argv[3], rev:1};
-      } else {
-        params = {rev:1};
+      var association = config.associations[req.params.association];
+      if (!association) {
+        req.flash("error", "Association does not exist");
+        return res.redirect("/users");
       }
-      var ticket = new Ticket(params);
-      console.log('New ticket: '+ticket._id);
+      var associationName = association.name;
 
-      return ticket.save(callback);
+      data.push(
+        await Promise.all(
+          (
+            await User.find({ vereniging: req.params.association })
+          ).map(async function (u) {
+            return [u.firstname, u.surname, u.email, u.bus, u.ticket];
+          })
+        )
+      );
+
+      var filename =
+        associationName.replace(/ /g, "_") + "_registered_users.csv";
+
+      res.set("Content-Type", "text/plain");
+      res.set("Content-Disposition", 'attachment; filename="' + filename + '"');
+      res.send(CSV.stringify(data));
+    }
+  );
+
+  /*******************************************************************************
+   * Triggered if someone requests this page. This will be printed on the badge of
+   * an attendee in the form of a QR code. Can be scanned with generic QR code
+   * scanners. When url has been gotten, can be opened in browser.
+   *
+   * Will create a list of all people to connected with during the event per user.
+   * After the event, this can be used to send an email to everyone who
+   * participated to exchange contact details.
+   ******************************************************************************/
+  router.get("/connect/:id", auth, function (req, res, next) {
+    User.findOne({ ticket: req.params.id }, function (err, user) {
+      if (err || !user) {
+        res.render("connect", {
+          connected: false,
+          error: "Ticket id is not valid",
+        });
+      } else {
+        User.findOneAndUpdate(
+          { email: req.session.passport.user },
+          { $addToSet: { connectlist: req.params.id } },
+          function (err, doc) {
+            if (err) {
+              res.render("connect", {
+                connected: false,
+                error: "Could not connect with " + user.firstname,
+              });
+              console.log(
+                req.params.id + "could not be added to the connectlist!"
+              );
+            } else {
+              res.render("connect", { connected: true, connectee: user });
+            }
+          }
+        );
+      }
     });
+  });
+
+  /**
+   * Session choices displayed for administrators
+   */
+  router.get("/choices", adminAuth, function (req, res, next) {
+    User.aggregate(
+      [{ $group: { _id: "$session1", count: { $sum: 1 } } }],
+      function (err, session1) {
+        User.aggregate(
+          [{ $group: { _id: "$session2", count: { $sum: 1 } } }],
+          function (err, session2) {
+            User.aggregate(
+              [{ $group: { _id: "$session3", count: { $sum: 1 } } }],
+              function (err, session3) {
+                console.log(session1, session2, session3);
+                res.render("choices", {
+                  session1: session1,
+                  session2: session2,
+                  session3: session3,
+                });
+              }
+            );
+          }
+        );
+      }
+    );
+  });
+
+  async function getMatchingStats() {
+    // based on https://github.com/Automattic/mongoose/blob/master/examples/mapreduce/mapreduce.js
+    var map = function () {
+      for (var i = this.matchingterms.length - 1; i >= 0; i--) {
+        emit(this.matchingterms[i], 1);
+      }
+    };
+
+    var reduce = function (key, values) {
+      return Array.sum(values);
+    };
+
+    // map-reduce command
+    var command = {
+      map: map, // a function for mapping
+      reduce: reduce, // a function  for reducing
+    };
+
+    return User.mapReduce(command);
   }
 
-  async.parallel(tasks, function(err) {
-    if (err) {
-      console.log(err);
+  router.get("/matchingstats", adminAuth, function (req, res, next) {
+    getMatchingStats()
+      .then((results) => {
+        console.log(results);
+        res.render("matchingstats", { interests: results });
+      })
+      .catch(function (err) {
+        res.render("matchingstats", { error: err });
+      });
+  });
+
+  /**
+   * Output alle tickets die nog niet geownt zijn door gebruikers
+   */
+  router.get("/tickets", adminAuth, function (req, res, next) {
+    Ticket.find({ rev: 1, ownedBy: undefined }, function (err, tickets) {
+      if (err) {
+        return next(err);
+      }
+      res.render("tickets", { tickets: tickets });
+    });
+  });
+
+  router.post("/tickets", adminAuth, function (req, res, next) {
+    var tasks = [];
+
+    var n = +req.body.amount;
+
+    for (var i = 0; i < n; i++) {
+      tasks.push(function (callback) {
+        var params;
+        if (req.body.type === "partner") {
+          params = { type: process.argv[3], rev: 1 };
+        } else {
+          params = { rev: 1 };
+        }
+        var ticket = new Ticket(params);
+        console.log("New ticket: " + ticket._id);
+
+        return ticket.save(callback);
+      });
     }
-    console.log(n + ' tickets generated!');
-    res.redirect('/tickets');
+
+    async.parallel(tasks, function (err) {
+      if (err) {
+        console.log(err);
+      }
+      console.log(n + " tickets generated!");
+      res.redirect("/tickets");
+    });
   });
-});
 
-router.post('/speeddate', adminAuth, function(req, res, next) {
-  console.log('Creating ' + req.body.startTime + '-' + req.body.endTime);
+  router.post("/speeddate", adminAuth, function (req, res, next) {
+    console.log("Creating " + req.body.startTime + "-" + req.body.endTime);
 
-  var ts = new SpeedDateTimeSlot({
-    startTime: '2019-11-26T' + req.body.startTime,
-    endTime: '2019-11-26T' + req.body.endTime,
-    capacity: req.body.capacity
+    var ts = new SpeedDateTimeSlot({
+      startTime: "2019-11-26T" + req.body.startTime,
+      endTime: "2019-11-26T" + req.body.endTime,
+      capacity: req.body.capacity,
+    });
+    ts.save().then(
+      function (doc) {
+        console.log("Created speeddate time slot!");
+        return res.redirect("/speeddate");
+      },
+      function (err) {
+        console.log(err);
+        return next(err);
+      }
+    );
   });
-  ts.save().then(function(doc) {
-    console.log('Created speeddate time slot!');
-    return res.redirect('/speeddate');
-  },function(err) {
-      console.log(err);
-      return next(err);
+
+  router.get("/api/timetable", adminAuth, function (req, res, next) {
+    res.json(timetable);
   });
-});
 
-router.get('/api/timetable', adminAuth, function(req, res, next) {
-  res.json(timetable);
-});
+  router.get("/timetable", adminAuth, function (req, res) {
+    var enrollment_start_time = new Date(config.enroll_start_time);
+    var enrollment_end_time = new Date(config.enroll_end_time);
+    var today = new Date();
+    var enrollment_possible =
+      enrollment_start_time < today && today < enrollment_end_time;
 
-router.get('/timetable', adminAuth, function(req, res) {
-  var enrollment_start_time = new Date(config.enroll_start_time);
-  var enrollment_end_time = new Date(config.enroll_end_time);
-  var today = new Date();
-  var enrollment_possible = enrollment_start_time < today && today < enrollment_end_time;
-
-  res.render('timetable', {timetable: timetable, enrollment_possible: enrollment_possible});
-});
-
-router.get('/ticket', auth, function(req, res, next){
-  User.findOne({email: req.session.passport.user}, function(err, doc) {
-    res.redirect('/tickets/' + doc.ticket);
+    res.render("timetable", {
+      timetable: timetable,
+      enrollment_possible: enrollment_possible,
+    });
   });
-});
 
-router.get('/tickets/:id', auth, function (req, res, next) {
-  Ticket.findById(req.params.id).populate('ownedBy').exec(function (err, ticket) {
-    if (err) { err.code = 403; return next(err); }
-    if (!ticket || !ticket.ownedBy || ticket.ownedBy.email !== req.session.passport.user) {
-      var error = new Error("Forbidden");
-      error.code = 403;
-      return next(error);
-    }
-    res.render('tickets/ticket', {ticket: ticket});
+  router.get("/ticket", auth, function (req, res, next) {
+    User.findOne({ email: req.session.passport.user }, function (err, doc) {
+      res.redirect("/tickets/" + doc.ticket);
+    });
   });
-});
 
-router.get('/tickets/:id/barcode', function (req, res) {
-    bwipjs.toBuffer({
-        bcid: 'code128',
+  router.get("/tickets/:id", auth, function (req, res, next) {
+    Ticket.findById(req.params.id)
+      .populate("ownedBy")
+      .exec(function (err, ticket) {
+        if (err) {
+          err.code = 403;
+          return next(err);
+        }
+        if (
+          !ticket ||
+          !ticket.ownedBy ||
+          ticket.ownedBy.email !== req.session.passport.user
+        ) {
+          var error = new Error("Forbidden");
+          error.code = 403;
+          return next(error);
+        }
+        res.render("tickets/ticket", { ticket: ticket });
+      });
+  });
+
+  router.get("/tickets/:id/barcode", function (req, res) {
+    bwipjs.toBuffer(
+      {
+        bcid: "code128",
         text: req.params.id,
         height: 10,
-    }, function (err, png) {
+      },
+      function (err, png) {
         if (err) {
-            return next(err);
+          return next(err);
         } else {
-            res.set('Content-Type', 'image/png');
-            res.send(png);
+          res.set("Content-Type", "image/png");
+          res.send(png);
         }
-    });
-});
+      }
+    );
+  });
 
-router.get('/reload', adminAuth, function (req, res){
-  config = JSON.parse(fs.readFileSync('config.json'));
-  speakerinfo = JSON.parse(fs.readFileSync('speakers.json'));
-  partnerinfo = JSON.parse(fs.readFileSync('partners.json'));
-  timetable = loadTimetableJSON(speakerinfo);
-  return res.redirect('/speakers');
-});
-
-router.get('/reload/:file', adminAuth, function (req, res) {
-  if (req.params.file==='speakers') {
-    speakerinfo = JSON.parse(fs.readFileSync('speakers.json'));
-    return res.redirect('/speakers');
-  } else if(req.params.file==='partners') {
-    partnerinfo = JSON.parse(fs.readFileSync('partners.json'));
-    return res.redirect('/partners');
-  } else if(req.params.file ==='timetable') {
+  router.get("/reload", adminAuth, function (req, res) {
+    config = JSON.parse(fs.readFileSync("config.json"));
+    speakerinfo = JSON.parse(fs.readFileSync("speakers.json"));
+    partnerinfo = JSON.parse(fs.readFileSync("partners.json"));
     timetable = loadTimetableJSON(speakerinfo);
-    return res.redirect('/timetable');
-  }
-  return res.redirect('/');
-});
+    return res.redirect("/speakers");
+  });
 
- return router;
+  router.get("/reload/:file", adminAuth, function (req, res) {
+    if (req.params.file === "speakers") {
+      speakerinfo = JSON.parse(fs.readFileSync("speakers.json"));
+      return res.redirect("/speakers");
+    } else if (req.params.file === "partners") {
+      partnerinfo = JSON.parse(fs.readFileSync("partners.json"));
+      return res.redirect("/partners");
+    } else if (req.params.file === "timetable") {
+      timetable = loadTimetableJSON(speakerinfo);
+      return res.redirect("/timetable");
+    }
+    return res.redirect("/");
+  });
+
+  return router;
 };

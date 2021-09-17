@@ -1,6 +1,6 @@
 :root {
-  --blue: #2D2E83;
-  --brown: #D5A361;
+  --blue: #2d2e83;
+  --brown: #d5a361;
   --bs-body-font-size: 1.2rem;
 }
 .white {
@@ -32,15 +32,20 @@ body {
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Apercu Mono", monospace;
   text-transform: uppercase;
 }
 
-a  {
+a {
   color: var(--blue);
 }
-.blue a  {
+.blue a {
   color: var(--brown);
 }
 
@@ -100,10 +105,10 @@ header:not(.fullscreen) {
   height: 3px;
   margin-bottom: 4px;
   background: #cccccc;
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
 }
 #menuToggle:hover span {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0 0 2px #232323;
 }
 #menuToggle:hover span:nth-child(3) {
@@ -120,8 +125,10 @@ header:not(.fullscreen) {
 .backdrop::before {
   content: "";
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   filter: blur(25px);
   background-clip: content-box;
   background-origin: content-box;
@@ -175,7 +182,8 @@ section {
   object-fit: contain;
 }
 
-.slick-track, .slick-list {
+.slick-track,
+.slick-list {
   position: relative;
   height: 100%;
   overflow: hidden;
@@ -201,10 +209,12 @@ section {
 .nav-pills .nav-link {
   border-radius: 0;
 }
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
   background-color: var(--brown);
 }
-.nav-link, .nav-link a {
+.nav-link,
+.nav-link a {
   color: white !important;
 }
 .nav-link:hover {
