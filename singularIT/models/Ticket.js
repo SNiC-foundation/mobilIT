@@ -4,10 +4,10 @@ var shortId = require("shortid");
 //User different characters to prevent confusion I and l
 // shortId.characters("123456789ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz");
 
-chars = "123456789ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
+const chars = "123456789ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
 
 function generateID() {
-  str = [];
+  let str = [];
   for (var i = 0; i < 10; ++i) {
     str[i] = chars[Math.floor(Math.random() * chars.length)];
   }

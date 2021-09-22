@@ -10,7 +10,6 @@ var mongoose = require("mongoose");
 var fs = require("fs");
 var passport = require("passport");
 var expressValidator = require("express-validator");
-var MongoStore = require("connect-mongo")(session);
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));

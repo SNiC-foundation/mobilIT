@@ -3,7 +3,6 @@ var passport = require("passport");
 var crypto = require("crypto");
 var async = require("async");
 var nodemailer = require("nodemailer");
-var mg = require("nodemailer-mailgun-transport");
 const pug = require("pug");
 var path = require("path");
 var md5 = require("md5");
@@ -16,13 +15,9 @@ mailchimp.setConfig({
   server: "us17",
 });
 
-// TODO: fix
-var gmail_send = require("gmail-send")({
-  // user: config.gmail.email,
-  // pass: config.gmail.password,
-  user: "test",
-  pass: "wrong",
-  from: "SNiC SingularIT",
+let transporter = nodemailer.createTransport({
+  streamTransport: true,
+  newline: 'unix',
 });
 
 const passwordForgotEmailTemplate = pug.compileFile(
@@ -208,8 +203,6 @@ router.post("/register", function (req, res, next) {
   );
 });
 
-var transport = nodemailer.createTransport(mg({ auth: config.mailgun }));
-
 router.get("/forgot", function (req, res) {
   res.render("forgot", {
     user: req.user,
@@ -246,15 +239,17 @@ router.post("/forgot", function (req, res, next) {
           user: user,
           token: token,
         });
-        console.log(html);
 
-        var mailOptions = {
+        transporter.sendMail({
+          from: "committee@2020.snic.nl",
           to: user.email,
-          subject: "SNiC: SingularIT - Password reset",
+          subject: "SNiC: MobilIT - Password reset",
           html: html,
-        };
-
-        gmail_send(mailOptions);
+        }, (err, info) => {
+          console.log(info.envelope);
+          console.log(info.messageId);
+          info.message.pipe(process.stdout);
+        });
         req.flash(
           "info",
           "An email has been sent to " +
@@ -346,17 +341,6 @@ router.post("/reset/:token", function (req, res, next) {
       console.log("error of get user: " + error);
       return res.redirect("back");
     });
-});
-
-router.post("/mailing", function (req, res) {
-  subscribe(req.body.email, function (err) {
-    if (err) {
-      req.flash("error", "Registration failed.");
-    } else {
-      req.flash("success", "Success!");
-    }
-    res.redirect("/mailing");
-  });
 });
 
 module.exports = router;
