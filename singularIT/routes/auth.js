@@ -6,13 +6,15 @@ var nodemailer = require("nodemailer");
 var mg = require("nodemailer-mailgun-transport");
 const pug = require("pug");
 var path = require("path");
+var md5 = require("md5");
+const mailchimp = require("@mailchimp/mailchimp_marketing");
+
 const config = require("../config.json");
 
-var Mailchimp = require("mailchimp-api-v3");
-var mc = new Mailchimp(config.mailchimp.key, true);
-// don't ever use MD5 seriously. The only reason it's used is because
-// mailchimp wants an md5 hash of the email address when you PUT it in the list
-var md5 = require("md5");
+mailchimp.setConfig({
+  apiKey: config.mailchimp.key,
+  server: "us17",
+});
 
 // TODO: fix
 var gmail_send = require("gmail-send")({
@@ -57,29 +59,11 @@ router.get("/logout", function (req, res) {
 
 router.get("/register", function (req, res) {
   res.render("register", {
+    associations: config.associations,
     studyProgrammes: config.studyProgrammes,
     ticketSaleStarts: config.ticketSaleStarts,
-    body: req.session.body || {},
   });
 });
-
-function subscribe(email, cb) {
-  mc.put(
-    "/lists/" + config.mailchimp.id + "/members/" + md5(email.toLowerCase()),
-    {
-      email_address: email,
-      status: "subscribed",
-    }
-  )
-    .then(function (res) {
-      cb();
-    })
-    .catch(function (err) {
-      console.log("SOME ERROR HAS OCCURED. NOTICE ME SENPAI!");
-      console.log(err);
-      cb(err);
-    });
-}
 
 router.post("/register", function (req, res, next) {
   req.checkBody("code", "Activation code is not provided.").notEmpty();
@@ -166,6 +150,23 @@ router.post("/register", function (req, res, next) {
   async.waterfall(
     [
       function (next) {
+        if (req.body.subscribe) {
+          mailchimp.lists
+              .setListMember(config.mailchimp.id, md5(req.body.email), {
+                email_address: req.body.email,
+                status: "subscribed",
+              })
+              .then(function (res) {
+                next(null);
+              })
+              .catch(function (err) {
+                console.error("an error with mailchimp has occurred");
+                console.error(err.response.res);
+                next(new Error(err.response.res.text.detail));
+              });
+        }
+      },
+      function (next) {
         Ticket.findById(req.body.code).populate("ownedBy").exec(next);
       },
       function (ticket, next) {
@@ -173,7 +174,6 @@ router.post("/register", function (req, res, next) {
           if (ticket.ownedBy) {
             next(new Error("Ticket has already been activated!"));
           } else {
-            console.log(ticket);
             user.ticket = ticket;
             user.type = ticket.type;
             User.register(user, req.body.password, function (err, user) {
@@ -192,13 +192,6 @@ router.post("/register", function (req, res, next) {
       },
       function (user, next) {
         req.login(user, next);
-      },
-      function (next) {
-        if (req.body.subscribe) {
-          subscribe(req.body.email, next);
-        } else {
-          next(null);
-        }
       },
     ],
     function (err) {

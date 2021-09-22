@@ -74,8 +74,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(function (req, res, next) {
   res.locals.path = req.path;
   res.locals.user = req.user;
-  res.locals.associations = config.associations;
-  res.locals.hideMenu = config.hideMenu;
+  res.locals.body = req.session.body || {};
   res.locals.ucfirst = function (value) {
     return value.charAt(0).toUpperCase() + value.slice(1);
   };
@@ -91,23 +90,14 @@ app.use(function (req, res, next) {
   next();
 });
 
-const routes = require("./routes/index");
-const auth = require("./routes/auth");
-const partners = require("./routes/parteners");
-const admin = require("./routes/admin");
-const profile = require("./routes/profile");
-const qrScanner = require("./routes/qrScanner");
-const talksApi = require("./routes/talksApi");
-const ticket = require("./routes/ticket");
-
-app.use("/", routes);
-app.use("/", auth);
-app.use("/", partners);
-app.use("/", admin);
-app.use("/", profile);
-app.use("/", qrScanner);
-app.use("/", talksApi);
-app.use("/", ticket);
+app.use("/", require("./routes/index"));
+app.use("/", require("./routes/auth"));
+app.use("/", require("./routes/parteners"));
+app.use("/", require("./routes/admin"));
+app.use("/", require("./routes/profile"));
+app.use("/", require("./routes/qrScanner"));
+app.use("/", require("./routes/talksApi"));
+app.use("/", require("./routes/ticket"));
 
 /// catch 404 and forward to error handler
 app.use(function (req, res, next) {

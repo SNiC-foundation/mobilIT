@@ -11,13 +11,15 @@ var async = require("async");
 const CSV = require("csv-string");
 var moment = require("moment");
 var fs = require("fs");
-
 const [auth, adminAuth] = require("./utils");
+
+const speaker_info = require("../speakers.json");
+const config = require("../config.json");
 
 function loadTimetableJSON(speakers) {
   var dateTimeSettings = { hour: "2-digit", minute: "2-digit", hour12: false };
 
-  var timetable = JSON.parse(fs.readFileSync("timetable.json"));
+  var timetable = require("../timetable.json");
   var intervalInMs = timetable.timeInterval * 60 * 1000;
 
   // Add time intervals to be used in the webpage.
@@ -57,8 +59,7 @@ function loadTimetableJSON(speakers) {
   return timetable;
 }
 
-// Load speaker information from speakers.json
-var timetable = loadTimetableJSON(speakerinfo);
+var timetable = loadTimetableJSON(speaker_info);
 
 var router = express.Router();
 

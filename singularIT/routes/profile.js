@@ -89,6 +89,7 @@ router.get("/profile", auth, async function (req, res) {
     allSpTimeSlots: allSpTimeSlots,
     freeSpTimeSlots: freeSpTimeSlots,
     provideTrackPreferencesEnd: config.provideTrackPreferencesEnd,
+    associations: config.associations,
   });
 });
 

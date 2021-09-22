@@ -4,7 +4,7 @@ services:
   mongodb:
     image: mongo:3.4
     volumes:
-     - ./mongo:/data/dbd
+     - ./mongo:/data/db
   mongoadmin:  # web UI for mongo
     image: mongo-express
     ports:
