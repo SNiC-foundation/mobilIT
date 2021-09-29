@@ -1,0 +1,46 @@
+version: '3.4'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    restart: always
+    volumes:
+      -
+    environment:
+      - NODE_ENV=production
+    command: bash entrypoint.production.sh
+
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx/templates/:/etc/nginx/templates
+      - certbot_webroot:/var/www/html
+      - certbot_var:/var/lib/letsencrypt/
+      - certbot_etc:/etc/letsencrypt/
+      - dhparam:/etc/ssl/certs/
+      - ./logs/nginx/:/var/log/nginx/
+    environment:
+      - DOMAIN=mobilit.snic.nl
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot_etc:/etc/letsencrypt
+      - certbot_var:/var/lib/letsencrypt
+      - certbot_webroot:/var/www/html
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/var/www/html --email luko@2020.snic.nl --agree-tos --no-eff-email --force-renewal -d mobilit.snic.nl
+
+
+volumes:
+  certbot_etc:
+  certbot_var:
+  certbot_webroot:

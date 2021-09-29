@@ -1,6 +1,10 @@
 extends ../layout
 
 mixin session(speaker, host)
+  .card
+    .card-header
+      small.text-muted
+
   if speaker
     span(class="speaker-anchor" id=speaker.id)
     div(class="session", class={"keynote": typeof speaker.keynote !== 'undefined'})

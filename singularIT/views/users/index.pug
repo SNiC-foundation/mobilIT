@@ -35,7 +35,6 @@ block page-content
     table.table.table-striped.table-hover
       thead
         tr
-          th #
           th First name
           th Last name
           th Email
@@ -45,10 +44,7 @@ block page-content
       tbody
         -var i = 1;
         for row in users
-          tr
-            td
-              a(href="/users/" + row._id)= i
-              - i++;
+          tr.pointer(onclick="window.location='/users/" + row._id + "'")
             td=row.firstname
             td=row.surname
             td=row.email
@@ -59,9 +55,18 @@ block page-content
               td='Partner'
             td
               if row.present
-                span.fa.fa-check(style='color:#79bf46;')
+                span.fa.fa-check.text-success
               else
-                span.fa.fa-close(style='color:#bf464c;')
+                span.fa.fa-times.text-danger
+  .mb-4
+    h2 Export csv
+    .row
+      .col
+        a.btn.btn-primary.m-1.w-100(href="/users/export-csv/all") Export all users
+    .row
+      .col
+        for association, shortName in associations
+            a.btn.btn-primary.m-1(href="/users/export-csv/" + shortName)= "Export " + association.name
 
 block footer
   script.

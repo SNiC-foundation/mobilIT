@@ -1,16 +1,13 @@
-extends layout
-block above-content
+extends normal_page
 
-block header 
-  header.text
-    h2 Diets
-
-block content
-  section.diets
-    p.text-center= users.length + ' bezoekers hadden speciale dieetwensen'
+block page-content
+  .row
+    .col-12.text-center
+      p= users.length + ' visitors have dietary requirements'
     
-    #diet-table.offset-by-three.six.columns
-      table.diet.table
+  .row
+    .col-12
+      table.table.table-striped.table-hover
         thead
           th Name
           th Association
@@ -21,9 +18,9 @@ block content
             tr
               td=row.firstname + " " + row.surname
               td=associations[row.association].name
-              td.text-center
+              td
                 if row.vegetarian
-                  span.fa.fa-check(style='color:#79bf46;') 1
+                  span.fa.fa-check.text-success
                 else
-                  span.fa.fa-close(style='color:#bf464c;') 0
-              td(width="100%")=row.specialNeeds
+                  span.fa.fa-close.text-danger
+              td=row.specialNeeds

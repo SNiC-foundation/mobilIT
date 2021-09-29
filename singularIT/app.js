@@ -10,6 +10,7 @@ var mongoose = require("mongoose");
 var fs = require("fs");
 var passport = require("passport");
 var expressValidator = require("express-validator");
+const helmet = require("helmet");
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,6 +24,10 @@ mongoose.Promise = require("q").Promise;
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 
 app.use(
   compress({

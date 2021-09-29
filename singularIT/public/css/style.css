@@ -134,6 +134,10 @@ header:not(.fullscreen) {
   transform: translateX(1px);
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 /* Blocks and backdrop */
 .backdrop::before {
   content: "";
@@ -269,8 +273,12 @@ section {
 
 /* CARDS */
 .card {
-  border: 0;
   border-radius: 0;
+}
+
+.card-empty {
+  border: 0;
+  background: transparent;
 }
 
 /* ALERTS */
