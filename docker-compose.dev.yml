@@ -1,0 +1,5 @@
+version: '3.4'
+services:
+  app:
+    volumes:
+      - ./singularIT:/usr/src/app/

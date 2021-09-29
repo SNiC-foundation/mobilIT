@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile
       target: production
     restart: always
-    volumes:
-      -
     environment:
       - NODE_ENV=production
     command: bash entrypoint.production.sh
