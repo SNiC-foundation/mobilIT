@@ -1,13 +1,8 @@
-extends layout
-block above-content
+extends normal_page
 
-block header
-    header.text
-        h2 Error
-
-block content
+block page-content
     section
-      h2= message
+      pre= message
       p= error.status
     pre #{error.stack}
 

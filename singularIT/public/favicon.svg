@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#2D2E83;}
+	.st1{fill:#D5A361;}
+	@media (prefers-color-scheme: dark) {
+		.st0{fill:#FFFFFF;}
+    }
+</style>
+<g id="Icon">
+	<polygon class="st0" points="431.9,180.7 275.3,180.7 257.4,209.9 239.6,180.7 82.9,180.7 82.9,251.6 431.9,251.6 		"/>
+	<polygon class="st0" points="191,101 82.9,101 82.9,171.8 234.2,171.8 		"/>
+	<polygon class="st0" points="431.9,101 323.8,101 280.6,171.8 431.9,171.8 		"/>
+	<path class="st0" d="M15,260.4v70.9h474c7.5-21.6,11.6-46,12-70.9H15z"/>
+	<rect x="356.3" y="202.7" class="st1" width="122.7" height="26.9"/>
+	<rect x="261.8" y="340.1" class="st0" width="170.1" height="70.9"/>
+	<rect x="82.9" y="340.1" class="st0" width="170.1" height="70.9"/>
+	<rect x="1" y="362.1" class="st1" width="179.4" height="26.9"/>
+	<rect x="35.7" y="123.7" class="st1" width="122.7" height="26.9"/>
+</g>
+</svg>

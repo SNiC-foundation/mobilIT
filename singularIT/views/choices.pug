@@ -1,4 +1,4 @@
-extends layout
+extends normal_page
 
 mixin speakerCount(session, title)
   script(type='text/javascript')
@@ -25,38 +25,29 @@ mixin speakerCount(session, title)
 
 mixin speakerData(session)
   if session._id == ''
-    -session._id = 'Geen voorkeur'
+    -session._id = 'No preference'
 
   if session._id !== null
     != "['" + session._id + "', " + session.count + "],"
 
-block above-content
-
-block header
-    header.text
-        h2 Choices
-
-block content
-  section.main.style1
-    .container
-      .row(class='0%')
-        script(type='text/javascript', src='https://www.google.com/jsapi')
-        -visitorCount = 0
-        -count = 0
-        -val = 0
-        while val < session1.length
-          if session1[val] && session1[val]._id != null
-            -count += session1[val].count
-          -visitorCount = visitorCount + session1[val].count
-          -val = val + 1
+block page-content
+  script(type='text/javascript', src='https://www.google.com/jsapi')
+  -visitorCount = 0
+  -count = 0
+  -val = 0
+  while val < session1.length
+    if session1[val] && session1[val]._id != null
+      -count += session1[val].count
+    -visitorCount = visitorCount + session1[val].count
+    -val = val + 1
 
 
-        h2
-          = 'Lezingkeuzes '
-          small
-            = '(' + count + ' ingevuld)'
-        p.text-center= 'on a total of ' + visitorCount + ' visitors'
+  h2
+    = 'Session choices '
+    small
+      = '(' + count + ' ingevuld)'
+  p.text-center= 'on a total of ' + visitorCount + ' visitors'
 
-        +speakerCount(session1.filter(session => session._id != null), "session1")
-        +speakerCount(session2.filter(session => session._id != null), "session2")
-        +speakerCount(session3.filter(session => session._id != null), "session3")
+  +speakerCount(session1.filter(session => session._id != null), "session1")
+  +speakerCount(session2.filter(session => session._id != null), "session2")
+  +speakerCount(session3.filter(session => session._id != null), "session3")

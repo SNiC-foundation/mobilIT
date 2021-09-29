@@ -1,116 +1,167 @@
-extends layout
+extends normal_page
 
-block above-content
-
-block header
-  header.text
-    h2 Time table
-
-block content
-    script(src='/js/timetable.js' defer)
-    #talkModal.modal
-        #talkModalContent.modal-content
-            .modal-header
-                span.close &times;
-                h2#ModalTitle Modal Header
-            .modal-body
-                .speaker-info
-                    div
-                        image#ModalImage.speaker-image
-                    div(style="margin-top: 10px;")
-                        button#SpeakerButton.speaker-button
-                p#ModalContent Body!
-            .modal-footer
-                h5#ModalFooter Modal Footer
-                if enrollment_possible
-                    button#EnrollButton Enroll
-                div#favorite-button
-                    input#favorite-checkbox(type='checkbox')
-                    label(for='favorite-checkbox')
-                        svg#heart-svg(viewbox='467 392 58 57' xmlns='http://www.w3.org/2000/svg')
-                            g#Group(fill='none' fill-rule='evenodd' transform='translate(467 392)')
-                                path#heart(d='M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z' fill='#AAB8C2')
-                                circle#main-circ(fill='#E2264D' opacity='0' cx='29.5' cy='29.5' r='1.5')
-                                g#grp7(opacity='0' transform='translate(7 6)')
-                                    circle#oval1(fill='#9CD8C3' cx='2' cy='6' r='2')
-                                    circle#oval2(fill='#8CE8C3' cx='5' cy='2' r='2')
-                                g#grp6(opacity='0' transform='translate(0 28)')
-                                    circle#oval1(fill='#CC8EF5' cx='2' cy='7' r='2')
-                                    circle#oval2(fill='#91D2FA' cx='3' cy='2' r='2')
-                                g#grp3(opacity='0' transform='translate(52 28)')
-                                    circle#oval2(fill='#9CD8C3' cx='2' cy='7' r='2')
-                                    circle#oval1(fill='#8CE8C3' cx='4' cy='2' r='2')
-                                g#grp2(opacity='0' transform='translate(44 6)')
-                                    circle#oval2(fill='#CC8EF5' cx='5' cy='6' r='2')
-                                    circle#oval1(fill='#CC8EF5' cx='2' cy='2' r='2')
-                                g#grp5(opacity='0' transform='translate(14 50)')
-                                    circle#oval1(fill='#91D2FA' cx='6' cy='5' r='2')
-                                    circle#oval2(fill='#91D2FA' cx='2' cy='2' r='2')
-                                g#grp4(opacity='0' transform='translate(35 50)')
-                                    circle#oval1(fill='#F48EA7' cx='6' cy='5' r='2')
-                                    circle#oval2(fill='#F48EA7' cx='2' cy='2' r='2')
-                                g#grp1(opacity='0' transform='translate(24)')
-                                    circle#oval1(fill='#9FC7FA' cx='2.5' cy='3' r='2')
-                                    circle#oval2(fill='#9FC7FA' cx='7.5' cy='2' r='2')
-
-    p
-        | The schedule of ResilIT 2019. Click on a talk to get more information and to add it to your favorites! <br>
-        | Once enrollment for talks is possible, you can enroll for all your favorite talks with only one click!
-
-    div#timetableTitle
-        h2(style="text-align: center; margin: auto; margin-top: 1.5em;") Programme
-        if enrollment_possible
-            button#enrollFavorites Enroll to favorites
-    hr(style="width: 80vw;")
-    div(class="program-table")
-        .container
-        a#program.anchor
-        .row
-            .col-lg-12.text-center
-                .table-responsive
-                    table#program-table.table
-                        thead
-                            tr
-                                th
-                                for track in timetable.tracks
-                                    th(style="text-align:center")
-                                        h4=track.name
-                        tbody
-                            tr
-                                td
-                                for track in timetable.tracks
-                                    td(class="location-text")
-                                        h6=track.location
-                            - var currentTalks = {};
-                            for time in timetable.intervals
-                                tr
-                                    - // Add time column
-                                    td
-                                        small=time
-                                    - // Add all tracks
-                                    for track in timetable.tracks
-                                        - var used = false
-                                        for talk in track.talks
-                                            if talk.startTimeDisplay === time
-                                                -
-                                                    used = true
-                                                    var timeText = talk.startTimeDisplay + " - " + talk.endTimeDisplay;
-                                                td#program-table.talk-column(rowspan=talk.length, data-id=talk.id, onclick="talkColumnClick(" + JSON.stringify(talk) + ")")
-                                                    - currentTalks[track.trackId] = talk.length
-                                                    h4=talk.title
-                                                    h6=talk.subTitle
-                                                    small=timeText
-                                                    p
-                                                - break
-                                        - // If we didn't have a talk, add an empty.
-                                        unless currentTalks[track.trackId]
-                                            td
-                                -
-                                    // Update the amount of currently active talks
-                                    for(var track in currentTalks) {
-                                        if(currentTalks[track] <= 1) {
-                                            delete currentTalks[track];
-                                        } else {
-                                            currentTalks[track] = currentTalks[track] - 1;
-                                        }
-                                    }
+block page-content
+    article.text-center
+        h2 Schedule
+        .card.my-5
+            .card-header
+                small.text-muted 09:00 - 10:00
+            .card-body
+                h5.card-title Arrival
+        .card.my-5
+            .card-header
+                small.text-muted 10:00 - 10:30
+            img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+            .card-body
+                h5.card-title Opening keynote
+                p.card-text
+                    | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+        .card-group.my-5
+            .card
+                .card-header
+                    small.text-muted 10:30 - 11:30
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 1
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Hoofdzaal
+            .card
+                .card-header
+                    small.text-muted 10:30 - 11:30
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 2
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Rabobankzaal
+            .card
+                .card-header
+                    small.text-muted 10:30 - 11:30
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 3
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Altioszaal
+        .card-group.my-5
+            .card
+                .card-header
+                    small.text-muted 11:30 - 12:30
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 4
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Hoofdzaal
+            .card
+                .card-header
+                    small.text-muted 11:30 - 12:30
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 5
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Rabobankzaal
+            .card
+                .card-header
+                    small.text-muted 11:30 - 12:30
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 6
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Altioszaal
+        .card.my-5
+            .card-header
+                small.text-muted 12:30 - 13:30
+            .card-body
+                h5.card-title Lunch break
+        .card-group.my-5
+            .card
+                .card-header
+                    small.text-muted 13:30 - 15:00
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 7
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Hoofdzaal
+            .card
+                .card-header
+                    small.text-muted 13:30 - 15:00
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 8
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Rabobankzaal
+            .card
+                .card-header
+                    small.text-muted 13:30 - 15:00
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 9
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Altioszaal
+        .card-group.my-5
+            .card
+                .card-header
+                    small.text-muted 15:00 - 16:00
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 10
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Hoofdzaal
+            .card
+                .card-header
+                    small.text-muted 15:00 - 16:00
+                img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+                .card-body
+                    h5.card-title Speaker 11
+                    p.card-text
+                        | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                .card-footer
+                    small.text-muted Rabobankzaal
+        .card.my-5
+            .card-header
+                small.text-muted 16:00 - 17:00
+            img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+            .card-body
+                h5.card-title Central keynote
+                p.card-text
+                    | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+            .card-footer
+                small.text-muted Hoofdzaal
+        .card.my-5
+            .card-header
+                small.text-muted 17:00 - 18:00
+            img.card-img-top(src='img/highway-lights-at-night.jpg', alt='...', height='200px')
+            .card-body
+                h5.card-title Closing keynote
+                p.card-text
+                    | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+            .card-footer
+                small.text-muted Hoofdzaal
+        .card.my-5
+            .card-header
+                small.text-muted 18:00 - 20:00
+            .card-body
+                h5.card-title Borrel and dinner
+        #departure.card.my-5
+            .card-header
+                small.text-muted 20:00-21:00
+            .card-body
+                h5.card-title Departure of busses

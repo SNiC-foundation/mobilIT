@@ -12,15 +12,15 @@ block content
     #diet-table.offset-by-three.six.columns
       table.diet.table
         thead
-          th Persoon
-          th Vereniging
-          th.checkbox Vegetarier
-          th Dieetwensen
+          th Name
+          th Association
+          th.checkbox Vegetarian
+          th Dietary requirements
         tbody
           for row in users
             tr
               td=row.firstname + " " + row.surname
-              td=verenigingen[row.vereniging].name
+              td=associations[row.association].name
               td.text-center
                 if row.vegetarian
                   span.fa.fa-check(style='color:#79bf46;') 1
