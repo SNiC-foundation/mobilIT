@@ -21,7 +21,7 @@ services:
       - certbot_webroot:/var/www/html
       - certbot_var:/var/lib/letsencrypt/
       - certbot_etc:/etc/letsencrypt/
-      - dhparam:/etc/ssl/certs/
+      - ./dhparam/:/etc/ssl/certs/
       - ./logs/nginx/:/var/log/nginx/
     environment:
       - DOMAIN=mobilit.snic.nl
