@@ -23,6 +23,8 @@ services:
       - certbot_etc:/etc/letsencrypt/
       - ./dhparam/:/etc/ssl/certs/
       - ./logs/nginx/:/var/log/nginx/
+    depends_on:
+      - app
     environment:
       - DOMAIN=mobilit.snic.nl
 
