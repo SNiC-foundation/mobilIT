@@ -8,48 +8,6 @@ const config = require("../config.json");
 
 let router = express.Router();
 
-/**
- * Queries the database to get all the visitor counts for non plenary sessions.
- */
-async function getVisitorCounts() {
-  // Query database to check how many people are going to each session
-  var promises = [];
-  for (
-    var session_idx = Object.keys(speaker_info.speakerids).length - 1;
-    session_idx >= 0;
-    session_idx--
-  ) {
-    var session = Object.keys(speaker_info.speakerids)[session_idx];
-    // Filter out the plenary sessions
-    if (speaker_info.speakerids[session] instanceof Array) {
-      for (
-        var speakeridx = speaker_info.speakerids[session].length - 1;
-        speakeridx >= 0;
-        speakeridx--
-      ) {
-        var speaker = speaker_info.speakerids[session][speakeridx];
-        promises.push(countEnrolls(session, speaker));
-      }
-    }
-  }
-
-  // Gather all the data and make a dict with
-  return Promise.all(promises);
-}
-
-/**
- * Count the amount of people enrolled for a session and returns object with sessionid
- */
-async function countEnrolls(sessions_lot, session_id) {
-  var query = {};
-  query[sessions_lot] = session_id;
-  var result = await User.find(query).count();
-  return {
-    id: session_id,
-    count: result,
-  };
-}
-
 router.get("/profile", auth, async function (req, res) {
   var user = await User.findOne({ email: req.session.passport.user });
   var spTimeSlot = null;
@@ -74,17 +32,12 @@ router.get("/profile", auth, async function (req, res) {
     freeSpTimeSlots = allSpTimeSlots.filter((ts) => ts.isFree);
   }
 
-  // Don't try to unescape here, it's not stored in user.
-  // Do it in the template
-  var visitorCounts = await getVisitorCounts();
-
   res.render("profile", {
     userHasBus: config.associations[user.association].bus,
     providePreferences: config.providePreferences,
     speakerids: speaker_info.speakerids,
     speakers: speaker_info.speakers,
     matchingterms: config.matchingterms,
-    visitorCounts: visitorCounts,
     spTimeSlot: spTimeSlot,
     allSpTimeSlots: allSpTimeSlots,
     freeSpTimeSlots: freeSpTimeSlots,
