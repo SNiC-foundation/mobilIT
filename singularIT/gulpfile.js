@@ -1,5 +1,3 @@
-// require('dotenv').config()
-
 const gulp = require("gulp");
 const nodemon = require("gulp-nodemon");
 const livereload = require("gulp-livereload");

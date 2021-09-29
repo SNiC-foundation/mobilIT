@@ -6,12 +6,12 @@ Install [Docker](https://docs.docker.com/engine/installation/) and [Docker Compo
 ### Running for development
 Run the following to build the development image:
 ```bash
-./docker-compose-dev.sh build
+./docker-compose-prod.sh build
 ```
 
 And run it with:
 ```bash
-./docker-compose-dev.sh up
+./docker-compose-prod.sh up
 ```
 
 This container has the `singularIT` directory mounted as a volume, so you don't have

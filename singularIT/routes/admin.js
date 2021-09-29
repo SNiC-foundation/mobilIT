@@ -40,9 +40,139 @@ router.get("/users", adminAuth, function (req, res, next) {
       if (err) {
         return next(err);
       }
-      res.render("users", { users: results });
+      res.render("users", {
+        users: results,
+        associations: config.associations,
+      });
     });
 });
+
+router.get("/users/:id", adminAuth, function (req, res, next) {
+  User.findOne({ _id: req.params.id }, function (err, result) {
+    if (err) {
+      return next(err);
+    }
+    res.render("users/edit", {
+      user: result,
+      associations: config.associations,
+    });
+  });
+});
+
+router.post("/users/:id", adminAuth, function (req, res, next) {
+  User.findOne({ _id: req.params.id }, function (err, result) {
+    if (err) {
+      return next(err);
+    }
+
+    result.present = req.body.present === "on";
+    result.admin = req.body.admin === "on";
+
+    result.save(function (err) {
+      if (err) {
+        return next(err);
+      }
+
+      req.flash("success", "User edited!");
+      return res.redirect("/users/" + req.params.id);
+    });
+  });
+});
+
+router.get("/users/export-csv/all", adminAuth, async function (req, res) {
+  var data = [
+    [
+      "First Name",
+      "Surname",
+      "Email",
+      "Bus",
+      "Association",
+      "Ticket code",
+      "Session 1",
+      "Session 2",
+      "Session 3",
+      "Speeddate start",
+      "Speeddate end",
+    ],
+  ];
+
+  data.push(
+    await Promise.all(
+      (
+        await User.find()
+          .sort([
+            ["firstname", 1],
+            ["lastname", 1],
+          ])
+          .populate("speedDateTimeSlot")
+      ).map(async function (u) {
+        var session1 = u.session1 ? u.session1 : "";
+        var session2 = u.session2 ? u.session2 : "";
+        var session3 = u.session3 ? u.session3 : "";
+
+        var spStart = "";
+        var spEnd = "";
+
+        if (u.speedDateTimeSlot) {
+          spStart = moment(u.speedDateTimeSlot.startTime).format("HH:mm");
+          spEnd = moment(u.speedDateTimeSlot.endTime).format("HH:mm");
+        }
+
+        return [
+          u.firstname,
+          u.surname,
+          u.email,
+          u.bus,
+          config.associations[u.association].name,
+          u.ticket,
+          session1,
+          session2,
+          session3,
+          spStart,
+          spEnd,
+        ];
+      })
+    )
+  );
+
+  res.set("Content-Type", "text/plain");
+  res.set(
+    "Content-Disposition",
+    'attachment; filename="all_registered_users.csv"'
+  );
+  res.send(CSV.stringify(data));
+});
+
+router.get(
+  "/users/export-csv/:association",
+  adminAuth,
+  async function (req, res) {
+    var data = [["First Name", "Surname", "Email", "Bus", "Ticket code"]];
+
+    var association = config.associations[req.params.association];
+    if (!association) {
+      req.flash("error", "Association does not exist");
+      return res.redirect("/users");
+    }
+    var associationName = association.name;
+
+    data.push(
+      await Promise.all(
+        (
+          await User.find({ association: req.params.association })
+        ).map(async function (u) {
+          return [u.firstname, u.surname, u.email, u.bus, u.ticket];
+        })
+      )
+    );
+
+    var filename = associationName.replace(/ /g, "_") + "_registered_users.csv";
+
+    res.set("Content-Type", "text/plain");
+    res.set("Content-Disposition", 'attachment; filename="' + filename + '"');
+    res.send(CSV.stringify(data));
+  }
+);
 
 router.get("/speeddate", adminAuth, async function (req, res) {
   var timeslots = await SpeedDateTimeSlot.find().sort({ startTime: 1 });
@@ -60,10 +190,6 @@ router.get("/speeddate", adminAuth, async function (req, res) {
   var result = await Promise.all(timeslots.map(createSlot));
 
   res.render("speeddate", { timeslots: result });
-});
-
-router.get("/admin", adminAuth, async function (req, res) {
-  res.render("admin");
 });
 
 router.get("/speeddate/export-csv", adminAuth, async function (req, res) {
@@ -177,133 +303,9 @@ router.get("/diet", adminAuth, function (req, res, next) {
       if (err) {
         return next(err);
       }
-      res.render("diet", { users: results });
+      res.render("diet", { users: results, associations: config.associations });
     });
 });
-
-router.get("/users/:id", adminAuth, function (req, res, next) {
-  User.findOne({ _id: req.params.id }, function (err, result) {
-    if (err) {
-      return next(err);
-    }
-    res.render("users/edit", { user: result });
-  });
-});
-
-router.post("/users/:id", adminAuth, function (req, res, next) {
-  User.findOne({ _id: req.params.id }, function (err, result) {
-    if (err) {
-      return next(err);
-    }
-
-    result.present = req.body.present;
-    result.admin = req.body.admin;
-
-    result.save(function (err) {
-      if (err) {
-        return next(err);
-      }
-
-      req.flash("success", "User edited!");
-      return res.redirect("/users/" + req.params.id);
-    });
-  });
-});
-
-router.get("/users/export-csv/all", adminAuth, async function (req, res) {
-  var data = [
-    [
-      "First Name",
-      "Surname",
-      "Email",
-      "Bus",
-      "Association",
-      "Ticket code",
-      "Session 1",
-      "Session 2",
-      "Session 3",
-      "Speeddate start",
-      "Speeddate end",
-    ],
-  ];
-
-  data.push(
-    await Promise.all(
-      (
-        await User.find()
-          .sort([
-            ["firstname", 1],
-            ["lastname", 1],
-          ])
-          .populate("speedDateTimeSlot")
-      ).map(async function (u) {
-        var session1 = u.session1 ? u.session1 : "";
-        var session2 = u.session2 ? u.session2 : "";
-        var session3 = u.session3 ? u.session3 : "";
-
-        var spStart = "";
-        var spEnd = "";
-
-        if (u.speedDateTimeSlot) {
-          spStart = moment(u.speedDateTimeSlot.startTime).format("HH:mm");
-          spEnd = moment(u.speedDateTimeSlot.endTime).format("HH:mm");
-        }
-
-        return [
-          u.firstname,
-          u.surname,
-          u.email,
-          u.bus,
-          config.associations[u.association].name,
-          u.ticket,
-          session1,
-          session2,
-          session3,
-          spStart,
-          spEnd,
-        ];
-      })
-    )
-  );
-
-  res.set("Content-Type", "text/plain");
-  res.set(
-    "Content-Disposition",
-    'attachment; filename="all_registered_users.csv"'
-  );
-  res.send(CSV.stringify(data));
-});
-
-router.get(
-  "/users/export-csv/:association",
-  adminAuth,
-  async function (req, res) {
-    var data = [["First Name", "Surname", "Email", "Bus", "Ticket code"]];
-
-    var association = config.associations[req.params.association];
-    if (!association) {
-      req.flash("error", "Association does not exist");
-      return res.redirect("/users");
-    }
-    var associationName = association.name;
-
-    data.push(
-      await Promise.all(
-        (
-          await User.find({ association: req.params.association })
-        ).map(async function (u) {
-          return [u.firstname, u.surname, u.email, u.bus, u.ticket];
-        })
-      )
-    );
-
-    var filename = associationName.replace(/ /g, "_") + "_registered_users.csv";
-
-    res.set("Content-Type", "text/plain");
-    res.set("Content-Disposition", 'attachment; filename="' + filename + '"');
-    res.send(CSV.stringify(data));
-  }
-);
 
 /**
  * Session choices displayed for administrators
@@ -364,16 +366,8 @@ router.get("/matchingstats", adminAuth, function (req, res, next) {
     });
 });
 
-/**
- * Output all tickets that aren't owned yet
- */
-router.get("/tickets", adminAuth, function (req, res, next) {
-  Ticket.find({ rev: 1, ownedBy: undefined }, function (err, tickets) {
-    if (err) {
-      return next(err);
-    }
-    res.render("tickets", { tickets: tickets });
-  });
+router.get("/tickets", adminAuth, async function (req, res) {
+  res.render("new_tickets");
 });
 
 router.post("/tickets", adminAuth, function (req, res, next) {

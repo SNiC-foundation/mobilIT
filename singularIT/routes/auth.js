@@ -17,7 +17,7 @@ mailchimp.setConfig({
 
 let transporter = nodemailer.createTransport({
   streamTransport: true,
-  newline: 'unix',
+  newline: "unix",
 });
 
 const passwordForgotEmailTemplate = pug.compileFile(
@@ -147,18 +147,18 @@ router.post("/register", function (req, res, next) {
       function (next) {
         if (req.body.subscribe) {
           mailchimp.lists
-              .setListMember(config.mailchimp.id, md5(req.body.email), {
-                email_address: req.body.email,
-                status: "subscribed",
-              })
-              .then(function (res) {
-                next(null);
-              })
-              .catch(function (err) {
-                console.error("an error with mailchimp has occurred");
-                console.error(err.response.res);
-                next(new Error(err.response.res.text.detail));
-              });
+            .setListMember(config.mailchimp.id, md5(req.body.email), {
+              email_address: req.body.email,
+              status: "subscribed",
+            })
+            .then(function (res) {
+              next(null);
+            })
+            .catch(function (err) {
+              console.error("an error with mailchimp has occurred");
+              console.error(err.response.res);
+              next(new Error(err.response.res.text.detail));
+            });
         }
       },
       function (next) {
@@ -240,16 +240,19 @@ router.post("/forgot", function (req, res, next) {
           token: token,
         });
 
-        transporter.sendMail({
-          from: "committee@2020.snic.nl",
-          to: user.email,
-          subject: "SNiC: MobilIT - Password reset",
-          html: html,
-        }, (err, info) => {
-          console.log(info.envelope);
-          console.log(info.messageId);
-          info.message.pipe(process.stdout);
-        });
+        transporter.sendMail(
+          {
+            from: "committee@2020.snic.nl",
+            to: user.email,
+            subject: "SNiC: MobilIT - Password reset",
+            html: html,
+          },
+          (err, info) => {
+            console.log(info.envelope);
+            console.log(info.messageId);
+            info.message.pipe(process.stdout);
+          }
+        );
         req.flash(
           "info",
           "An email has been sent to " +

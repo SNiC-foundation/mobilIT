@@ -1,38 +1,29 @@
-extends ../layout
+extends ../normal_page
 
-block above-content
+block page-content
+  .row
+    .col-12
+      form(method='POST')
+        table.table
+          thead
+              th First name
+              th Surname
+              th Email
+              th Ticket
+              th Association
+              th Present
+              th Admin
+          tbody
+            tr(style='height: 40px')
+              td=user.firstname
+              td=user.surname
+              td=user.email
+              td=user.ticket
+              td=associations[user.association].name
+              td
+                input.form-check-input(type='checkbox', name='present', checked=user.present?'checked':undefined)
+              td
+                input.form-check-input(type='checkbox', name='admin', checked=user.admin?'checked':undefined)
 
-block header
-  header.text
-    h2 Edit user
-
-block content
-  .section.users.intro.slanted
-    .content.offset-by-two.eight.columns
-      .row
-        .twelve.columns
-          form(method='POST')
-
-            table.users.table
-              thead
-                  th First name
-                  th Surname
-                  th Email
-                  th Ticket
-                  th Association
-                  th Present
-                  th Admin
-              tbody
-                tr(style='height: 40px')
-                  td=user.firstname
-                  td=user.surname
-                  td=user.email
-                  td=user.ticket
-                  td=associations[user.association].name
-                  td
-                    input#present(type='checkbox', name='present', checked=user.present?'checked':undefined)
-                  td
-                    input#admin(type='checkbox', name='admin', checked=user.admin?'checked':undefined)
-
-            a.button(href='/users') Back
-            button.button.button-primary.special(type='submit', style='float:right') Save
+        a.btn.btn-secondary(href='/users') Back
+        button.btn.btn-primary(type='submit', style='float:right') Save

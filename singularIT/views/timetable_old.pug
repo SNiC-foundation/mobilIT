@@ -90,15 +90,15 @@ block content
                                     - // Add all tracks
                                     for track in timetable.tracks
                                         - var used = false
-                                        for talk in track.talks
-                                            if talk.startTimeDisplay === time
+                                        for event in track.talks
+                                            if event.startTimeDisplay === time
                                                 -
                                                     used = true
-                                                    var timeText = talk.startTimeDisplay + " - " + talk.endTimeDisplay;
-                                                td#program-table.talk-column(rowspan=talk.length, data-id=talk.id, onclick="talkColumnClick(" + JSON.stringify(talk) + ")")
-                                                    - currentTalks[track.trackId] = talk.length
-                                                    h4=talk.title
-                                                    h6=talk.subTitle
+                                                    var timeText = event.startTimeDisplay + " - " + event.endTimeDisplay;
+                                                td#program-table.talk-column(rowspan=event.length, data-id=event.id, onclick="talkColumnClick(" + JSON.stringify(event) + ")")
+                                                    - currentTalks[track.trackId] = event.length
+                                                    h4=event.title
+                                                    h6=event.subTitle
                                                     small=timeText
                                                     p
                                                 - break

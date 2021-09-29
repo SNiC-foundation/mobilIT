@@ -9,22 +9,23 @@ services:
     image: mongo-express
     ports:
      - "127.0.0.1:8081:8081"
-    links:
-     - mongodb:mongo
     environment:
      - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
      - ME_CONFIG_BASICAUTH_USERNAME=admin
      - ME_CONFIG_BASICAUTH_PASSWORD=test
+     - ME_CONFIG_MONGODB_SERVER=mongodb
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
-    restart: always
-    links:
-      - "mongodb"
+      target: development
+    restart: unless-stopped
+    volumes:
+      - ./singularIT:/usr/src/app/
+    depends_on:
+      - mongodb
     environment:
-      - NODE_ENV=production
-    command: bash entrypoint.production.sh
+      - NODE_ENV=development
     ports:
-     - "80:3000"
+      - "3000:3000"
+    command: bash entrypoint.development.sh
