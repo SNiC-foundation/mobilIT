@@ -27,6 +27,7 @@ app.set("view engine", "pug");
 
 app.use(helmet({
   contentSecurityPolicy: false,
+  noSniff: false,
 }));
 
 app.use(
