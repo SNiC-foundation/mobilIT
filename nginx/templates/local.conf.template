@@ -17,7 +17,7 @@ server {
 
     location /.well-known/acme-challenge/ {
         allow all;
-        root /var/www/hotml;
+        root /var/www/html;
     }
 }
 
