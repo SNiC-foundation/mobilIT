@@ -258,6 +258,9 @@ router.post("/forgot", function (req, res, next) {
             html: html,
           },
           (err, info) => {
+            if (err) {
+              console.error(err);
+            }
             if (process.env.NODE_ENV !== 'production') {
               console.log(info.envelope);
               console.log(info.messageId);
