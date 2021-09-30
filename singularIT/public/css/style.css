@@ -270,7 +270,11 @@ section {
   border-color: var(--brown);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:focus-visible,
+.btn-primary:focus-within {
   background-color: var(--blue);
   border-color: var(--blue);
 }
@@ -303,6 +307,11 @@ section {
 .timetable .card-group .card-empty {
   border: 0 !important;
   opacity: 0 !important;
+}
+
+.modal-content {
+  border-radius: 0;
+  border: 0;
 }
 
 /* ALERTS */

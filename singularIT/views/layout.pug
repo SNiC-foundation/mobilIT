@@ -121,37 +121,40 @@ html(lang=locale)
       // content of the page
       block content
 
-      // sidebar
-      aside#sidebar.offcanvas.offcanvas-end.blue(tabindex='-1', aria-labelledby='sidebar')
-        button.btn-close.btn-close-white.text-reset.position-fixed.top-0.end-0.m-3(type='button', data-bs-dismiss='offcanvas', aria-label='Close')
-        nav#navbar.nav.nav-pills.flex-column.align-items-stretch.p-3
-          a.nav-link.navbar-brand.m-4(href='#mobilit')
-            img(alt='MobilIT', src='img/MobilIT-small.svg')
-          a.nav-link(href='/#theme') Theme
-          a.nav-link(href='/#corona') Corona
-          a.nav-link(href='/#speakers') Speakers
-          a.nav-link(href='/#partners') Partners
-          a.nav-link(href='/#contact') Contact
-          if user
-            a.nav-link.mt-5(href='/profile') Profile
-            a.nav-link(href='/timetable') Timetable
-            if user.admin
-              a.nav-link.mt-5(href='/users') Scan tickets
-              a.nav-link(href='/choices') Session choices
-              a.nav-link(href='/diet') Diets
-              a.nav-link(href='/speeddate') Speed date timeslots
-              a.nav-link(href='/badge-scanning') Badge scanning
-              a.nav-link(href='/tickets') New tickets
-            a.nav-link.mt-5(href='/logout') Logout
-          else
-            a.nav-link(href='/timetable') Timetable
-            a.nav-link.mt-5(href='/login') Login
-            a.nav-link(href='/register') Activate ticket
+    // Any content that should be outside the normal flow
+    block outside-flow
 
-      // Footer
-      script.
-        let rh = Rellax('.rellax-horizontal', {horizontal: true, wrapper: 'main'});
-        let rv = Rellax('.rellax', {wrapper: 'main'});
+    // sidebar
+    aside#sidebar.offcanvas.offcanvas-end.blue(tabindex='-1', aria-labelledby='sidebar')
+      button.btn-close.btn-close-white.text-reset.position-fixed.top-0.end-0.m-3(type='button', data-bs-dismiss='offcanvas', aria-label='Close')
+      nav#navbar.nav.nav-pills.flex-column.align-items-stretch.p-3
+        a.nav-link.navbar-brand.m-4(href='#mobilit')
+          img(alt='MobilIT', src='img/MobilIT-small.svg')
+        a.nav-link(href='/#theme') Theme
+        a.nav-link(href='/#corona') Corona
+        a.nav-link(href='/#speakers') Speakers
+        a.nav-link(href='/#partners') Partners
+        a.nav-link(href='/#contact') Contact
+        if user
+          a.nav-link.mt-5(href='/profile') Profile
+          a.nav-link(href='/timetable') Timetable
+          if user.admin
+            a.nav-link.mt-5(href='/users') Scan tickets
+            a.nav-link(href='/choices') Session choices
+            a.nav-link(href='/diet') Diets
+            a.nav-link(href='/speeddate') Speed date timeslots
+            a.nav-link(href='/badge-scanning') Badge scanning
+            a.nav-link(href='/tickets') New tickets
+          a.nav-link.mt-5(href='/logout') Logout
+        else
+          a.nav-link(href='/timetable') Timetable
+          a.nav-link.mt-5(href='/login') Login
+          a.nav-link(href='/register') Activate ticket
 
-      // For extra footer stuff
-      block footer
+    // Footer
+    script.
+      let rh = Rellax('.rellax-horizontal', {horizontal: true, wrapper: 'main'});
+      let rv = Rellax('.rellax', {wrapper: 'main'});
+
+    // For extra footer stuff
+    block footer
