@@ -17,6 +17,7 @@ mailchimp.setConfig({
 
 let transporter;
 if (process.env.NODE_ENV === 'production') {
+  // We are using the google workspaces email relay and thus don't need any authentication
   transporter = nodemailer.createTransport({
     host: "smtp-relay.gmail.com",
     port: 587,
@@ -257,9 +258,11 @@ router.post("/forgot", function (req, res, next) {
             html: html,
           },
           (err, info) => {
-            console.log(info.envelope);
-            console.log(info.messageId);
-            info.message.pipe(process.stdout);
+            if (process.env.NODE_ENV !== 'production') {
+              console.log(info.envelope);
+              console.log(info.messageId);
+              info.message.pipe(process.stdout);
+            }
           }
         );
         req.flash(
