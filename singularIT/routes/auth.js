@@ -15,10 +15,19 @@ mailchimp.setConfig({
   server: "us17",
 });
 
-let transporter = nodemailer.createTransport({
-  streamTransport: true,
-  newline: "unix",
-});
+let transporter;
+if (process.env.NODE_ENV === 'production') {
+  transporter = nodemailer.createTransport({
+    host: "smtp-relay.gmail.com",
+    port: 587,
+    secure: true,
+  });
+} else {
+  transporter = nodemailer.createTransport({
+    streamTransport: true,
+    newline: "unix",
+  });
+}
 
 const passwordForgotEmailTemplate = pug.compileFile(
   path.join("views", "password_reset_email.pug")
