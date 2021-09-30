@@ -50,7 +50,7 @@ router.get("//", function (req, res) {
 //   });
 // });
 
-router.get("/timetable", auth, function (req, res) {
+router.get("/timetable", function (req, res) {
   var enrollment_start_time = new Date(config.enrollStartTime);
   var enrollment_end_time = new Date(config.enrollEndTime);
   var today = new Date();
