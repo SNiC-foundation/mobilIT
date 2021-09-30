@@ -1,4 +1,4 @@
-extends fullscreen_page
+extends normal_page
 
 block page-content
   h2 Tickets
@@ -10,3 +10,4 @@ block page-content
         option(value='partner') Partner
       input.form-control(type='number', name="amount", value=0)
       button.btn.btn-primary(type='submit') Generate
+  a.btn.btn-primary.mt-4(href='/new_tickets') View unclaimed tickets

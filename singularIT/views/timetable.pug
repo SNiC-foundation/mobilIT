@@ -1,7 +1,7 @@
 extends normal_page
 
 block page-content
-    article.text-center
+    .text-center.timetable
         h2 Schedule
         for session in timetable
             .card-group.my-5
@@ -10,7 +10,7 @@ block page-content
                         if event.empty
                             .card.card-empty
                         else
-                            .card
+                            .card.chosen
                                 .card-header
                                     small.text-muted= session.startTime + " - " + session.endTime
                                 if event.picture

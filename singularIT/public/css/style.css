@@ -99,7 +99,11 @@ header {
 
 header:not(.fullscreen) {
   width: 100vw;
-  height: 50vh;
+  z-index: 500;
+}
+
+header:not(.fullscreen) > .logo {
+  min-height: 20px;
 }
 
 /* Menu toggle */
@@ -276,9 +280,29 @@ section {
   border-radius: 0;
 }
 
-.card-empty {
-  border: 0;
-  background: transparent;
+.card > img {
+  border-radius: 0;
+}
+
+.timetable .card-group > * {
+  opacity: 30%;
+}
+
+.timetable .card-group {
+  background-color: white;
+}
+
+.timetable .card-group .card:hover,
+.timetable .card-group .card:active,
+.timetable .card-group .card:focus,
+.timetable .card-group .chosen {
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
+  opacity: 100%;
+}
+
+.timetable .card-group .card-empty {
+  border: 0 !important;
+  opacity: 0 !important;
 }
 
 /* ALERTS */
