@@ -21,7 +21,6 @@ if (process.env.NODE_ENV === 'production') {
   transporter = nodemailer.createTransport({
     host: "smtp-relay.gmail.com",
     port: 587,
-    secure: true,
   });
 } else {
   transporter = nodemailer.createTransport({
@@ -259,7 +258,7 @@ router.post("/forgot", function (req, res, next) {
           },
           (err, info) => {
             if (err) {
-              console.error(err);
+              console.error("error while sending email: ", err);
             }
             if (process.env.NODE_ENV !== 'production') {
               console.log(info.envelope);
