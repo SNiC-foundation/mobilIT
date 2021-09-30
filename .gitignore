@@ -6,8 +6,6 @@
 *.sublime-workspace
 *.swp
 **/.psci_modules
-**/public/css/*.min.css
-**/public/js/*.min.js
 *.log
 **/node_modules
 **/node_modules/localhost.daplie.me-certificates/*
