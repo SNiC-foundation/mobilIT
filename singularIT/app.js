@@ -25,11 +25,6 @@ mongoose.Promise = require("q").Promise;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(helmet({
-  contentSecurityPolicy: false,
-  noSniff: false,
-}));
-
 app.use(
   compress({
     filter: function (req, res) {
@@ -44,6 +39,13 @@ app.use(
 );
 
 app.use(morgan("combined"));
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    noSniff: false,
+  })
+);
 
 // This must come BEFORE the bodyParser stuff, so the scanner API route
 // can have its own bodyParser and handle its errors
@@ -123,18 +125,16 @@ if (app.get("env") === "development") {
       error: err,
     });
   });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-  // debug(err.status)
-  res.status(err.status || 500);
-  res.render("error", {
-    message: err.message,
-    error: {},
+} else {
+  // production error handler, no stack traces leaked to user
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render("error", {
+      message: err.message,
+      error: {},
+    });
   });
-});
+}
 
 process.on("message", function (message) {
   if (message === "shutdown") {

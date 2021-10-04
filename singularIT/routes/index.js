@@ -39,18 +39,18 @@ router.get("/", async function (req, res) {
       associations: config.associations,
       studyProgrammes: config.studyProgrammes,
     });
+  } else {
+    res.render("index", {
+      logged_out: false,
+      timetable: timetable,
+      speakers: speaker_info,
+      enrollment_possible: enrollment_possible,
+      ticketSaleStarts: config.ticketSaleStarts,
+      userHasBus: false,
+      associations: config.associations,
+      studyProgrammes: config.studyProgrammes,
+    });
   }
-
-  res.render("index", {
-    logged_out: false,
-    timetable: timetable,
-    speakers: speaker_info,
-    enrollment_possible: enrollment_possible,
-    ticketSaleStarts: config.ticketSaleStarts,
-    userHasBus: false,
-    associations: config.associations,
-    studyProgrammes: config.studyProgrammes,
-  });
 });
 
 router.get("/timetable", function (req, res) {

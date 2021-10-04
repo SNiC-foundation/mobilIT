@@ -370,10 +370,12 @@ router.get("/tickets", adminAuth, async function (req, res) {
   res.render("new_tickets");
 });
 
-router.get('/new_tickets', adminAuth, function (req, res, next) {
-  Ticket.find({rev:1, ownedBy:undefined}, function (err, tickets) {
-    if (err) { return next(err); }
-    res.render('tickets', {tickets: tickets});
+router.get("/new_tickets", adminAuth, function (req, res, next) {
+  Ticket.find({ rev: 1, ownedBy: undefined }, function (err, tickets) {
+    if (err) {
+      return next(err);
+    }
+    res.render("tickets", { tickets: tickets });
   });
 });
 

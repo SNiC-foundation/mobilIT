@@ -33,7 +33,12 @@ body {
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
 }
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Apercu Mono", monospace;
   text-transform: uppercase;
 }
@@ -91,7 +96,7 @@ header:not(.fullscreen) {
   z-index: 500;
 }
 
-header:not(.fullscreen) >.logo {
+header:not(.fullscreen) > .logo {
   min-height: 20px;
 }
 
@@ -283,13 +288,13 @@ section {
   opacity: 30%;
 }
 .timetable .card-group {
-  background-color: white
+  background-color: white;
 }
 .timetable .card-group .card:hover,
 .timetable .card-group .card:active,
 .timetable .card-group .card:focus,
-.timetable .card-group .chosen{
-  border-left: 1px solid rgba(0,0,0,.125);
+.timetable .card-group .chosen {
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
   opacity: 100%;
   cursor: pointer;
 }
@@ -308,7 +313,7 @@ section {
   background-color: rgba(var(--blue-rgb), 0.8);
 }
 .block-white {
-  background-color: rgba(255,255,255, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .glitch1 {
@@ -328,7 +333,6 @@ section {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
-
 }
 .glitch4 {
   background-image: url("../img/glitch4.png");
