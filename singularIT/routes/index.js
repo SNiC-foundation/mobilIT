@@ -13,42 +13,45 @@ var moment = require("moment");
 var fs = require("fs");
 const [auth, adminAuth] = require("./utils");
 
-const speaker_info = require("../speakers.json");
-const timetable = require("../timetable.json");
+let speaker_info = require("../speakers.json");
+let timetable = require("../timetable.json");
 const config = require("../config.json");
 
 var router = express.Router();
 
-router.get("/", function (req, res) {
+router.get("/", async function (req, res) {
+  var enrollment_start_time = new Date(config.enrollStartTime);
+  var enrollment_end_time = new Date(config.enrollEndTime);
+  var today = new Date();
+  var enrollment_possible =
+    enrollment_start_time < today && today < enrollment_end_time;
+
+  if (req.user) {
+    const user = await User.findOne({ email: req.session.passport.user });
+
+    res.render("index", {
+      logged_in: true,
+      timetable: timetable,
+      speakers: speaker_info,
+      enrollment_possible: enrollment_possible,
+      ticketSaleStarts: config.ticketSaleStarts,
+      userHasBus: config.associations[user.association].bus,
+      associations: config.associations,
+      studyProgrammes: config.studyProgrammes,
+    });
+  }
+
   res.render("index", {
-    title: "",
+    logged_out: false,
+    timetable: timetable,
+    speakers: speaker_info,
+    enrollment_possible: enrollment_possible,
     ticketSaleStarts: config.ticketSaleStarts,
+    userHasBus: false,
+    associations: config.associations,
+    studyProgrammes: config.studyProgrammes,
   });
 });
-
-router.get("//", function (req, res) {
-  res.render("index", {
-    title: "",
-    ticketSaleStarts: config.ticketSaleStarts,
-  });
-});
-
-// router.get("/speakers", function (req, res) {
-//   var s = speaker_info.speakers.filter(function (speaker) {
-//     return !speaker.hidden;
-//   });
-//   var p = speaker_info.presenters.filter(function (presenter) {
-//     return !presenter.hidden;
-//   });
-//   res.render("speakers/index", {
-//     speakers: s,
-//     presenters: p,
-//     speakerids: speaker_info.speakerids,
-//     settings: {
-//       tracks: speaker_info.tracks,
-//     },
-//   });
-// });
 
 router.get("/timetable", function (req, res) {
   var enrollment_start_time = new Date(config.enrollStartTime);
@@ -62,6 +65,16 @@ router.get("/timetable", function (req, res) {
     speakers: speaker_info,
     enrollment_possible: enrollment_possible,
   });
+});
+
+router.get("/reload/timetable", adminAuth, function (req, res) {
+  delete require.cache[require.resolve("../speakers.json")];
+  delete require.cache[require.resolve("../timetable.json")];
+
+  speaker_info = require("../speakers.json");
+  timetable = require("../timetable.json");
+
+  res.redirect("/");
 });
 
 module.exports = router;

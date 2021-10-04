@@ -9,39 +9,10 @@ const config = require("../config.json");
 let router = express.Router();
 
 router.get("/profile", auth, async function (req, res) {
-  var user = await User.findOne({ email: req.session.passport.user });
-  var spTimeSlot = null;
-  var allSpTimeSlots = null;
-  var freeSpTimeSlots = null;
-
-  if (user.speedDateTimeSlot) {
-    spTimeSlot = await SpeedDateTimeSlot.findById(user.speedDateTimeSlot);
-  } else {
-    allSpTimeSlots = await SpeedDateTimeSlot.find().sort({ startTime: 1 });
-
-    allSpTimeSlots = await Promise.all(
-      allSpTimeSlots.map(async function (ts) {
-        var userCount = await User.find({ speedDateTimeSlot: ts.id }).count();
-
-        ts.isFree = userCount < ts.capacity;
-
-        return ts;
-      })
-    );
-
-    freeSpTimeSlots = allSpTimeSlots.filter((ts) => ts.isFree);
-  }
+  const user = await User.findOne({ email: req.session.passport.user });
 
   res.render("profile", {
     userHasBus: config.associations[user.association].bus,
-    providePreferences: config.providePreferences,
-    speakerids: speaker_info.speakerids,
-    speakers: speaker_info.speakers,
-    matchingterms: config.matchingterms,
-    spTimeSlot: spTimeSlot,
-    allSpTimeSlots: allSpTimeSlots,
-    freeSpTimeSlots: freeSpTimeSlots,
-    provideTrackPreferencesEnd: config.provideTrackPreferencesEnd,
     associations: config.associations,
   });
 });

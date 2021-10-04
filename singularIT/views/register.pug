@@ -1,8 +1,8 @@
-extends normal_page
+extends inclusion
 
 block page-content
   if new Date(ticketSaleStarts).getTime() < Date.now()
-    form.text-center(method='post')
+    form.text-center(method='post', action='/register')
       legend(hidden) Registration
       h2 Register
       p

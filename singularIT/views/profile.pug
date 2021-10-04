@@ -1,4 +1,4 @@
-extends normal_page
+extends inclusion
 
 mixin dropdown(speaker, user, session, visitorCounts)
   - var description = (!speaker.company || speaker.company === '') ? '' : ' (' + speaker.company + ') '
@@ -26,57 +26,13 @@ block page-content
   .mb-5
     h2= ucfirst(user.firstname) + ' ' + user.surname +' ('+ associations[user.association].name +')'
 
-  form#settings(method='post')
+  form#settings(method='post', action='/profile')
     .mb-4
       h4 Tickets
       p
         | Download your ticket #[a(href='/ticket', target='_blank') here].
         br
         | Please bring it along to the conference on your phone or in print.
-
-    .mb-4
-      h4 Sessions
-      if user.type === 'partner'
-        .mb-3
-          p Partners don't have to enroll for sessions, but you are welcome to join in if there are seats left.
-      else
-        if providePreferences
-          if Date.now() < new Date(provideTrackPreferencesEnd).getTime()
-            .mb-3
-              p
-                | You can select your preference for the parallel sessions here
-            .mb-3.mx-5
-              select.form-control(name='session1')
-                option(value='', selected=!user.session1?'selected':undefined, disabled) Select preference first parallel session
-                each val in speakerids.session1
-                  - var speaker = speakers.filter(function(doc){return doc.id === val})[0]
-                  +dropdown(speaker, user, 'session1', visitorCounts)
-
-            .mb-3.mx-5
-              select.form-control(name='session2')
-                option(value='', selected=!user.session2 ? 'selected': undefined, disabled) Select preference second parallel session
-                each val in speakerids.session2
-                  - var speaker = speakers.filter(function(doc){return doc.id === val})[0]
-                  +dropdown(speaker, user, 'session2', visitorCounts)
-
-            .mb-3.mx-5
-              select.form-control(name='session3')
-                option(value='', selected=!user.session3 ? 'selected': undefined, disabled) Select preference third parallel session
-                each val in speakerids.session3
-                  - var speaker = speakers.filter(function(doc){return doc.id === val})[0]
-                  +dropdown(speaker, user, 'session3', visitorCounts)
-
-          else
-            if (user.session1 !== undefined && user.session1 !== '') || (user.session2 !== undefined && user.session2 !== '') || (user.session3 !== undefined && user.session3 !== '')
-              p Enrollment for sessions is closed. You signed up for the following sessions:
-              ul#enrollment-sessions
-                +fixedEnrollment("Session 1", speakerids.session1, user.session1)
-                +fixedEnrollment("Session 2", speakerids.session2, user.session2)
-                +fixedEnrollment("Session 3", speakerids.session3, user.session3)
-            else
-              p Enrollment for sessions is closed.
-        else
-          p You can enroll for sessions on a later date.
 
     if user.type === 'student'
       .mb-4
@@ -99,27 +55,6 @@ block page-content
           | There are 6 participating companies in total:
           ul#speeddate-companies
             li to fill in
-
-        if spTimeSlot
-          p You are signed up for speed dating in timeslot: #[b=spTimeSlot.name]
-        else if allSpTimeSlots.length > 0
-          if freeSpTimeSlots.length > 0
-            p
-              | You can sign up for speed dating by choosing a timeslot below and
-              | pressing the 'Save settings' button.
-            br
-            label(for='speedDateTimeSlot') Select speed date timeslot:
-            .select-wrapper
-              select.form-control(id='speedDateTimeSlot', name='speedDateTimeSlot')
-                option(value='', selected) Select...
-                for ts in freeSpTimeSlots
-                  option(value=ts.id)=ts.name
-          else
-            p
-              b Unfortunately, there are no more free speed date timeslots.
-        else
-          p You can select the timeslots for speed dating on a later date.
-
 
     if userHasBus
       .mb-4

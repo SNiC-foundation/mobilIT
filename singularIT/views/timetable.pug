@@ -1,4 +1,4 @@
-extends normal_page
+extends inclusion
 
 block page-content
     .text-center.timetable
@@ -46,7 +46,7 @@ block outside-flow
                             .modal-body
                                 .container-fluid
                                     if speakers.speakers[event.speakerId].image
-                                        img.float-end.w-25(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                        img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].bio
                                         p= par
                 .modal(id='s' + s_idx + '-' + e_idx + '-abstract-modal', tabindex='-1', aria-labelledby='opening-keynote', aria-hidden='true')
@@ -58,6 +58,6 @@ block outside-flow
                             .modal-body
                                 .container-fluid
                                     if speakers.speakers[event.speakerId].image
-                                        img.float-end.w-25(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                        img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].talk
                                         p= par

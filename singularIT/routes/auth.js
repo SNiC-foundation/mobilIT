@@ -16,7 +16,7 @@ mailchimp.setConfig({
 });
 
 let transporter;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   // We are using the google workspaces email relay and thus don't need any authentication
   transporter = nodemailer.createTransport({
     host: "smtp-relay.gmail.com",
@@ -50,7 +50,7 @@ router.get("/login", function (req, res) {
 
 router.post("/login", function (req, res) {
   return passport.authenticate("local", {
-    successRedirect: req.session.lastPage || "/profile",
+    successRedirect: req.session.lastPage || "/",
     failureRedirect: "/login",
     failureFlash: "Incorrect e-mail or password",
   })(req, res);
@@ -260,7 +260,7 @@ router.post("/forgot", function (req, res, next) {
             if (err) {
               console.error("error while sending email: ", err);
             }
-            if (process.env.NODE_ENV !== 'production') {
+            if (process.env.NODE_ENV !== "production") {
               console.log(info.envelope);
               console.log(info.messageId);
               info.message.pipe(process.stdout);
