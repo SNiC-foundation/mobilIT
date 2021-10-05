@@ -19,11 +19,11 @@
 
 @font-face {
   font-family: "Apercu Mono";
-  src: url("../font/Apercu Mono.otf");
+  src: url("/font/Apercu Mono.otf");
 }
 @font-face {
   font-family: "Apercu Light";
-  src: url("../font/Apercu Light.otf");
+  src: url("/font/Apercu Light.otf");
 }
 body {
   font-family: "Apercu Light", sans-serif;
@@ -172,7 +172,6 @@ header:not(.fullscreen) > .logo {
 }
 
 header {
-  z-index: 100;
   position: relative;
 }
 section {
@@ -182,7 +181,7 @@ section {
   z-index: 200;
 }
 .container {
-  z-index: 10;
+  z-index: 100;
 }
 .block {
   z-index: 1;
@@ -248,7 +247,7 @@ section {
 .nav-link:hover {
   color: var(--brown);
 }
-.offcanvas {
+#sidebar.offcanvas {
   width: 300px;
 }
 #profile.offcanvas {
@@ -317,37 +316,37 @@ section {
 }
 
 .glitch1 {
-  background-image: url("../img/glitch1.png");
+  background-image: url("/img/glitch1.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 .glitch2 {
-  background-image: url("../img/glitch2.png");
+  background-image: url("/img/glitch2.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 .glitch3 {
-  background-image: url("../img/glitch3.png");
+  background-image: url("/img/glitch3.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 .glitch4 {
-  background-image: url("../img/glitch4.png");
+  background-image: url("/img/glitch4.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 #location {
-  background-image: url("../img/location/orpheus-entree.jpg");
+  background-image: url("/img/location/orpheus-entree.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 #corona-speaker {
-  background-image: url("../img/location/spreker.jpg");
+  background-image: url("/img/location/spreker.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -358,13 +357,26 @@ section {
 }
 #partners .card {
   border: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
 }
 #partners .card:hover {
   background-color: rgba(var(--blue-rgb), 0.4);
 }
 
+section,
+.container,
+main,
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.container {
+  overflow: visible;
+}
+
 /* ALERTS */
-.alert {
-  border: 0;
+.toast {
   border-radius: 0;
 }

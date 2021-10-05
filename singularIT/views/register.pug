@@ -1,14 +1,14 @@
 extends inclusion
 
 block page-content
-  if new Date(ticketSaleStarts).getTime() < Date.now()
-    form.text-center(method='post', action='/register')
+  if ticketSalePossible
+    form.col-12.col-lg-8.mt-5.text-center(method='post', action='/register')
       legend(hidden) Registration
       h2 Register
       p
         | You can buy a ticket with an activation code at your study association. You can print out your ticket after you&apos;ve registered. Preferences for lectures, diets and other remarks can be changed after the registration has been completed.
       .row
-        .col-12.col-md-6
+        .col-12.col-lg-6
           .mb-3
             input#code.form-control(type='text', name='code', required, placeholder='Ticket code' value=body.code)
           .mb-3.input-group
@@ -20,7 +20,7 @@ block page-content
             input#password.form-control(type='password', name='password', required, placeholder='Password')
           .mb-3
             input#confirmPassword.form-control(type='password', name='confirm', required, placeholder='Confirm password')
-        .col-12.col-md-6
+        .col-12.col-lg-6
           .mb-3
             select#association.form-control(required, name='association')
               option(value='', selected, disabled) Select association...
@@ -55,12 +55,10 @@ block page-content
             label.form-check-label(for='privacyPolicy')
               | I agree with the
               a(href='/Privacy_Policy.pdf', target='_blank') Privacy Policy
-      button.btn.btn-primary.mt-3(type='submit') Register now
+      button.btn.btn-primary.btn-lg.mt-3(type='submit') Register now
   else
-    .alert.alert-info
-      .icon.fa.fa-info
-      - months = ['January', 'February', 'March', 'April', 'May','June','July','August', 'September','November','December'];
-      div= 'You can activate your ticket here from ' + new Date(ticketSaleStarts).getDate() + ' ' + months[new Date(ticketSaleStarts).getMonth()] + ' onwards!'
+    - months = ['January', 'February', 'March', 'April', 'May','June','July','August', 'September','November','December'];
+    div= 'You can activate your ticket here from ' + ticketSaleStart.getDate() + ' ' + months[ticketSaleStart.getMonth()] + ' onwards!'
 
 block footer
   if new Date(ticketSaleStarts).getTime() < Date.now()

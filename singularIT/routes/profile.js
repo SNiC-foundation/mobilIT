@@ -11,10 +11,11 @@ let router = express.Router();
 router.get("/profile", auth, async function (req, res) {
   const user = await User.findOne({ email: req.session.passport.user });
 
-  res.render("profile", {
-    userHasBus: config.associations[user.association].bus,
-    associations: config.associations,
-  });
+  // res.render("profile", {
+  //   userHasBus: config.associations[user.association].bus,
+  //   associations: config.associations,
+  // });
+  res.redirect("/");
 });
 
 /**

@@ -73,11 +73,11 @@ router.post("/register", function (req, res, next) {
   req.checkBody("code", "Activation code is not provided.").notEmpty();
   req.checkBody("firstname", "First name is not provided.").notEmpty();
   req.checkBody("surname", "Surname is not provided.").notEmpty();
-  req.checkBody("email", "Emailaddress is not provided.").notEmpty();
-  req.checkBody("email", "Emailaddress is not valid.").isEmail();
+  req.checkBody("email", "Email address is not provided.").notEmpty();
+  req.checkBody("email", "Email address is not valid.").isEmail();
   req
-    .checkBody("password", "Password needs to be atleast 6 characters long.")
-    .len(6);
+    .checkBody("password", "Password needs to be at least 8 characters long.")
+    .len(8);
   req
     .checkBody("password", "Passwords are not equal.")
     .equals(req.body.confirm);
@@ -136,7 +136,7 @@ router.post("/register", function (req, res, next) {
       req.flash("error", err.msg);
     });
     req.session.body = req.body;
-    return res.redirect("/register");
+    return res.redirect("/");
   }
 
   var user = new User({
@@ -203,10 +203,10 @@ router.post("/register", function (req, res, next) {
         req.flash("error", err.message || err.error || "Error");
         console.log(err.stack);
         req.session.body = req.body;
-        return res.redirect("/register");
+        return res.redirect("/");
       } else {
         req.flash("success", "You've succesfully registered");
-        return res.redirect("/profile");
+        return res.redirect("/");
       }
     }
   );

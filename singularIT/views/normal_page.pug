@@ -1,6 +1,6 @@
 extends layout
 block header
-    header#mobilit.d-flex.flex-column.align-items-center.justify-content-center.sticky-top
+    header#mobilit.d-flex.flex-column.align-items-center.justify-content-center.sticky-top.glitch4
         figure.logo.col-12.col-sm-9.col-md-6.col-lg-4.px-5.my-3
             svg#MOBILITLOGO(version='1.1', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', x='0px', y='0px', viewBox='0 0 895.8 205.9', style='enable-background:new 0 0 895.8 205.9;', xml:space='preserve')
                 style(type='text/css').
@@ -76,43 +76,21 @@ block header
                     rect.st0(x='768.2', y='130.9', width='127.6', height='24.8')
                     rect.st0(y='103.1', width='24.8', height='24.8')
                 g#BARS
-                    g#Bar-1.rellax-horizontal(data-rellax-horizontal-speed='1', data-rellax-vertical-scroll-axis='x')
+                    g#Bar-1.rellax(data-rellax-horizontal-speed='1', data-rellax-vertical-scroll-axis='x')
                         rect.st1(x='226.4', y='82.9', width='128.6', height='9.4')
-                    g#Bar-2.rellax-horizontal(data-rellax-horizontal-speed='-0.5', data-rellax-vertical-scroll-axis='x')
+                    g#Bar-2.rellax(data-rellax-horizontal-speed='-0.5', data-rellax-vertical-scroll-axis='x')
                         rect.st1(x='322.4', y='7.7', width='128.6', height='9.4')
-                    g#Bar-3.rellax-horizontal(data-rellax-horizontal-speed='-0.5', data-rellax-vertical-scroll-axis='x')
+                    g#Bar-3.rellax(data-rellax-horizontal-speed='-0.5', data-rellax-vertical-scroll-axis='x')
                         rect.st1(x='459.2', y='110.8', width='128.6', height='9.4')
-                    g#Bar-4.rellax-horizontal(data-rellax-horizontal-speed='-1', data-rellax-vertical-scroll-axis='x')
+                    g#Bar-4.rellax(data-rellax-horizontal-speed='-1', data-rellax-vertical-scroll-axis='x')
                         rect.st1(x='631.6', y='173.5', width='128.6', height='9.4')
-                    g#Bar-5.rellax-horizontal(data-rellax-horizontal-speed='2', data-rellax-vertical-scroll-axis='x')
+                    g#Bar-5.rellax(data-rellax-horizontal-speed='2', data-rellax-vertical-scroll-axis='x')
                         rect.st0(x='687.3', y='82.9', width='128.6', height='9.4')
-                    g#Bar-6.rellax-horizontal(data-rellax-horizontal-speed='1.5', data-rellax-vertical-scroll-axis='x')
+                    g#Bar-6.rellax(data-rellax-horizontal-speed='1.5', data-rellax-vertical-scroll-axis='x')
                         rect.st1(x='36.2', y='138.6', width='128.6', height='9.4')
 
 block content
     section.white.d-flex.align-items-center.justify-content-center
-        .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed=' 3', data-rellax-percentage='0.5', style='height: 60vh; width: 2vw; margin-left: -45%; margin-top: -15vh;')
-        .blue.block.position-absolute.rellax(data-rellax-speed='-2', data-rellax-percentage='0.5', style='height:  8vw; width: 5vw; margin-left: -25%; margin-top: -25vh;')
-        .brown.block.position-absolute.rellax(data-rellax-speed='4', data-rellax-percentage='0.5', style='height: 40vh; width: 2vw; margin-left:  10%; margin-top: -35vh;')
-        .blue.block.position-absolute.rellax(data-rellax-speed='6', data-rellax-percentage='0.5', style='height: 15vh; width: 5vw; margin-left:  25%; margin-top:   5vh;')
-        .brown.block.position-absolute.rellax.d-none.d-sm-block(data-rellax-speed='-1', data-rellax-percentage='0.5', style='height:  5vw; width: 5vw; margin-left:  42%; margin-top: -12vh;')
         .container.backdrop.my-4.px-5
-            if messages.error
-                each msg in messages.error
-                    .alert.alert-danger
-                        +showMessage(msg)
-            if messages.info
-                each msg in messages.info
-                    .alert.alert-info
-                        +showMessage(msg)
-            if messages.success
-                each msg in messages.success
-                    .alert.alert-success
-                        +showMessage(msg)
-            if messages.warning
-                each msg in messages.warning
-                    .alert.alert-warning
-                        +showMessage(msg)
-
             article
                 block page-content
