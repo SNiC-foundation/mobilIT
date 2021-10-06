@@ -3,6 +3,7 @@ const nodemon = require("gulp-nodemon");
 const livereload = require("gulp-livereload");
 const sass = require("gulp-sass")(require("sass"));
 const rename = require("gulp-rename");
+const imagemin = require("gulp-imagemin");
 
 gulp.task("sass", function () {
   return gulp
@@ -17,6 +18,18 @@ gulp.task("js", function () {
     .src("./assets/js/*.js")
     .pipe(rename("app.js"))
     .pipe(gulp.dest("./public/js"));
+});
+
+gulp.task("img", function () {
+  return gulp
+    .src("./assets/img/*")
+    .pipe(
+      imagemin([
+        imagemin.optipng({ optimizationLevel: 6 }),
+        imagemin.mozjpeg({ quality: 70 }),
+      ])
+    )
+    .pipe(gulp.dest("./public/img"));
 });
 
 gulp.task("serve", () => {
