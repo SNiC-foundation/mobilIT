@@ -129,12 +129,13 @@ block header
               i.fas.fa-arrow-right.me-2
               | Your ticket
         else
-          button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='modal', data-bs-target='#registration-modal')
-            i.fas.fa-arrow-right.me-2
-            | Activate your ticket
-          a.btn.btn-primary.btn-lg.m-1(href='/login')
-            i.fas.fa-arrow-right.me-2
-            | Login
+          if ticketSalePossible
+            button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='modal', data-bs-target='#registration-modal')
+              i.fas.fa-arrow-right.me-2
+              | Activate your ticket
+            a.btn.btn-primary.btn-lg.m-1(href='/login')
+              i.fas.fa-arrow-right.me-2
+              | Login
 
   .banner
     each content, name in partners.partners
@@ -189,7 +190,7 @@ block content
     .white.bar.position-absolute.rellax.d-md-none(data-rellax-horizontal-speed='-1', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 1%; width: 40%; left: 30%; bottom: 4.5%')
     .container
       .row.d-flex.align-items-center.justify-content-center
-        .col-12.col-md-6.rellax-vertical(data-rellax-speed='0.5', data-rellax-percentage='0.5')
+        .col-12.col-md-6
           #theme-carousel.carousel.slide.my-5.mx-md-3(data-bs-ride='carousel')
             .carousel-inner.ratio.ratio-4x3
               .carousel-item.active
@@ -204,7 +205,7 @@ block content
             button.carousel-control-next(type='button', data-bs-target='#theme-carousel', data-bs-slide='next')
               span.carousel-control-next-icon(aria-hidden='true')
               span.visually-hidden Next
-        article.col-12.col-md-6.rellax-vertical(data-rellax-speed='-0.5', data-rellax-percentage='0.5')
+        article.col-12.col-md-6
           h2 Theme
           p
             | The focus of this edition of SNiC will be on the IT of mobility. For the past years there have been major leaps
@@ -251,7 +252,7 @@ block content
     .blue.bar.position-absolute.rellax.d-md-none(data-rellax-horizontal-speed='-1', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 1%; width: 50%; left: 0; bottom: 32%')
     .container
       .row.d-flex.align-items-center.justify-content-center
-        article.col-12.col-md-6.rellax-vertical(data-rellax-speed='0.5', data-rellax-percentage='0.5')
+        article.col-12.col-md-6
           .block.blue.p-5
             h2 Speakers
             p
@@ -262,7 +263,7 @@ block content
               | .
               We would very much like to hear about more amazing areas in MobilIT.
             button#timetable-button.btn.btn-primary(type='button', data-bs-toggle='modal', data-bs-target='#timetable-modal') Check out the timetable
-        .col-12.col-md-6.rellax-vertical(data-rellax-speed='-0.5', data-rellax-percentage='0.5')
+        .col-12.col-md-6
           #speakers-carousel.carousel.slide.my-md-5.mx-md-3(data-bs-ride='carousel')
             .carousel-inner.ratio.ratio-4x3
               .carousel-item
@@ -304,7 +305,7 @@ block content
     .brown.bar.position-absolute.rellax.d-md-none(data-rellax-horizontal-speed='1', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 2%; width: 50%; right: -100%; top: 35%')
     .block.col-12.col-md-6.h-100.start-0.position-absolute
     .container
-      .row.d-flex.align-items-center.justify-content-center.rellax-vertical(data-rellax-speed='1', data-rellax-percentage='0.5')
+      .row.d-flex.align-items-center.justify-content-center
         article.col-12.col-md-6.pe-md-5
           h2 Location
           p
@@ -339,7 +340,7 @@ block content
     #corona-speaker.block.col-12.col-md-6.h-100.start-0.position-absolute(style='z-index: -1')
     .h-100.position-absolute.block-white.end-0.col-12.col-md-6(style='z-index: 2')
     .container
-      .row.d-flex.align-items-center.justify-content-center.rellax-vertical(data-rellax-speed='-1', data-rellax-percentage='0.5')
+      .row.d-flex.align-items-center.justify-content-center
         .col-12.col-md-6
         article.col-12.col-md-6.ps-md-5.p-md-0
           h2 Corona
@@ -357,7 +358,7 @@ block content
   section#quote.py-5.snap.glitch3.brown.d-flex.align-items-center.position-relative(style='min-height: 20vh')
     .container
       .text-center
-        figure.m-0.rellax-vertical(data-rellax-speed='-0.5', data-rellax-percentage='0.5')
+        figure.m-0
           blockquote.blockquote
             p A well-known quote, contained in a blockquote element.
           figcaption.blockquote-footer

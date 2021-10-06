@@ -47,9 +47,9 @@ block page-content
           .mb-3
             input#specialNeeds.form-control(type='text', name='specialNeeds', placeholder='Other remarks (e.g. veganism, allergies)')
           .mb-3.form-check
-            input#subscribe.form-check-input(type='checkbox', name='subscribe', checked)
-            label.form-check-label(for='subscribe')
-              | Subscribe for the mailinglist. We will mail you when you can enroll for sessions and last minute practical information. (You can deregister at any moment)
+            input#subscribe.form-check-input(type='checkbox', name='share')
+            label.form-check-label(for='share')
+              | Share your information with companies when the congress has finished
           .mb-3.form-check
             input#privacyPolicy.form-check-input(type='checkbox', name='privacyPolicyAgree', required, checked=body.privacyPolicyAgree? "checked" : undefined)
             label.form-check-label(for='privacyPolicy')

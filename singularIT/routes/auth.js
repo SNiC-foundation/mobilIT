@@ -92,7 +92,7 @@ router.post("/register", function (req, res, next) {
   }
 
   req.body.vegetarian = req.body.vegetarian || false;
-  req.body.subscribe = req.body.subscribe || false;
+  req.body.share = req.body.share || false;
   req.body.privacyPolicyAgree = req.body.privacyPolicyAgree || false;
 
   if (association === "Partner") {
@@ -113,7 +113,7 @@ router.post("/register", function (req, res, next) {
 
   req.sanitize("bus").toBoolean();
   req.sanitize("vegetarian").toBoolean();
-  req.sanitize("subscribe").toBoolean();
+  req.sanitize("share").toBoolean();
   req.sanitize("privacyPolicyAgree").toBoolean();
 
   var errors = req.validationErrors();
@@ -149,26 +149,25 @@ router.post("/register", function (req, res, next) {
     specialNeeds: req.body.specialNeeds,
     studyProgramme: req.body.programme,
     companyName: req.body.companyName,
+    share: req.body.share,
   });
 
   async.waterfall(
     [
       function (next) {
-        if (req.body.subscribe) {
-          mailchimp.lists
-            .setListMember(config.mailchimp.id, md5(req.body.email), {
-              email_address: req.body.email,
-              status: "subscribed",
-            })
-            .then(function (res) {
-              next(null);
-            })
-            .catch(function (err) {
-              console.error("an error with mailchimp has occurred");
-              console.error(err.response.res);
-              next(new Error(err.response.res.text.detail));
-            });
-        }
+        mailchimp.lists
+          .setListMember(config.mailchimp.id, md5(req.body.email), {
+            email_address: req.body.email,
+            status: "subscribed",
+          })
+          .then(function (res) {
+            next(null);
+          })
+          .catch(function (err) {
+            console.error("an error with mailchimp has occurred");
+            console.error(err.response.res);
+            next(new Error(err.response.res.text.detail));
+          });
       },
       function (next) {
         Ticket.findById(req.body.code).populate("ownedBy").exec(next);
