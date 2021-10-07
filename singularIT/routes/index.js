@@ -59,17 +59,18 @@ router.get("/", async function (req, res) {
 });
 
 router.get("/timetable", function (req, res) {
-  var enrollment_start_time = new Date(config.enrollStartTime);
-  var enrollment_end_time = new Date(config.enrollEndTime);
-  var today = new Date();
-  var enrollment_possible =
-    enrollment_start_time < today && today < enrollment_end_time;
-
-  res.render("timetable", {
-    timetable: timetable,
-    speakers: speaker_info,
-    enrollment_possible: enrollment_possible,
-  });
+  // var enrollment_start_time = new Date(config.enrollStartTime);
+  // var enrollment_end_time = new Date(config.enrollEndTime);
+  // var today = new Date();
+  // var enrollment_possible =
+  //   enrollment_start_time < today && today < enrollment_end_time;
+  //
+  // res.render("timetable", {
+  //   timetable: timetable,
+  //   speakers: speaker_info,
+  //   enrollment_possible: enrollment_possible,
+  // });
+  res.redirect("/");
 });
 
 router.get("/reload/timetable", adminAuth, function (req, res) {
@@ -79,7 +80,7 @@ router.get("/reload/timetable", adminAuth, function (req, res) {
   speaker_info = require("../speakers.json");
   timetable = require("../timetable.json");
 
-  res.redirect("/");
+  res.redirect("/#timetable-modal");
 });
 
 module.exports = router;

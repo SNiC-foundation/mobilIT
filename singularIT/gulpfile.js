@@ -22,7 +22,7 @@ gulp.task("js", function () {
 
 gulp.task("img", function () {
   return gulp
-    .src("./assets/img/*")
+    .src("./assets/img/**")
     .pipe(
       imagemin([
         imagemin.optipng({ optimizationLevel: 6 }),

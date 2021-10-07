@@ -166,9 +166,10 @@ block sidebar
           a.nav-link.mt-3(href='/reload/timetable') Reload timetable
         a.nav-link.mt-5(href='/logout') Logout
       else
-        a.nav-link(data-bs-toggle="modal" data-bs-target="#timetable-modal" style="cursor: pointer") Timetable
+        a.nav-link.mt-3(data-bs-toggle="modal" data-bs-target="#timetable-modal" style="cursor: pointer") Timetable
+        if ticketSalePossible
+          a.nav-link(data-bs-toggle="modal" data-bs-target="#registration-modal" style="cursor: pointer") Activate tickets
         a.nav-link.mt-5(href='/login') Login
-        a.nav-link(data-bs-toggle="modal" data-bs-target="#registration-modal" style="cursor: pointer") Activate tickets
 
 block content
   section#theme.snap.py-5.blue.d-flex.align-items-center.position-relative.fullscreen
@@ -256,12 +257,17 @@ block content
           .block.blue.p-5
             h2 Speakers
             p
-              | As always we are working on an amazing line-up of speakers to present at our conference. We are, however, still
-              | actively looking for more people that would like to give a talk. Thus if you would be interested in presenting
-              | an interesting subject that fits in our theme, do not hesitate to send us an email at
-              a(href='mailto:speakers@2020.snic.nl') speakers@2020.snic.nl
-              | .
-              We would very much like to hear about more amazing areas in MobilIT.
+              | Our current society is a highly mobile one. MobilIT takes a look at how IT makes this society possible.
+              | Our speakers range from scientists to entrepreneurs that will all give a talk about how they facilitate
+              | or make use of this highly connected society.
+            p
+              | Aside from two keynote speakers there are three tracks that all focus on their own area of mobility.
+              | Organising mobility will focus on the logistics of a highly mobile society, Regaining mobility focuses
+              | on how IT can help people to stay mobile and finally Vehicular mobility is about the role of vehicles
+              | in our society.
+            p
+              | From these three tracks you can choose your own personal schedule to make this day your own from the
+              | 1st of November.
             button#timetable-button.btn.btn-primary(type='button', data-bs-toggle='modal', data-bs-target='#timetable-modal') Check out the timetable
         .col-12.col-md-6
           #speakers-carousel.carousel.slide.my-md-5.mx-md-3(data-bs-ride='carousel')
@@ -349,20 +355,20 @@ block content
           p
             strong This year we are more optimistic!
           p
-            | We believe that with the vaccines being deployed faster and faster a normal conference in
-            | november 2021 will be entirely feasible. In the small chance that we cannot host 700 people, we will try to
-            | bring as many people as possible to our venue. We will then organize an online alternative for the people
-            | that are not able to join in Apeldoorn. This way we ensure that as many people can have a good conference,
-            | and sponsors will still be able to reach the students.
+            | According to the current dutch regulations a normal conference is entirely possible! This means no 1,5m
+            | distance or face masks. The only measure we do need to employ is the corona QR codes. Everyone coming to
+            | MobilIT should have a valid QR code in the ‘CoronaCheck’ app. This means being vaccinated, having a
+            | recovery certificate or joining with ‘Testen voor Toegang’. Please make sure that you have a QR code and
+            | we can have an amazing Covid free conference!
   section#quote.py-5.snap.glitch3.brown.d-flex.align-items-center.position-relative(style='min-height: 20vh')
     .container
       .text-center
         figure.m-0
           blockquote.blockquote
-            p A well-known quote, contained in a blockquote element.
+            p I think it’s possible for ordinary people to choose to be extraordinary
           figcaption.blockquote-footer
-            | Someone famous in
-            cite(title='Source Title') Source Title
+            | Elon Musk
+            cite(title='in an Interview with the Henry Ford') in an Interview with the Henry Ford
   section#partners.fullscreen.py-5.snap.white.d-flex.align-items-center.position-relative
     .container.block-white
       article.text-center
@@ -464,10 +470,10 @@ block content
         .col-4.text-end.lead
           a.text-reset(href='https://www.instagram.com/snic_mobilit/', target='_blank')
             i.fab.fa-instagram
-          |  &bull;
+          |  &bull; 
           a.text-reset(href='https://www.facebook.com/events/3550045645007435', target='_blank')
             i.fab.fa-facebook
-          |  &bull;
+          |  &bull; 
           a.text-reset(href='https://github.com/snic_foundation/', target='_blank')
             i.fab.fa-github
 

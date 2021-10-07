@@ -62,11 +62,12 @@ router.get("/logout", function (req, res) {
 });
 
 router.get("/register", function (req, res) {
-  res.render("register", {
-    associations: config.associations,
-    studyProgrammes: config.studyProgrammes,
-    ticketSaleStarts: config.ticketSaleStarts,
-  });
+  // res.render("register", {
+  //   associations: config.associations,
+  //   studyProgrammes: config.studyProgrammes,
+  //   ticketSaleStarts: config.ticketSaleStarts,
+  // });
+  res.redirect("/");
 });
 
 router.post("/register", function (req, res, next) {
