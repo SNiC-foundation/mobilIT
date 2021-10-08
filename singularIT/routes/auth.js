@@ -93,7 +93,7 @@ router.post("/register", function (req, res, next) {
   }
 
   req.body.vegetarian = req.body.vegetarian || false;
-  req.body.share = req.body.share || false;
+  req.body.shareInfo = req.body.shareInfo || false;
   req.body.privacyPolicyAgree = req.body.privacyPolicyAgree || false;
 
   if (association === "Partner") {
@@ -114,7 +114,7 @@ router.post("/register", function (req, res, next) {
 
   req.sanitize("bus").toBoolean();
   req.sanitize("vegetarian").toBoolean();
-  req.sanitize("share").toBoolean();
+  req.sanitize("shareInfo").toBoolean();
   req.sanitize("privacyPolicyAgree").toBoolean();
 
   var errors = req.validationErrors();
@@ -150,7 +150,7 @@ router.post("/register", function (req, res, next) {
     specialNeeds: req.body.specialNeeds,
     studyProgramme: req.body.programme,
     companyName: req.body.companyName,
-    share: req.body.share,
+    shareInfo: req.body.shareInfo,
   });
 
   async.waterfall(
@@ -203,10 +203,10 @@ router.post("/register", function (req, res, next) {
         req.flash("error", err.message || err.error || "Error");
         console.log(err.stack);
         req.session.body = req.body;
-        return res.redirect("/");
+        return res.redirect("/#profile");
       } else {
         req.flash("success", "You've succesfully registered");
-        return res.redirect("/");
+        return res.redirect("/#profile");
       }
     }
   );

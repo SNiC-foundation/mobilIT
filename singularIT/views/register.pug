@@ -26,11 +26,13 @@ block page-content
               option(value='', selected, disabled) Select association...
               each association, shortName in associations
                 option(value=shortName, selected = body.association === shortName ? 'selected': undefined)=association.name
+          .mb-3#company-name-group(style='display:none')
+            input#company-name.form-control(type='text', name='companyName', placeholder='Company name', value=body.companyName)
           .mb-3.form-check#bus-form-group(style='display:none')
             input#bus.form-check-input(type='checkbox', name='bus', checked=body.bus?'checked': undefined)
             label.form-check-label(for='bus')
               | I would like to use the arranged bus at my study association
-          .mb-3
+          .mb-3#programme-group
             select#programme.form-control(required, name='programme')
               option(value='', selected, disabled) Select study programme...
               each programme in studyProgrammes
@@ -38,8 +40,6 @@ block page-content
               option(value="other" id="study-programme-other", selected = body.programmeOther ? 'selected': undefined) Other
           .mb-3#programme-other-group(style='display:none')
             input#programme-other.form-control(type='text', name='programmeOther', placeholder='Other study programme', value=body.programmeOther)
-          .mb-3#company-name-group(style='display:none')
-            input#company-name.form-control(type='text', name='companyName', placeholder='Company name', value=body.companyName)
           .mb-3.form-check
             input#vegetarian.form-check-input(type='checkbox', name='vegetarian', checked=body.vegetarian? "checked": undefined)
             label.form-check-label(for='vegetarian')
@@ -47,13 +47,13 @@ block page-content
           .mb-3
             input#specialNeeds.form-control(type='text', name='specialNeeds', placeholder='Other remarks (e.g. veganism, allergies)')
           .mb-3.form-check
-            input#subscribe.form-check-input(type='checkbox', name='share')
+            input#subscribe.form-check-input(type='checkbox', name='shareInfo', checked=body.shareInfo? "checked": undefined)
             label.form-check-label(for='share')
               | Share your information with companies when the congress has finished
           .mb-3.form-check
             input#privacyPolicy.form-check-input(type='checkbox', name='privacyPolicyAgree', required, checked=body.privacyPolicyAgree? "checked" : undefined)
             label.form-check-label(for='privacyPolicy')
-              | I agree with the
+              | I agree with the 
               a(href='/Privacy_Policy.pdf', target='_blank') Privacy Policy
       button.btn.btn-primary.btn-lg.mt-3(type='submit') Register now
   else
@@ -61,7 +61,7 @@ block page-content
     div= 'You can activate your ticket here from ' + ticketSaleStart.getDate() + ' ' + months[ticketSaleStart.getMonth()] + ' onwards!'
 
 block footer
-  if new Date(ticketSaleStarts).getTime() < Date.now()
+  if ticketSalePossible
     script(type="text/javascript").
       var associations = !{JSON.stringify(associations)};
       var bus = $("#bus-form-group");
@@ -104,4 +104,3 @@ block footer
 
         updateVisibility();
       });
-

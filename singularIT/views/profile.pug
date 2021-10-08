@@ -47,14 +47,14 @@ block page-content
           input#allowBadgeScanning.form-check-input(type='checkbox', name='allowBadgeScanning', checked=user.allowBadgeScanning? "checked": undefined)
           label.form-check-label(for='allowBadgeScanning')
             | Allow my badge to be scanned by companies
-
         p
-          | To allow students to get to know companies better, we offer several
-          | speed dating sessions with the participating companies. When you sign up for speed dating,
-          | you will get private conversation of around 5 minutes with each participating company.
-          | There are 6 participating companies in total:
-          ul#speeddate-companies
-            li to fill in
+          | We also allow companies to send you informtion regardless of they scanned you badge if you give them 
+          | permission. 
+      
+      .mb-4.mx-5.form-check
+        input#shareInfo.form-check-input(type='checkbox', name='shareInfo', checked=user.shareInfo ? "checked" : undefined)
+        label.form-check-label(for='shareInfo')
+          | Allow my email to be shared with companies after the congress.
 
     if userHasBus
       .mb-4
@@ -80,5 +80,3 @@ block page-content
         input#specialNeeds.form-control(type='text', name='specialNeeds', placeholder='Other remarks (e.g. veganism, allergies)', value=user.specialNeeds)
 
     button.btn.btn-primary.mt-3(type='submit') Save settings
-
-

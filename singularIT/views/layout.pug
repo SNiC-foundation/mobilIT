@@ -112,7 +112,7 @@ html(lang=locale)
         span
         span
 
-      .toast-container.position-fixed.bottom-0.end-0.p-3(style="z-index: 1000;")
+      .toast-container.position-fixed.bottom-0.end-0.p-3(style="z-index: 2000;")
         if messages.error
           each msg in messages.error
             .toast.align-items-center.text-white.bg-danger.border-0.show(role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")
@@ -122,21 +122,21 @@ html(lang=locale)
                 button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
         if messages.info
           each msg in messages.info
-            .toast.align-items-center.text-white.bg-info.border-0(role="info" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")
+            .toast.align-items-center.text-white.bg-info.border-0.show(role="info" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")
               .d-flex.align-items-center.justify-content-between
                 .toast-body
                   +showMessage(msg)
                 button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
         if messages.success
           each msg in messages.success
-            .toast.align-items-center.text-white.bg-success.border-0(role="success" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")
+            .toast.align-items-center.text-white.bg-success.border-0.show(role="success" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")
               .d-flex.align-items-center.justify-content-between
                 .toast-body
                   +showMessage(msg)
                 button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
         if messages.warning
           each msg in messages.warning
-            .toast.align-items-center.text-white.bg-warning.border-0(role="warning" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")
+            .toast.align-items-center.text-white.bg-warning.border-0.show(role="warning" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")
               .d-flex.align-items-center.justify-content-between
                 .toast-body
                   +showMessage(msg)

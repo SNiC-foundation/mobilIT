@@ -14,6 +14,27 @@
       "website": "https://quintor.nl/",
       "description": "Wij maken software die cruciaal is voor het succes van onze klanten. Zij vertrouwen ons hun meest complexe IT-systemen toe, in de zekerheid dat wij de verantwoordelijkheid nemen."
     },
+    "ns": {
+      "image": "/img/partners/ns.svg",
+      "text": ["..."],
+      "title": "NS",
+      "website": "",
+      "description": ""
+    },
+    "picnic": {
+      "image": "/img/partners/picnic.svg",
+      "text": ["..."],
+      "title": "Picnic",
+      "website": "",
+      "description": ""
+    },
+    "tomtom": {
+      "image": "/img/partners/tomtom.svg",
+      "text": ["..."],
+      "title": "TomTom",
+      "website": "",
+      "description": ""
+    },
     "anwb": {
       "image": "/img/partners/anwb.svg",
       "text": ["..."],
@@ -21,25 +42,28 @@
       "website": "https://anwb.nl/",
       "description": "vroem vroem"
     },
-    "ortec": {
-      "website": "https://ortec.com/",
-      "text": ["...", "..."],
-      "image": "/images/partners/logo_ORTEC_oyw.png"
-    },
     "dsw": {
       "website": "https://dsw.nl/",
       "text": ["...", "..."],
-      "image": "/images/partners/logo_DSW.png"
+      "image": "/img/partners/dsw-ict.svg"
     },
-    "dnb": {
-      "website": "https://dnb.nl/",
+    "yer": {
+      "website": "",
       "text": ["...", "..."],
-      "image": "/images/partners/logo_DNB.jpg"
+      "image": "/img/partners/yer.jpg"
+    },
+    "chipsoft": {
+      "website": "",
+      "text": ["...", "..."],
+      "image": "/img/partners/chipsoft.svg"
     },
     "asml": {
       "website": "https://asml.com/en",
       "text": ["...", "..."],
-      "image": "/images/partners/logo_ASML.jpg"
+      "image": "/img/partners/asml.svg"
+    },
+    "cofano": {
+      "image": "/img/partners/cofano.svg"
     },
     "ru": {
       "image": "/img/partners/ru-icis.svg"
@@ -55,11 +79,13 @@
     },
     "ut": {
       "image": "/img/partners/utwente.svg"
+    },
+    "ul": {
+      "image": "/img/partners/ul-liacs.svg"
     }
   },
   "goldp": ["anwb"],
-  "gold": ["quintor", "nedap"],
-  "silver": ["ortec", "dsw", "dnb"],
-  "bronze": ["asml"],
-  "university": ["radboud", "rug", "tue", "uva", "ut"]
+  "gold": ["ns", "quintor", "nedap"],
+  "silver": ["chipsoft", "dsw", "picnic", "yer"],
+  "bronze": ["asml"]
 }
