@@ -2,64 +2,76 @@
   "partners": {
     "nedap": {
       "image": "/img/partners/nedap.png",
-      "text": ["...", "..."],
+      "text": [
+        "Even though Nedap is a technology company at heart, our strength is that we always put people first. ",
+        "'First people, then technology' is what we call it",
+        "We do so by observing people – and what they need to perform better – before we start developing technology."
+      ],
       "title": "Nedap",
       "website": "https://nedap.com/",
-      "description": "Nedap is all about ‘Technology for life’: developing products, propositions and solutions that make work more pleasant for people and increase their productivity. We focus on how people interact with technology, not on technology itself. At Nedap we believe in the versatility of people and organisations. We trust in the power of ideas and initiatives."
+      "description": "Nedap is all about 'Technology for life': developing products, propositions and solutions that make work more pleasant for people and increase their productivity. We focus on how people interact with technology, not on technology itself. At Nedap we believe in the versatility of people and organisations. We trust in the power of ideas and initiatives."
     },
     "quintor": {
       "image": "/img/partners/quintor.jpg",
-      "text": ["..."],
+      "text": ["Our guiding principle is: 'Cloud First'. Our experienced cloud developers, devops engineers and cloud architects support our customers with cloud migrations, cloud infrastructure, IT modernization and cloud native development."],
       "title": "Quintor",
       "website": "https://quintor.nl/",
-      "description": "Wij maken software die cruciaal is voor het succes van onze klanten. Zij vertrouwen ons hun meest complexe IT-systemen toe, in de zekerheid dat wij de verantwoordelijkheid nemen."
+      "description": "We're everything you need to get in the cloud -and beyond-"
     },
     "ns": {
       "image": "/img/partners/ns.svg",
-      "text": ["..."],
+      "text": [
+        "From train company to mobility company, that is the transition that NS is undergoing. We expect the mobility market as a whole to grow and become more dynamic, with travelers expecting tailor-made solutions for their journey. This requires innovation."
+      ],
       "title": "NS",
-      "website": "",
-      "description": ""
+      "website": "https://werkenbijns.nl/werkgebieden/it/",
+      "description": "Whether you are developing an application, or you focus on the functional management of our workstations; you do it all for our travelers."
     },
     "picnic": {
       "image": "/img/partners/picnic.svg",
-      "text": ["..."],
+      "text": [
+        "People are at the heart of every connection we build. We design products and deliver services that bring the world closer together—one delivery at a time"
+      ],
       "title": "Picnic",
-      "website": "",
-      "description": ""
-    },
-    "tomtom": {
-      "image": "/img/partners/tomtom.svg",
-      "text": ["..."],
-      "title": "TomTom",
-      "website": "",
-      "description": ""
+      "website": "https://picnic.app/careers/?_ga=2.74397458.1096993885.1633806654-609777040.1633806654",
+      "description": "From distribution model to warehouse system: we improve something new every day. For our customers and for ourselves."
     },
     "anwb": {
       "image": "/img/partners/anwb.svg",
-      "text": ["..."],
+      "text": [
+        "We are working on carefree and affordable mobility for everyone, aiming for zero road deaths, zero emissions and zero traffic jams. The best information, products and services should ensure that our members can go out and about without any worries and enjoy unforgettable experiences. We are leading the way, but have never worked out. We are constantly working on our themes of mobility, road safety, getting out and about and vacation."
+      ],
       "title": "ANWB",
-      "website": "https://anwb.nl/",
-      "description": "vroem vroem"
+      "website": "https://www.werkenbijanwb.nl/Pages/nl-NL/Algemeen/Over-anwb",
+      "description": "The best information, products and services ensure that our members can go out and about and enjoy future experiences without any worries."
     },
     "dsw": {
       "website": "https://dsw.nl/",
-      "text": ["...", "..."],
+      "text": [
+        "We prefer to be principled rather than commercial",
+        "Good care, free choice of doctors, it concerns everyone. Not just our own customers. That's why we sometimes say: everyone in the Netherlands has a little bit of DSW insurance."
+      ],
+      "description": "",
       "image": "/img/partners/dsw-ict.svg"
     },
     "yer": {
-      "website": "",
-      "text": ["...", "..."],
+      "website": "https://www.yer.nl/",
+      "text": [
+        "YER is the springboard that gives your engineering career the right impulse. "
+      ],
+      "description": "",
       "image": "/img/partners/yer.jpg"
     },
     "chipsoft": {
-      "website": "",
-      "text": ["...", "..."],
+      "website": "https://www.chipsoft.nl/",
+      "text": [
+        "ChipSoft's primary ambition is to continue to develop innovative software that supports and facilitates every healthcare provider to deliver the right care to the patient at the right time."
+      ],
+      "description": "",
       "image": "/img/partners/chipsoft.svg"
     },
     "asml": {
       "website": "https://asml.com/en",
-      "text": ["...", "..."],
       "image": "/img/partners/asml.svg"
     },
     "cofano": {

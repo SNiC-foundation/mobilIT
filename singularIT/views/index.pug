@@ -506,9 +506,9 @@ block outside-flow
   each content, name in partners.partners
     if content.text
       section.modal(id=name + '-partner-modal' tabindex='-1', aria-labelledby=name + '-partner-button', aria-hidden='true')
-        .modal-dialog.modal-dialog-scrollable.modal-xl
+        .modal-dialog.modal-dialog-scrollable
           .modal-content.modal-dialog-scrollable
-            .modal-body
+            .modal-body.p-5
               .container-fluid
                 button.btn-close.position-absolute.top-0.end-0.m-4(type='button', data-bs-dismiss='modal', aria-label='Close')
                 article
