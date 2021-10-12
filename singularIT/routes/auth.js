@@ -9,6 +9,7 @@ var md5 = require("md5");
 const mailchimp = require("@mailchimp/mailchimp_marketing");
 
 const config = require("../config.json");
+const partners = require("../partners.json");
 
 mailchimp.setConfig({
   apiKey: config.mailchimp.key,
@@ -32,6 +33,10 @@ if (process.env.NODE_ENV === "production") {
 const passwordForgotEmailTemplate = pug.compileFile(
   path.join("views", "password_reset_email.pug")
 );
+
+const welcomeEmailTemplate = pug.compileFile(
+    path.join("views", "welcome_email.pug")
+)
 
 var User = require("../models/User");
 var Ticket = require("../models/Ticket");
@@ -196,7 +201,33 @@ router.post("/register", function (req, res, next) {
       },
       function (user, next) {
         req.login(user, next);
+        // next(user);
       },
+      // function (user, next) {
+      //   const html = welcomeEmailTemplate({
+      //     user: user,
+      //     partners: partners,
+      //   });
+      //
+      //   transporter.sendMail(
+      //       {
+      //         from: "committee@2020.snic.nl",
+      //         to: user.email,
+      //         subject: "SNiC: MobilIT - Welcome",
+      //         html: html,
+      //       },
+      //       (err, info) => {
+      //         if (err) {
+      //           console.error("error while sending email: ", err);
+      //         }
+      //         if (process.env.NODE_ENV !== "production") {
+      //           console.log(info.envelope);
+      //           console.log(info.messageId);
+      //           info.message.pipe(process.stdout);
+      //         }
+      //       }
+      //   );
+      // },
     ],
     function (err) {
       if (err) {

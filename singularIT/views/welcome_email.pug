@@ -1,0 +1,17 @@
+html
+    p Welcome #{user.firstname},
+        p
+            | First of all, good to see you're coming to MobilIT at the 23th of November!
+        p
+            | We're proud to say that the programme is online! While some texts are still missing, they'll arrive soon.
+        p
+            | On Friday, the 1th of November, enrollment will be possible for the talks.
+        p With kind regards,
+        p
+            small
+                b The SNiC: MobilIT Committee
+                br
+                i Stichting Nationaal informatica Congres (#[b SNiC])
+    #partners(style="display: flex;")
+        each partner in partners.partners
+            img(src="https://mobilit.snic.nl" + partner.image)

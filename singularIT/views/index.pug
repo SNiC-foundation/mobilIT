@@ -506,11 +506,15 @@ block outside-flow
   each content, name in partners.partners
     if content.text
       section.modal(id=name + '-partner-modal' tabindex='-1', aria-labelledby=name + '-partner-button', aria-hidden='true')
-        .modal-dialog.modal-dialog-scrollable
-          .modal-content.modal-dialog-scrollable
+        .modal-dialog
+          .modal-content
             .modal-body.p-5
               .container-fluid
                 button.btn-close.position-absolute.top-0.end-0.m-4(type='button', data-bs-dismiss='modal', aria-label='Close')
+                if content.header_image
+                  img.img-fluid.mb-4(src=content.header_image alt="banner for company")
+                else
+                  img.img-fluid.mb-4(src=content.image alt="logo for company")
                 article
                   each par in content.text
                     p= par

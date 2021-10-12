@@ -3,13 +3,18 @@
     "nedap": {
       "image": "/img/partners/nedap.png",
       "text": [
-        "Even though Nedap is a technology company at heart, our strength is that we always put people first. ",
-        "'First people, then technology' is what we call it",
-        "We do so by observing people – and what they need to perform better – before we start developing technology."
+        "Nedap is all about 'Technology for life': developing products, propositions and solutions that make work more pleasant for people and increase their productivity. We focus on how people interact with technology, not on technology itself. At Nedap we believe in the versatility of people and organisations. We trust in the power of ideas and initiatives."
       ],
       "title": "Nedap",
       "website": "https://nedap.com/",
-      "description": "Nedap is all about 'Technology for life': developing products, propositions and solutions that make work more pleasant for people and increase their productivity. We focus on how people interact with technology, not on technology itself. At Nedap we believe in the versatility of people and organisations. We trust in the power of ideas and initiatives."
+      "description": "Even though Nedap is a technology company at heart, our strength is that we always put people first. 'First people, then technology' is what we call it. We do so by observing people – and what they need to perform better – before we start developing technology."
+    },
+    "rijksoverheid": {
+      "image": "/img/partners/rijksoverheid.png",
+      "text": ["As one of the largest employers in our country, the national government offers an enormous diversity of work. More than 90,000 people work for the national government. Young, old, starter, senior, diverse and inclusive. From mbo to university level. Within very different fields. They have one thing in common: they want to take the Netherlands seriously."],
+      "title": "Rijksoverheid",
+      "website": "https://www.werkenvoornederland.nl/",
+      "description": "Working for Rijksoverheid is working for the Netherlands."
     },
     "quintor": {
       "image": "/img/partners/quintor.jpg",
@@ -20,6 +25,7 @@
     },
     "ns": {
       "image": "/img/partners/ns.svg",
+      "header_image": "/img/partners/ns_header.png",
       "text": [
         "From train company to mobility company, that is the transition that NS is undergoing. We expect the mobility market as a whole to grow and become more dynamic, with travelers expecting tailor-made solutions for their journey. This requires innovation."
       ],
@@ -98,6 +104,6 @@
   },
   "goldp": ["anwb"],
   "gold": ["ns", "quintor", "nedap"],
-  "silver": ["chipsoft", "dsw", "picnic", "yer"],
+  "silver": ["chipsoft", "dsw", "picnic", "yer", "rijksoverheid"],
   "bronze": ["asml"]
 }
