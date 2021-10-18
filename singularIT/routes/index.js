@@ -19,6 +19,9 @@ router.get("/", async function (req, res) {
   const event_start = new Date(config.eventStarts);
   const eventToday = event_start < today;
 
+  const enrollment_start = new Date(config.talkEnrollmentStarts);
+  const enrollment_possible = enrollment_start < today;
+
   let talk_capacity = {};
   for (const speaker in speaker_info.speakers) {
     if (speaker_info.speakers[speaker].limit !== undefined) {
@@ -36,6 +39,7 @@ router.get("/", async function (req, res) {
       timetable: timetable,
       speakers: speaker_info,
       ticketSalePossible: ticket_sale_possible,
+      enrollmentPossible: enrollment_possible,
       ticketSaleStart: ticket_sale_start_time,
       userHasBus: config.associations[user.association].bus,
       associations: config.associations,
@@ -50,6 +54,7 @@ router.get("/", async function (req, res) {
       timetable: timetable,
       speakers: speaker_info,
       ticketSalePossible: ticket_sale_possible,
+      enrollmentPossible: enrollment_possible,
       ticketSaleStart: ticket_sale_start_time,
       userHasBus: undefined,
       associations: config.associations,

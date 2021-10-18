@@ -29,6 +29,7 @@ function createToast(content, type) {
 function unenrollClick(talkid) {
   $.post("/api/talk/unenroll/" + talkid, {}, function (result) {
     updateCapacity();
+    updateEnrolled();
     if (result.success) {
       $("#" + talkid + "-unenroll").hide();
       $("#" + talkid + "-enroll").show();
@@ -42,18 +43,19 @@ function unenrollClick(talkid) {
 function enrollClick(talkid) {
   $.post("/api/talk/enroll/" + talkid, {}, function (result) {
     updateCapacity();
+    updateEnrolled();
     if (result.success) {
       $("#" + talkid + "-unenroll").show();
       $("#" + talkid + "-enroll").hide();
       createToast("Successfully enrolled", "success");
     } else {
-      createToast("Talk is already full", "danger");
+      createToast(result.error, "danger");
     }
   });
 }
 
 function updateCapacity() {
-  $.post("/api/talk/count/", {}, function (result) {
+  $.get("/api/talk/count/", {}, function (result) {
     if (result.success) {
       for (const talk in result.content) {
         $("#" + talk + "-capacity").text(
@@ -65,6 +67,21 @@ function updateCapacity() {
       }
     } else {
       console.error("failed to get talk count", result);
+    }
+  });
+}
+
+function updateEnrolled() {
+  $.get("/api/talk/enrolled/", {}, function (result) {
+    if (result.success) {
+      $(".choosable").addClass("chosen");
+      for (const talk of result.content) {
+        let talk_card = $("#e-" + talk + "-card");
+        talk_card.parent().children().removeClass("chosen");
+        talk_card.addClass("chosen");
+      }
+    } else {
+      console.error("failed to get enrolled talks", result);
     }
   });
 }

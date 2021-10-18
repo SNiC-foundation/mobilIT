@@ -9,7 +9,11 @@ block page-content
                     if event.empty
                         .card.card-empty
                     else
-                        .card.chosen
+                        - var talks_session = session.events.filter(el => el.speakerId).map(el => el.speakerId)
+                        .card(
+                            id=event.speakerId?'e-'+event.speakerId+"-card":"" 
+                            class=(talks_session.some(el => talkEnrollments.includes(el)) && !talkEnrollments.includes(event.speakerId))?"":"chosen"
+                            class=talks_session.length > 0?"choosable":"")
                             .card-header
                                 small.text-muted= session.startTime + " - " + session.endTime
                             if event.picture
@@ -25,7 +29,7 @@ block page-content
                                     button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-bio-modal')
                                         i.fas.fa-user-alt.me-2
                                         | About
-                                    if user && event.speakerId && speakers.speakers[event.speakerId].limit !== undefined
+                                    if user && enrollmentPossible && event.speakerId && speakers.speakers[event.speakerId].limit !== undefined
                                         button.btn.btn-primary.m-1(style=talkEnrollments.includes(event.speakerId)?"":"display: none;" id=event.speakerId+"-unenroll" onclick="unenrollClick('" + event.speakerId + "')")
                                             i.fas.fa-angle-right.me-2
                                             | Unenroll
