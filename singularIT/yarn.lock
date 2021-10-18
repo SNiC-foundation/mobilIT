@@ -2194,8 +2194,8 @@
     "transfob" "^1.0.0"
     "vinyl-sourcemaps-apply" "^0.2.1"
 
-"gulp@^4.0.0", "gulp@>=4", "gulp@file:../../../../../../usr/lib/node_modules/gulp":
-  "resolved" "file:../../../../../../usr/lib/node_modules/gulp"
+"gulp@^4.0.0", "gulp@>=4", "gulp@file:../../local/lib/node_modules/gulp":
+  "resolved" "file:../../local/lib/node_modules/gulp"
   "version" "4.0.2"
   dependencies:
     "glob-watcher" "^5.0.3"

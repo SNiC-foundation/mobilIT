@@ -19,6 +19,7 @@ html(lang=locale)
     script(src='/js/jquery-3.6.0.min.js')
     script(src='/js/rellax.min.js')
     script(src='/js/slick.min.js')
+    block extrajs
     script.
       $(document).ready(function () {
         $('.banner').slick({
@@ -112,7 +113,7 @@ html(lang=locale)
         span
         span
 
-      .toast-container.position-fixed.bottom-0.end-0.p-3(style="z-index: 2000;")
+      #toastContainer.toast-container.position-fixed.top-0.start-50.translate-middle-x.p-3(style="z-index: 2000;")
         if messages.error
           each msg in messages.error
             .toast.align-items-center.text-white.bg-danger.border-0.show(role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false")

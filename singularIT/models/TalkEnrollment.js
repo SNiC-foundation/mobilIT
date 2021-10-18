@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 
 var TalkEnrollment = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  talk: { type: Number, required: true },
+  talk: { type: String, required: true },
 });
 
 TalkEnrollment.index({ user: 1, talk: 1 }, { unique: true });

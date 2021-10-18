@@ -1,4 +1,7 @@
 extends layout
+append extrajs
+  script(src='/js/timetable.js')
+
 block header
   header#mobilit.snap.position-relative.glitch1(style='height: 90vh;')
     .white.bar.position-absolute.rellax.d-none.d-sm-block(data-rellax-horizontal-speed='3', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 3%; width: 25%; left: 20%; top: 1%')

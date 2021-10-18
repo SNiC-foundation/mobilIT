@@ -1,16 +1,6 @@
 var express = require("express");
-var bwipjs = require("bwip-js");
-var Ticket = require("../models/Ticket");
 var User = require("../models/User");
 var TalkEnrollment = require("../models/TalkEnrollment");
-var ScannerUser = require("../models/ScannerUser");
-var ScannerResult = require("../models/ScannerResult");
-var SpeedDateTimeSlot = require("../models/SpeedDateTimeSlot");
-var _ = require("underscore");
-var async = require("async");
-const CSV = require("csv-string");
-var moment = require("moment");
-var fs = require("fs");
 const [auth, adminAuth] = require("./utils");
 
 let speaker_info = require("../speakers.json");
@@ -29,8 +19,18 @@ router.get("/", async function (req, res) {
   const event_start = new Date(config.eventStarts);
   const eventToday = event_start < today;
 
+  let talk_capacity = {};
+  for (const speaker in speaker_info.speakers) {
+    if (speaker_info.speakers[speaker].limit !== undefined) {
+      talk_capacity[speaker] = await TalkEnrollment.count({ talk: speaker });
+    }
+  }
+
   if (req.user) {
     const user = await User.findOne({ email: req.session.passport.user });
+
+    let user_talk_enrollments = await TalkEnrollment.find({ user: user });
+    user_talk_enrollments = user_talk_enrollments.map((obj) => obj.talk);
 
     res.render("index", {
       timetable: timetable,
@@ -42,6 +42,8 @@ router.get("/", async function (req, res) {
       studyProgrammes: config.studyProgrammes,
       eventToday: eventToday,
       partners: partners,
+      talkEnrollments: user_talk_enrollments,
+      talkCapacity: talk_capacity,
     });
   } else {
     res.render("index", {
@@ -54,6 +56,8 @@ router.get("/", async function (req, res) {
       studyProgrammes: config.studyProgrammes,
       eventToday: eventToday,
       partners: partners,
+      talkEnrollments: [],
+      talkCapacity: talk_capacity,
     });
   }
 });

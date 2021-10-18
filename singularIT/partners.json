@@ -11,14 +11,18 @@
     },
     "rijksoverheid": {
       "image": "/img/partners/rijksoverheid.png",
-      "text": ["As one of the largest employers in our country, the national government offers an enormous diversity of work. More than 90,000 people work for the national government. Young, old, starter, senior, diverse and inclusive. From mbo to university level. Within very different fields. They have one thing in common: they want to take the Netherlands seriously."],
+      "text": [
+        "As one of the largest employers in our country, the national government offers an enormous diversity of work. More than 90,000 people work for the national government. Young, old, starter, senior, diverse and inclusive. From mbo to university level. Within very different fields. They have one thing in common: they want to take the Netherlands seriously."
+      ],
       "title": "Rijksoverheid",
       "website": "https://www.werkenvoornederland.nl/",
       "description": "Working for Rijksoverheid is working for the Netherlands."
     },
     "quintor": {
       "image": "/img/partners/quintor.jpg",
-      "text": ["Our guiding principle is: 'Cloud First'. Our experienced cloud developers, devops engineers and cloud architects support our customers with cloud migrations, cloud infrastructure, IT modernization and cloud native development."],
+      "text": [
+        "Our guiding principle is: 'Cloud First'. Our experienced cloud developers, devops engineers and cloud architects support our customers with cloud migrations, cloud infrastructure, IT modernization and cloud native development."
+      ],
       "title": "Quintor",
       "website": "https://quintor.nl/",
       "description": "We're everything you need to get in the cloud -and beyond-"

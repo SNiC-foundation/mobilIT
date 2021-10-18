@@ -35,8 +35,8 @@ const passwordForgotEmailTemplate = pug.compileFile(
 );
 
 const welcomeEmailTemplate = pug.compileFile(
-    path.join("views", "welcome_email.pug")
-)
+  path.join("views", "welcome_email.pug")
+);
 
 var User = require("../models/User");
 var Ticket = require("../models/Ticket");

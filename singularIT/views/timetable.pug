@@ -25,9 +25,16 @@ block page-content
                                     button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-bio-modal')
                                         i.fas.fa-user-alt.me-2
                                         | About
-                                if event.speakerId && speakers.speakers[event.speakerId].limit
+                                    if user && event.speakerId && speakers.speakers[event.speakerId].limit !== undefined
+                                        button.btn.btn-primary.m-1(style=talkEnrollments.includes(event.speakerId)?"":"display: none;" id=event.speakerId+"-unenroll" onclick="unenrollClick('" + event.speakerId + "')")
+                                            i.fas.fa-angle-right.me-2
+                                            | Unenroll
+                                        button.btn.btn-primary.m-1(style=talkEnrollments.includes(event.speakerId)?"display: none;":"" id=event.speakerId + "-enroll" onclick="enrollClick('" + event.speakerId + "')")
+                                            i.fas.fa-angle-right.me-2
+                                            | Enroll
+                                if event.speakerId && speakers.speakers[event.speakerId].limit !== undefined
                                     br
-                                    small.text-muted= "Capacity " + speakers.speakers[event.speakerId].limit
+                                    small.text-muted(id=event.speakerId + "-capacity")= "Capacity " + talkCapacity[event.speakerId] + "/" + speakers.speakers[event.speakerId].limit
                             if event.location
                                 .card-footer
                                     small.text-muted= event.location
