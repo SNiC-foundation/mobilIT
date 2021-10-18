@@ -402,6 +402,7 @@ block content
                 a.btn.btn-primary.m-1(target="_blank" href=partners.partners[id].website)
                   i.fas.fa-globe.me-2
                   | Website
+        hr
         #silver-partners.card-group.my-5
           each id in partners.silver
             .card(data-bs-toggle='modal', data-bs-target='#' + id + '-partner-modal', style='cursor: pointer')
@@ -410,6 +411,15 @@ block content
                 button.btn.btn-primary.m-1(type='button')
                   i.fas.fa-user-alt.me-2
                   | About
+                a.btn.btn-primary.m-1(target="_blank" href=partners.partners[id].website)
+                  i.fas.fa-globe.me-2
+                  | Website
+        hr
+        #bronze-partners.card-group.my-5
+          each id in partners.bronze
+            .card(data-bs-toggle='modal', data-bs-target='#' + id + '-partner-modal', style='cursor: pointer')
+              img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='100px')
+              .card-body
                 a.btn.btn-primary.m-1(target="_blank" href=partners.partners[id].website)
                   i.fas.fa-globe.me-2
                   | Website
