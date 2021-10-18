@@ -383,6 +383,7 @@ block content
               .card-body
                 h5.card-title= partners.partners[id].title
                 p.card-text= partners.partners[id].description
+              .card-footer
                 button.btn.btn-primary.m-1(type='button')
                   i.fas.fa-user-alt.me-2
                   | About
@@ -396,6 +397,7 @@ block content
               .card-body
                 h5.card-title= partners.partners[id].title
                 p.card-text= partners.partners[id].description
+              .card-footer
                 button.btn.btn-primary.m-1(type='button')
                   i.fas.fa-user-alt.me-2
                   | About
@@ -407,7 +409,7 @@ block content
           each id in partners.silver
             .card(data-bs-toggle='modal', data-bs-target='#' + id + '-partner-modal', style='cursor: pointer')
               img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='200px')
-              .card-body
+              .card-footer
                 button.btn.btn-primary.m-1(type='button')
                   i.fas.fa-user-alt.me-2
                   | About
@@ -419,7 +421,7 @@ block content
           each id in partners.bronze
             .card(data-bs-toggle='modal', data-bs-target='#' + id + '-partner-modal', style='cursor: pointer')
               img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='100px')
-              .card-body
+              .card-footer
                 a.btn.btn-primary.m-1(target="_blank" href=partners.partners[id].website)
                   i.fas.fa-globe.me-2
                   | Website

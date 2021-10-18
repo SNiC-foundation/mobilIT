@@ -364,6 +364,11 @@ section {
   background-color: rgba(var(--blue-rgb), 0.4);
 }
 
+#partners .card-footer {
+  background: transparent;
+  border: 0;
+}
+
 section,
 .container,
 main,
