@@ -43,7 +43,7 @@ block page-content
           | information with a company by letting them scan your badge.
           | However, we only share this information with your permission.
 
-        .mb-4.mx-5.form-check
+        .mb-4.form-check
           input#allowBadgeScanning.form-check-input(type='checkbox', name='allowBadgeScanning', checked=user.allowBadgeScanning? "checked": undefined)
           label.form-check-label(for='allowBadgeScanning')
             | Allow my badge to be scanned by companies
@@ -51,7 +51,7 @@ block page-content
           | We also allow companies to send you informtion regardless of they scanned you badge if you give them 
           | permission. 
       
-      .mb-4.mx-5.form-check
+      .mb-4.form-check
         input#shareInfo.form-check-input(type='checkbox', name='shareInfo', checked=user.shareInfo ? "checked" : undefined)
         label.form-check-label(for='shareInfo')
           | Allow my email to be shared with companies after the congress.
@@ -62,7 +62,7 @@ block page-content
         p
           | For some study associations which are further away from the location,
           | we offer a bus which will bring you to the location and back to your city after the conference.
-        .mb-4.mx-5.form-check
+        .mb-4.form-check
           input#bus.form-check-input(type='checkbox', name='bus', checked=user.bus ? "checked" : undefined)
           label.form-check-label(for='bus')
             | I would like to use the arranged bus at my study association
@@ -71,12 +71,12 @@ block page-content
       h4 Diets
       p
         | You can alter your diet preferences here
-      .mb-3.mx-5.form-check
+      .mb-3.form-check
         input#vegetarian.form-check-input(type='checkbox', name='vegetarian', checked=user.vegetarian? "checked": undefined)
         label.form-check-label(for='vegetarian')
           | I am a vegetarian
 
-      .mb-4.mx-5
+      .mb-4
         input#specialNeeds.form-control(type='text', name='specialNeeds', placeholder='Other remarks (e.g. veganism, allergies)', value=user.specialNeeds)
 
     button.btn.btn-primary.mt-3(type='submit') Save settings

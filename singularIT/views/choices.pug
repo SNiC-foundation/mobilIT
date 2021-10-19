@@ -1,53 +1,30 @@
 extends normal_page
 
-mixin speakerCount(session, title)
-  script(type='text/javascript')
-    | google.load("visualization", "1", {packages: ["corechart"]});
-    | google.setOnLoadCallback(drawChart);
-    | function drawChart() {
-    |   var data = google.visualization.arrayToDataTable([
-    |     ['Talk', 'Choice'],
-    - val = 0
-    while val < session.length
-      +speakerData(session[val])
-      - val = val + 1
-    |   ]);
-    |   var options = {
-    !=   "title: '" + title + "',"
-    |     is3D: true,
-    |     chartArea: {height: '90%'},
-    |     legend: {alignment: 'center'},
-    |   };
-    !=  "var chart = new google.visualization.PieChart(document.getElementById('" + title + "'));"
-    |   chart.draw(data, options);
-    | }
-  div(id!=title, style='width: 100%; height: 300px;')
-
-mixin speakerData(session)
-  if session._id == ''
-    -session._id = 'No preference'
-
-  if session._id !== null
-    != "['" + session._id + "', " + session.count + "],"
-
 block page-content
-  script(type='text/javascript', src='https://www.google.com/jsapi')
-  -visitorCount = 0
-  -count = 0
-  -val = 0
-  while val < session1.length
-    if session1[val] && session1[val]._id != null
-      -count += session1[val].count
-    -visitorCount = visitorCount + session1[val].count
-    -val = val + 1
-
-
-  h2
-    = 'Session choices '
-    small
-      = '(' + count + ' ingevuld)'
+  script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
+  h2 Session choices
+    small= '(' + enrolled + ' ingevuld)'
   p.text-center= 'on a total of ' + visitorCount + ' visitors'
-
-  +speakerCount(session1.filter(session => session._id != null), "session1")
-  +speakerCount(session2.filter(session => session._id != null), "session2")
-  +speakerCount(session3.filter(session => session._id != null), "session3")
+  
+  for session, s_idx in talksTable
+    script(type='text/javascript')
+      | google.charts.load('current', {'packages':['corechart']});
+      | google.charts.setOnLoadCallback(drawChart);
+      |
+      | function drawChart() {
+      |   var data = new google.visualization.DataTable();
+      |   data.addColumn('string', 'Talk');
+      |   data.addColumn('number', 'Chosen');
+      |   data.addRows([
+      for talk in session
+        = "['" + talk + "'," + (talksCount[talk]===undefined?0:talksCount[talk]) + "],"
+      |   ]);
+      |   var options = {
+      !=   "'title': 'Session " + (s_idx + 1) + "',\n"
+      |    'width': 400,
+      |    'height': 300
+      |   };
+      !=  "var chart = new google.visualization.PieChart(document.getElementById('s" + s_idx + "'));"
+      |   chart.draw(data, options);
+      | }
+    div(id!='s'+s_idx)

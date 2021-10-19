@@ -59,7 +59,7 @@ router.post("/api/talk/enroll/:talk", auth, async function (req, res) {
     } else {
       const today = new Date();
       const enrollment_start = new Date(config.talkEnrollmentStarts);
-      if (enrollment_start < today) {
+      if (enrollment_start > today) {
         res.json({
           success: false,
           error: "Talk enrollment is not yet possible",

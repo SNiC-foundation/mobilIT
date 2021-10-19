@@ -6,9 +6,12 @@ const CSV = require("csv-string");
 const config = require("../config.json");
 const ScannerUser = require("../models/ScannerUser");
 const ScannerResult = require("../models/ScannerResult");
+const TalkEnrollment = require("../models/TalkEnrollment");
 const moment = require("moment");
 const Ticket = require("../models/Ticket");
 const async = require("async");
+const timetable = require("../timetable.json");
+const speaker_info = require("../speakers.json");
 
 let router = express.Router();
 
@@ -310,60 +313,40 @@ router.get("/diet", adminAuth, function (req, res, next) {
 /**
  * Session choices displayed for administrators
  */
-router.get("/choices", adminAuth, function (req, res, next) {
-  User.aggregate(
-    [{ $group: { _id: "$session1", count: { $sum: 1 } } }],
-    function (err, session1) {
-      User.aggregate(
-        [{ $group: { _id: "$session2", count: { $sum: 1 } } }],
-        function (err, session2) {
-          User.aggregate(
-            [{ $group: { _id: "$session3", count: { $sum: 1 } } }],
-            function (err, session3) {
-              console.log(session1, session2, session3);
-              res.render("choices", {
-                session1: session1,
-                session2: session2,
-                session3: session3,
-              });
-            }
-          );
-        }
-      );
+let talks_table = timetable
+  .map(function (slot) {
+    let talks = [];
+    for (const event of slot.events) {
+      if (
+        event.speakerId &&
+        speaker_info.speakers[event.speakerId].limit !== undefined
+      ) {
+        talks.push(event.speakerId);
+      }
     }
-  );
-});
+    return talks;
+  })
+  .filter((el) => el.length > 0);
 
-async function getMatchingStats() {
-  // based on https://github.com/Automattic/mongoose/blob/master/examples/mapreduce/mapreduce.js
-  var map = function () {
-    for (var i = this.matchingterms.length - 1; i >= 0; i--) {
-      emit(this.matchingterms[i], 1);
+router.get("/choices", adminAuth, async function (req, res, next) {
+  let talks_count = {};
+  for (const speaker in speaker_info.speakers) {
+    if (speaker_info.speakers[speaker].limit !== undefined) {
+      talks_count[speaker] = await TalkEnrollment.count({ talk: speaker });
     }
-  };
+  }
 
-  var reduce = function (key, values) {
-    return Array.sum(values);
-  };
+  const enrolled = await TalkEnrollment.distinct("user").count();
+  console.debug(talks_count);
 
-  // map-reduce command
-  var command = {
-    map: map, // a function for mapping
-    reduce: reduce, // a function  for reducing
-  };
+  const visitor_count = await User.count();
 
-  return User.mapReduce(command);
-}
-
-router.get("/matchingstats", adminAuth, function (req, res, next) {
-  getMatchingStats()
-    .then((results) => {
-      console.log(results);
-      res.render("matchingstats", { interests: results });
-    })
-    .catch(function (err) {
-      res.render("matchingstats", { error: err });
-    });
+  res.render("choices", {
+    talksTable: talks_table,
+    talksCount: talks_count,
+    enrolled: enrolled,
+    visitorCount: visitor_count,
+  });
 });
 
 router.get("/tickets", adminAuth, async function (req, res) {
