@@ -23,12 +23,14 @@ block page-content
                                 if event.content
                                     p.card-text= event.content
                                 if event.speakerId
-                                    button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-abstract-modal')
-                                        i.fas.fa-angle-right.me-2
-                                        | Read more
-                                    button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-bio-modal')
-                                        i.fas.fa-user-alt.me-2
-                                        | About
+                                    if speakers.speakers[event.speakerId].talk
+                                        button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-abstract-modal')
+                                            i.fas.fa-angle-right.me-2
+                                            | Read more
+                                    if speakers.speakers[event.speakerId].bio
+                                        button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-bio-modal')
+                                            i.fas.fa-user-alt.me-2
+                                            | About
                                     if user && enrollmentPossible && event.speakerId && speakers.speakers[event.speakerId].limit !== undefined
                                         button.btn.btn-primary.m-1(style=talkEnrollments.includes(event.speakerId)?"":"display: none;" id=event.speakerId+"-unenroll" onclick="unenrollClick('" + event.speakerId + "')")
                                             i.fas.fa-angle-right.me-2

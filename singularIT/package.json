@@ -18,7 +18,6 @@
     "express-session": "^1.16.2",
     "express-validator": "^3.2.0",
     "gulp": "^4.0.2",
-    "gulp-imagemin": "^7.1.0",
     "gulp-livereload": "^4.0.2",
     "gulp-nodemon": "^2.5.0",
     "helmet": "^4.6.0",
@@ -41,6 +40,7 @@
   },
   "devDependencies": {
     "gulp-rename": "^2.0.0",
+    "gulp-imagemin": "^7.1.0",
     "gulp-sass": "^5.0.0",
     "prettier": "^2.4.1",
     "sass": "^1.37.5"

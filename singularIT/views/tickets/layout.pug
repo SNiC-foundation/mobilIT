@@ -23,7 +23,7 @@ html
         height: 330px;
         margin: 0 -1px -1px 0;
         width: 115px;
-        background-color: #22244b;
+        background-color: #2d2e83;
         -webkit-print-color-adjust: exact;
         position: relative;
         z-index: 2;
@@ -89,57 +89,39 @@ html
         height: 200px;
       }
 
-      /* Fonts */
       @font-face {
-        font-family: 'Glacial Indifference';
-        src: url('/fonts/GlacialIndifference-Italic.eot');
-        src: local('Glacial Indifference Italic'), local('GlacialIndifference-Italic'),
-          url('/fonts/GlacialIndifference-Italic.eot?#iefix') format('embedded-opentype'),
-          url('/fonts/GlacialIndifference-Italic.woff') format('woff'),
-          url('/fonts/GlacialIndifference-Italic.ttf') format('truetype'),
-          url('/fonts/GlacialIndifference-Italic.svg#GlacialIndifference-Italic') format('svg');
-        font-weight: normal;
-        font-style: italic;
+        font-family: "Apercu Mono";
+        src: url("/font/Apercu Mono.otf");
       }
 
       @font-face {
-        font-family: 'Glacial Indifference';
-        src: url('/fonts/GlacialIndifference-Regular.eot');
-        src: local('Glacial Indifference Regular'), local('GlacialIndifference-Regular'),
-          url('/fonts/GlacialIndifference-Regular.eot?#iefix') format('embedded-opentype'),
-          url('/fonts/GlacialIndifference-Regular.woff') format('woff'),
-          url('/fonts/GlacialIndifference-Regular.ttf') format('truetype'),
-          url('/fonts/GlacialIndifference-Regular.svg#GlacialIndifference-Regular') format('svg');
-        font-weight: normal;
-        font-style: normal;
+        font-family: "Apercu Light";
+        src: url("/font/Apercu Light.otf");
       }
 
-      @font-face {
-        font-family: 'Glacial Indifference';
-        src: url('/fonts/GlacialIndifference-Bold.eot');
-        src: local('Glacial Indifference-Bold'), local('GlacialIndifference-Bold'),
-          url('/fonts/GlacialIndifference-Bold.eot?#iefix') format('embedded-opentype'),
-          url('/fonts/GlacialIndifference-Bold.woff') format('woff'),
-          url('/fonts/GlacialIndifference-Bold.ttf') format('truetype'),
-          url('/fonts/GlacialIndifference-Bold.svg#GlacialIndifference-Bold') format('svg');
-        font-weight: bold;
-        font-style: normal;
-      }
-
-      /* Design */
       body {
-        font-family: 'Glacial Indifference', "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        font-family: "Apercu Light", sans-serif;
+        text-align: justify;
+        hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
         font-size: 1rem;
-        color: #555;
         margin: 20px;
       }
 
-      h2 {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Apercu Mono", monospace;
+        text-transform: uppercase;
         margin: 0;
         padding: 0;
         font-weight: normal;
         font-size: 1.75em;
-        color: #22244b;
       }
       html {
         font-size: 100%;

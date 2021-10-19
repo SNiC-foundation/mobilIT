@@ -1,33 +1,33 @@
 for session, s_idx in timetable
     for event, e_idx in session.events
         if event.speakerId
-            section.modal(id='s' + s_idx + '-' + e_idx + '-bio-modal', tabindex='-1', aria-hidden='true')
-                .modal-dialog.modal-dialog-centered.modal-xl
-                    .modal-content.modal-dialog-scrollable
-                        .modal-header
-                            h5.modal-title= speakers.speakers[event.speakerId].name
-                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
-                        .modal-body
-                            .container-fluid
-                                if speakers.speakers[event.speakerId].image
-                                    img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
-                                for par in speakers.speakers[event.speakerId].bio
-                                    p= par
-                        button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
-                            i.fas.fa-arrow-left.me-2
-                            | Back to timetable
-            .modal(id='s' + s_idx + '-' + e_idx + '-abstract-modal', tabindex='-1', aria-hidden='true')
-                .modal-dialog.modal-dialog-centered.modal-xl
-                    .modal-content
-                        .modal-header
-                            h5.modal-title= speakers.speakers[event.speakerId].subject
-                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
-                        .modal-body
-                            .container-fluid
-                                if speakers.speakers[event.speakerId].image
-                                    img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
-                                for par in speakers.speakers[event.speakerId].talk
-                                    p= par
-                        button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
-                            i.fas.fa-arrow-left.me-2
-                            | Back to timetable
+            if speakers.speakers[event.speakerId].bio
+                section.modal(id='s' + s_idx + '-' + e_idx + '-bio-modal', tabindex='-1', aria-hidden='true')
+                    .modal-dialog.modal-dialog-centered.modal-xl
+                        .modal-content.modal-dialog-scrollable
+                            .modal-header
+                                h5.modal-title= speakers.speakers[event.speakerId].name
+                            .modal-body
+                                .container-fluid
+                                    if speakers.speakers[event.speakerId].image
+                                        img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                    for par in speakers.speakers[event.speakerId].bio
+                                        p= par
+                            button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
+                                i.fas.fa-arrow-left.me-2
+                                | Back to timetable
+            if speakers.speakers[event.speakerId].talk
+                section.modal(id='s' + s_idx + '-' + e_idx + '-abstract-modal', tabindex='-1', aria-hidden='true')
+                    .modal-dialog.modal-dialog-centered.modal-xl
+                        .modal-content
+                            .modal-header
+                                h5.modal-title= speakers.speakers[event.speakerId].subject
+                            .modal-body
+                                .container-fluid
+                                    if speakers.speakers[event.speakerId].image
+                                        img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                    for par in speakers.speakers[event.speakerId].talk
+                                        p= par
+                            button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
+                                i.fas.fa-arrow-left.me-2
+                                | Back to timetable
