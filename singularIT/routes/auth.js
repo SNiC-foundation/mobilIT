@@ -67,6 +67,10 @@ router.get("/logout", function (req, res) {
   res.redirect("/");
 });
 
+router.get("/privacy-policy", function (req, res) {
+  res.render("privacy_policy");
+});
+
 router.get("/register", function (req, res) {
   // res.render("register", {
   //   associations: config.associations,

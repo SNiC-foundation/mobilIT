@@ -54,7 +54,7 @@ block page-content
             input#privacyPolicy.form-check-input(type='checkbox', name='privacyPolicyAgree', required, checked=body.privacyPolicyAgree? "checked" : undefined)
             label.form-check-label(for='privacyPolicy')
               | I agree with the 
-              a(href='/Privacy_Policy.pdf', target='_blank') Privacy Policy
+              a(href='/privacy-policy', target='_blank') Privacy Policy
       button.btn.btn-primary.btn-lg.mt-3(type='submit') Register now
   else
     - months = ['January', 'February', 'March', 'April', 'May','June','July','August', 'September','November','December'];
