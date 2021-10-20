@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === "production") {
   transporter = nodemailer.createTransport({
     host: "smtp-relay.gmail.com",
     port: 587,
+    name: "websitehost",
   });
 } else {
   transporter = nodemailer.createTransport({
