@@ -22,6 +22,8 @@ block page-content
                                 h5.card-title= event.title
                                 if event.content
                                     p.card-text= event.content
+                                else if event.speakerId
+                                    p.card-text= speakers.speakers[event.speakerId].talk[0]
                                 if event.speakerId
                                     if speakers.speakers[event.speakerId].talk
                                         button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-abstract-modal')

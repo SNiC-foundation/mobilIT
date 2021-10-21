@@ -10,7 +10,7 @@ for session, s_idx in timetable
                             .modal-body
                                 .container-fluid
                                     if speakers.speakers[event.speakerId].image
-                                        img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                        img.float-end.w-25.ms-4(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].bio
                                         p= par
                             button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
@@ -25,7 +25,7 @@ for session, s_idx in timetable
                             .modal-body
                                 .container-fluid
                                     if speakers.speakers[event.speakerId].image
-                                        img.float-end.w-25.ms-2(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                        img.float-end.w-25.ms-4(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].talk
                                         p= par
                             button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
