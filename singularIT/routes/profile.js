@@ -1,6 +1,5 @@
 const express = require("express");
 const User = require("../models/User");
-const SpeedDateTimeSlot = require("../models/SpeedDateTimeSlot");
 const [auth, adminAuth] = require("./utils");
 
 const speaker_info = require("../speakers.json");
@@ -17,54 +16,6 @@ router.get("/profile", auth, async function (req, res) {
   // });
   res.redirect("/");
 });
-
-/**
- * This function is used to determine if there is still room for someone to
- * enroll and takes in to account if someone is already enrolled.
- * TODO: possibly combine with countEnrolls?
- */
-async function canEnrollForSession(sessionslot, sessionid, useremail) {
-  if (Date.now() >= new Date(config.provideTrackPreferencesEnd).getTime()) {
-    return false;
-  }
-
-  if (
-    typeof sessionid === "undefined" ||
-    sessionid === "" ||
-    sessionid == null
-  ) {
-    return true;
-  }
-
-  var session = speaker_info.speakers.filter(function (speaker) {
-    return speaker.id === sessionid;
-  });
-
-  // session not found
-  if (session.length !== 1) {
-    return false;
-  }
-
-  session = session[0];
-
-  // Check if there is a limit and if so, if it has been reached
-  if (session.limit) {
-    var query = {};
-    query[sessionslot] = sessionid;
-    var result;
-
-    await User.find(query)
-      .where("email")
-      .ne(useremail)
-      .count()
-      .then(function (res) {
-        result = res;
-      });
-    return result < session.limit;
-  }
-
-  return true;
-}
 
 router.post("/profile", auth, async function (req, res) {
   console.log(req.body);

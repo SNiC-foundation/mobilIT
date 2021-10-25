@@ -1,11 +1,8 @@
 const User = require("../models/User");
 const express = require("express");
 const [auth, adminAuth] = require("./utils");
-const SpeedDateTimeSlot = require("../models/SpeedDateTimeSlot");
 const CSV = require("csv-string");
 const config = require("../config.json");
-const ScannerUser = require("../models/ScannerUser");
-const ScannerResult = require("../models/ScannerResult");
 const TalkEnrollment = require("../models/TalkEnrollment");
 const moment = require("moment");
 const Ticket = require("../models/Ticket");
@@ -177,125 +174,6 @@ router.get(
   }
 );
 
-router.get("/speeddate", adminAuth, async function (req, res) {
-  var timeslots = await SpeedDateTimeSlot.find().sort({ startTime: 1 });
-
-  var createSlot = async function (slot) {
-    var users = await User.find({ speedDateTimeSlot: slot.id });
-    return {
-      name: slot.name,
-      capacity: slot.capacity,
-      usersRegistered: users,
-      id: slot.id,
-    };
-  };
-
-  var result = await Promise.all(timeslots.map(createSlot));
-
-  res.render("speeddate", { timeslots: result });
-});
-
-router.get("/speeddate/export-csv", adminAuth, async function (req, res) {
-  var data = [["Slot", "Name", "Email", "Study programme", "Association"]];
-
-  var slots = await SpeedDateTimeSlot.find().sort({ startTime: 1 });
-
-  for (var i = 0; i < slots.length; i++) {
-    var slot = slots[i];
-
-    var users = await User.find({ speedDateTimeSlot: slot.id });
-    var userData = users.map((user) => [
-      slot.name,
-      user.firstname + " " + user.surname,
-      user.email,
-      user.studyProgramme,
-      config.associations[user.association].name,
-    ]);
-
-    if (userData.length > 0) {
-      data.push(userData);
-    }
-  }
-
-  res.set("Content-Type", "text/plain");
-  res.set(
-    "Content-Disposition",
-    'attachment; filename="speeddating_participants.csv"'
-  );
-  res.send(CSV.stringify(data));
-});
-
-router.get("/speeddate/remove/:id", adminAuth, async function (req, res) {
-  console.log("Removing speeddate: " + req.params.id);
-  res.redirect("/speeddate");
-});
-
-router.get("/badge-scanning", adminAuth, async function (req, res) {
-  var badgeScanningAllowed = await User.find({
-    allowBadgeScanning: true,
-    type: "student",
-  }).count();
-  var totalUsers = await User.find({ type: "student" }).count();
-
-  var scannerAccounts = await Promise.all(
-    (
-      await ScannerUser.find().sort({ displayName: 1 })
-    ).map(async function (account) {
-      var scans = await ScannerResult.find({ scanner_user: account._id })
-        .populate("user")
-        .sort({ "user.studyProgramme": 1 });
-
-      return {
-        id: account._id,
-        display_name: account.display_name,
-        username: account.username,
-        scans: scans,
-      };
-    })
-  );
-
-  res.render("badge_scanning", {
-    badgeScanningAllowed: badgeScanningAllowed,
-    totalUsers: totalUsers,
-    scannerAccounts: scannerAccounts,
-  });
-});
-
-router.get(
-  "/badge-scanning/export-csv/:id",
-  adminAuth,
-  async function (req, res) {
-    var data = [["Time", "Email", "Name", "Study programme", "Comments"]];
-
-    var scannerUser = await ScannerUser.findById(req.params.id);
-
-    data.push(
-      await Promise.all(
-        (
-          await ScannerResult.find({ scanner_user: req.params.id })
-            .populate("user")
-            .sort({ "user.surname": 1, "user.firstname": 1 })
-        ).map(async function (r) {
-          return [
-            r.scan_time_string,
-            r.user.email,
-            r.user.firstname + " " + r.user.surname,
-            r.user.studyProgramme,
-            r.comment,
-          ];
-        })
-      )
-    );
-
-    var filename =
-      scannerUser.display_name.replace(/ /g, "_") + "_badge_scans.csv";
-
-    res.set("Content-Type", "text/plain");
-    res.set("Content-Disposition", 'attachment; filename="' + filename + '"');
-    res.send(CSV.stringify(data));
-  }
-);
-
 /**
  * Output all dietary wishes provided by users
  */
@@ -389,26 +267,6 @@ router.post("/tickets", adminAuth, function (req, res, next) {
     console.log(n + " tickets generated!");
     res.redirect("/new_tickets");
   });
-});
-
-router.post("/speeddate", adminAuth, function (req, res, next) {
-  console.log("Creating " + req.body.startTime + "-" + req.body.endTime);
-
-  var ts = new SpeedDateTimeSlot({
-    startTime: "2019-11-26T" + req.body.startTime,
-    endTime: "2019-11-26T" + req.body.endTime,
-    capacity: req.body.capacity,
-  });
-  ts.save().then(
-    function (doc) {
-      console.log("Created speeddate time slot!");
-      return res.redirect("/speeddate");
-    },
-    function (err) {
-      console.log(err);
-      return next(err);
-    }
-  );
 });
 
 module.exports = router;
