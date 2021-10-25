@@ -1,16 +1,10 @@
-extends layout
-block above-content
+extends fullscreen_page
 
-block header 
-	header.text
-		h2 Connect
-
-block content
-	section
-		.connectbetter
-			if connected
-				p You've succesfully connected with #{connectee.firstname + ' ' + connectee.surname}
-				p You can close the current page
-			else
-				p We could not connect you. This error should help you:
-				p= error
+block page-content
+	.text-center.block.p-5
+		if connected
+			h5 You've succesfully connected with #{connectee.firstname + ' ' + connectee.surname}
+			small You can close the current page
+		else
+			h5 We could not connect you. This error should help you:
+			p= error
