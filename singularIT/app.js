@@ -47,11 +47,6 @@ app.use(
   })
 );
 
-// This must come BEFORE the bodyParser stuff, so the scanner API route
-// can have its own bodyParser and handle its errors
-var scanner_api_routes = require("./routes/scanner")(config);
-app.use("/scanner/api/", scanner_api_routes);
-
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
