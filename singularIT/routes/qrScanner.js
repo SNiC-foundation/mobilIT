@@ -18,7 +18,7 @@ router.get("/connect/:id", auth, function (req, res, next) {
     if (err || !user) {
       res.render("connect", {
         connected: false,
-        error: "Ticket id is not valid",
+        error: "qrcode is not valid",
       });
     } else {
       User.findOneAndUpdate(
@@ -28,10 +28,13 @@ router.get("/connect/:id", auth, function (req, res, next) {
           if (err) {
             res.render("connect", {
               connected: false,
-              error: "Could not connect with " + user.firstname,
+              error:
+                "Could not connect with " +
+                user.firstname +
+                " due to an internal error.",
             });
-            console.log(
-              req.params.id + "could not be added to the connectlist!"
+            console.error(
+              req.params.id + "could not be added to the connect list!"
             );
           } else {
             res.render("connect", { connected: true, connectee: user });
