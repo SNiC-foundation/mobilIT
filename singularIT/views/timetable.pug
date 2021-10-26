@@ -28,7 +28,7 @@ block page-content
                                 else if event.speakerId
                                     p.card-text= speakers.speakers[event.speakerId].talk[0]
                             if event.speakerId
-                                .card-footer
+                                .card-footer.card-footer-transparent
                                     if speakers.speakers[event.speakerId].talk
                                         button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-abstract-modal')
                                             i.fas.fa-angle-right.me-2
