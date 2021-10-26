@@ -303,6 +303,8 @@ section {
 
 .card > img {
   border-radius: 0;
+  object-fit: cover;
+  object-position: center;
 }
 
 .timetable .card-group > * {
