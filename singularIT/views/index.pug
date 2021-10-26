@@ -122,22 +122,22 @@ block header
       .text-center.mb-4
         if user
           button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle="offcanvas" data-bs-target="#profile" aria-controls="profile")
-            i.fas.fa-arrow-right.me-2
+            i.fas.fa-user.me-2
             | Profile
           button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='modal', data-bs-target='#timetable-modal')
-            i.fas.fa-arrow-right.me-2
+            i.fas.fa-calendar-alt.me-2
             | Timetable
           if eventToday
             a.btn.btn-primary.btn-lg.m-1(href='/ticket')
-              i.fas.fa-arrow-right.me-2
+              i.fas.fa-ticket-alt.me-2
               | Your ticket
         else
           if ticketSalePossible
             button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='modal', data-bs-target='#registration-modal')
-              i.fas.fa-arrow-right.me-2
+              i.fas.fa-ticket-alt.me-2
               | Activate your ticket
             a.btn.btn-primary.btn-lg.m-1(href='/login')
-              i.fas.fa-arrow-right.me-2
+              i.fas.fa-user.me-2
               | Login
 
   .banner

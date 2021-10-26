@@ -4,6 +4,7 @@ block page-content
     h1.mt-3 Timetable
     for session, s_idx in timetable
         .card-group.my-5
+            - var event_with_picture = session.events.findIndex((event) => event.picture !== undefined) !== -1
             for event, e_idx in session.events
                 if event.enabled
                     if event.empty
@@ -18,13 +19,16 @@ block page-content
                                 small.text-muted= session.startTime + " - " + session.endTime
                             if event.picture
                                 img.card-img-top(src=event.picture, alt="image for " + event.title, height="200px")
+                            else if event_with_picture
+                                img.card-img-top(src="/img/resilit.jpg" alt="placeholder image for talk" height="200px")
                             .card-body
                                 h5.card-title= event.title
                                 if event.content
                                     p.card-text= event.content
                                 else if event.speakerId
                                     p.card-text= speakers.speakers[event.speakerId].talk[0]
-                                if event.speakerId
+                            if event.speakerId
+                                .card-footer
                                     if speakers.speakers[event.speakerId].talk
                                         button.btn.btn-primary.m-1(data-bs-toggle="modal" data-bs-target='#s' + s_idx + '-' + e_idx + '-abstract-modal')
                                             i.fas.fa-angle-right.me-2

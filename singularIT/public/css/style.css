@@ -321,7 +321,6 @@ section {
 .timetable .card-group .chosen {
   border-left: 1px solid rgba(0, 0, 0, 0.125);
   opacity: 100%;
-  cursor: pointer;
 }
 
 .timetable .card-group .card-empty {
@@ -334,6 +333,11 @@ section {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
+}
+
+.timetable .card-footer {
+  background: transparent;
+  border: 0;
 }
 
 .modal-content {
