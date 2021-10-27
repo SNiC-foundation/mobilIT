@@ -19,7 +19,7 @@
       "description": "Working for Rijksoverheid is working for the Netherlands."
     },
     "quintor": {
-      "image": "/img/partners/quintor.jpg",
+      "image": "/img/partners/quintor.svg",
       "text": [
         "Our guiding principle is: 'Cloud First'. Our experienced cloud developers, devops engineers and cloud architects support our customers with cloud migrations, cloud infrastructure, IT modernization and cloud native development."
       ],
@@ -70,7 +70,7 @@
         "YER is the springboard that gives your engineering career the right impulse. "
       ],
       "description": "",
-      "image": "/img/partners/yer.jpg"
+      "image": "/img/partners/yer.svg"
     },
     "chipsoft": {
       "website": "https://www.chipsoft.nl/",

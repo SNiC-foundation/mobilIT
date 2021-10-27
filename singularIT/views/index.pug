@@ -124,7 +124,7 @@ block header
           button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle="offcanvas" data-bs-target="#profile" aria-controls="profile")
             i.fas.fa-user.me-2
             | Profile
-          button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='modal', data-bs-target='#timetable-modal')
+          button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='offcanvas', data-bs-target='#timetable' aria-controls="timetable")
             i.fas.fa-calendar-alt.me-2
             | Timetable
           if eventToday
@@ -158,7 +158,7 @@ block sidebar
       a.nav-link(href='#about') About SNiC
       if user
         a.nav-link.mt-5(data-bs-toggle="offcanvas" data-bs-target="#profile" aria-controls="profile" style="cursor: pointer") Profile
-        a.nav-link(data-bs-toggle="modal" data-bs-target="#timetable-modal" style="cursor: pointer") Timetable
+        a.nav-link(data-bs-toggle="offcanvas" data-bs-target="#timetable" style="cursor: pointer") Timetable
         if user.admin
           a.nav-link.mt-5(href='/users') Scan tickets
           a.nav-link(href='/choices') Session choices
@@ -169,7 +169,7 @@ block sidebar
           a.nav-link.mt-3(href='/reload/timetable') Reload timetable
         a.nav-link.mt-5(href='/logout') Logout
       else
-        a.nav-link.mt-3(data-bs-toggle="modal" data-bs-target="#timetable-modal" style="cursor: pointer") Timetable
+        a.nav-link.mt-3(data-bs-toggle="offcanvas" data-bs-target="#timetable" style="cursor: pointer") Timetable
         if ticketSalePossible
           a.nav-link(data-bs-toggle="modal" data-bs-target="#registration-modal" style="cursor: pointer") Activate tickets
         a.nav-link.mt-5(href='/login') Login
@@ -271,7 +271,7 @@ block content
             p
               | From these three tracks you can choose your own personal schedule to make this day your own from the
               | 1st of November.
-            button#timetable-button.btn.btn-primary(type='button', data-bs-toggle='modal', data-bs-target='#timetable-modal') Check out the timetable
+            button#timetable-button.btn.btn-primary(type='button', data-bs-toggle='offcanvas', data-bs-target='#timetable') Check out the timetable
         .col-12.col-md-6
           #speakers-carousel.carousel.slide.my-md-5.mx-md-3(data-bs-ride='carousel')
             .carousel-inner.ratio.ratio-4x3
@@ -399,7 +399,7 @@ block content
                 p.card-text= partners.partners[id].description
               .card-footer
                 button.btn.btn-primary.m-1(type='button')
-                  i.fas.fa-user-alt.me-2
+                  i.fas.fa-info.me-2
                   | About
                 a.btn.btn-primary.m-1(target="_blank" href=partners.partners[id].website)
                   i.fas.fa-globe.me-2
@@ -411,7 +411,7 @@ block content
               img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='200px')
               .card-footer
                 button.btn.btn-primary.m-1(type='button')
-                  i.fas.fa-user-alt.me-2
+                  i.fas.fa-info.me-2
                   | About
                 a.btn.btn-primary.m-1(target="_blank" href=partners.partners[id].website)
                   i.fas.fa-globe.me-2
@@ -508,14 +508,11 @@ block outside-flow
               button.btn-close.position-absolute.top-0.end-0.m-4(type='button', data-bs-dismiss='modal', aria-label='Close')
               article.d-flex.align-items-center.justify-content-center.pb-4
                 include register
-  section#timetable-modal.modal(tabindex='-1', aria-labelledby='timetable-button', aria-hidden='true')
-    .modal-dialog.modal-dialog-scrollable.modal-xl
-      .modal-content.glitch3
-        .modal-body.block-white
-          .container-fluid
-            button.btn-close.position-absolute.top-0.end-0.m-4(type='button', data-bs-dismiss='modal', aria-label='Close')
-            article.text-center.timetable.p-3
-              include  timetable
+  section#timetable.timetable.offcanvas.offcanvas-top.h-100.glitch3(tabindex='-1', aria-labelledby='timetable', style='overflow-y: scroll')
+    .container-fluid.block-white
+      button.btn-close.position-absolute.top-0.end-0.m-4(type='button', data-bs-dismiss='offcanvas', aria-label='Close')
+      article.text-center.timetable.p-3
+        include  timetable
   include timetable-modals
   // partner modals
   each content, name in partners.partners
@@ -537,8 +534,8 @@ block outside-flow
 block footer
   script(type="text/javascript").
     $(document).ready(function () {
-      if ($(location).attr('hash') === "#timetable-modal") {
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('timetable-modal')).show();
+      if ($(location).attr('hash') === "#timetable") {
+        bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('timetable')).show();
       } else if ($(location).attr('hash') === "#registration-modal") {
         bootstrap.Modal.getOrCreateInstance(document.getElementById('registration-modal')).show();
       } else if ($(location).attr('hash') === "#profile") {

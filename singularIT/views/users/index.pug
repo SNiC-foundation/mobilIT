@@ -22,11 +22,11 @@ block page-content
             option Association
             option Ticket
         .col-8#searchFieldsWrap
-          input.form-control(type='email', name='email', placeholder='Email', style='display:none;')
-          input.form-control(type='text', name='firstname', placeholder='First name')
-          input.form-control(type='text', name='surname', placeholder='Last name', style='display:none;')
+          input.form-control(type='text' name='email' placeholder='Email' style='display:none;')
+          input.form-control(type='text' name='firstname' placeholder='First name')
+          input.form-control(type='text' name='surname' placeholder='Last name' style='display:none;')
           select.form-control(name='association', style='display:none;')
-            option(value='', disabled) Choose association
+            option(value='' disabled selected) Choose association
             each association, shortName in associations
               option(value=shortName)=association.name
           input.form-control(type='text', name='ticket', placeholder='Ticket', style='display:none;')

@@ -6,7 +6,7 @@ for session, s_idx in timetable
                     .modal-dialog.modal-dialog-centered.modal-xl
                         .modal-content.modal-dialog-scrollable
                             .modal-header
-                                h5.modal-title= speakers.speakers[event.speakerId].name
+                                h5.modal-title.pe-3.text-left= speakers.speakers[event.speakerId].name
                                     br
                                     small.text-muted.fs-6= speakers.speakers[event.speakerId].subject
                                 if speakers.speakers[event.speakerId].talk
@@ -17,10 +17,10 @@ for session, s_idx in timetable
                             .modal-body
                                 .container-fluid
                                     if speakers.speakers[event.speakerId].image
-                                        img.float-end.w-25.ms-5(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                        img.modal-img.float-end.w-25.ms-5(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].bio
                                         p.px-2= par
-                            button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
+                            button.btn.btn-primary.btn-lg(data-bs-dismiss="modal")
                                 i.fas.fa-arrow-left.me-2
                                 | Back to timetable
             if speakers.speakers[event.speakerId].talk
@@ -28,7 +28,7 @@ for session, s_idx in timetable
                     .modal-dialog.modal-dialog-centered.modal-xl
                         .modal-content
                             .modal-header
-                                h5.modal-title= speakers.speakers[event.speakerId].subject
+                                h5.modal-title.pe-3.text-left= speakers.speakers[event.speakerId].subject
                                     br
                                     small.text-muted.fs-6= speakers.speakers[event.speakerId].name
                                 if speakers.speakers[event.speakerId].bio
@@ -39,9 +39,9 @@ for session, s_idx in timetable
                             .modal-body
                                 .container-fluid
                                     if speakers.speakers[event.speakerId].image
-                                        img.float-end.w-25.ms-5(src=speakers.speakers[event.speakerId].image alt="speaker photo")
+                                        img.modal-img.float-end.w-25.ms-5(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].talk
                                         p.px-2= par
-                            button.btn.btn-primary.btn-lg(data-bs-target='#timetable-modal', data-bs-toggle='modal')
+                            button.btn.btn-primary.btn-lg(data-bs-dismiss="modal")
                                 i.fas.fa-arrow-left.me-2
                                 | Back to timetable
