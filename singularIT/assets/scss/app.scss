@@ -321,7 +321,8 @@ section {
 
 
 .timetable.offcanvas {
-  width: 80vw;
+  width: fit-content;
+  width: -moz-fit-content;
   margin-left: auto;
   margin-right: auto;
 }

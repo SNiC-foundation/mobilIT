@@ -156,6 +156,7 @@ block sidebar
       a.nav-link(href='#corona') Corona
       a.nav-link(href='#partners') Partners
       a.nav-link(href='#about') About SNiC
+    nav#navbar2.nav.nav-pills.flex-column.align-items-stretch.p-3
       if user
         a.nav-link.mt-5(data-bs-toggle="offcanvas" data-bs-target="#profile" aria-controls="profile" style="cursor: pointer") Profile
         a.nav-link(data-bs-toggle="offcanvas" data-bs-target="#timetable" style="cursor: pointer") Timetable
@@ -509,7 +510,7 @@ block outside-flow
               article.d-flex.align-items-center.justify-content-center.pb-4
                 include register
   section#timetable.timetable.offcanvas.offcanvas-top.h-100.glitch3(tabindex='-1', aria-labelledby='timetable', style='overflow-y: scroll')
-    .container-fluid.block-white
+    .container.block-white
       button.btn-close.position-absolute.top-0.end-0.m-4(type='button', data-bs-dismiss='offcanvas', aria-label='Close')
       article.text-center.timetable.p-3
         include  timetable
