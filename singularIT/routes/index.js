@@ -89,7 +89,7 @@ router.get("/reload/timetable", adminAuth, function (req, res) {
   speaker_info = require("../speakers.json");
   timetable = require("../timetable.json");
 
-  res.redirect("/#timetable-modal");
+  res.redirect("/#timetable");
 });
 
 module.exports = router;

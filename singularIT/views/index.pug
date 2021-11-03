@@ -164,8 +164,6 @@ block sidebar
           a.nav-link.mt-5(href='/users') Scan tickets
           a.nav-link(href='/choices') Session choices
           a.nav-link(href='/diet') Diets
-          a.nav-link(href='/speeddate') Speed date timeslots
-          a.nav-link(href='/badge-scanning') Badge scanning
           a.nav-link(href='/tickets') New tickets
           a.nav-link.mt-3(href='/reload/timetable') Reload timetable
         a.nav-link.mt-5(href='/logout') Logout
@@ -383,7 +381,7 @@ block content
               img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='200px')
               .card-body
                 h5.card-title= partners.partners[id].title
-                p.card-text= partners.partners[id].description
+                p.card-text !{partners.partners[id].description}
               .card-footer
                 button.btn.btn-primary.m-1(type='button')
                   i.fas.fa-user-alt.me-2
@@ -397,7 +395,7 @@ block content
               img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='200px')
               .card-body
                 h5.card-title= partners.partners[id].title
-                p.card-text= partners.partners[id].description
+                p.card-text !{partners.partners[id].description}
               .card-footer
                 button.btn.btn-primary.m-1(type='button')
                   i.fas.fa-info.me-2
@@ -530,7 +528,7 @@ block outside-flow
                   img.img-fluid.mb-4(src=content.image alt="logo for company")
                 article
                   each par in content.text
-                    p= par
+                    p!= par
 
 block footer
   script(type="text/javascript").
