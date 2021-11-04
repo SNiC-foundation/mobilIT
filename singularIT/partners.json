@@ -3,7 +3,18 @@
     "nedap": {
       "image": "/img/partners/nedap.png",
       "text": [
-        "Nedap is all about 'Technology for life': developing products, propositions and solutions that make work more pleasant for people and increase their productivity. We focus on how people interact with technology, not on technology itself. At Nedap we believe in the versatility of people and organisations. We trust in the power of ideas and initiatives."
+        "<b>First people, then technology</b>",
+        "Even though Nedap is a technology company at heart, our strength is that we always put people first. ‘First people, then technology’ is what we call it. We do so by observing people – and what they need to perform better – before we start developing technology.",
+        "<b>We observe. We create. We scale.</b>",
+        "At Nedap, design and technology work closely together to meet people’s professional needs. We create elegant solutions that are easy to use and beautiful to look at. These solutions help you find a place to park your car in Amsterdam and Auckland, and provide security for major landmarks such as the Eiffel Tower and the Burj Khalifa. We help farmers take care of their livestock and enable interactive shopping experiences from Adidas to H&M.",
+        "<b>People. Culture. Leadership.</b>",
+        "‘First people, then technology’ does not only apply to the markets in which we operate, it also applies to our own organization. We invest in developing talent. At our beautiful campus in Groenlo we challenge ‘Nedappers’ to realize their ideas and ambitions and to achieve more than they could ever imagine. At Nedap, you are challenged to take the lead from day one.",
+        "<b>What are you going to change?</b>",
+        "At Nedap you get all the space you need, literally and figuratively. But we also expect you to do something with it. We believe in the power of ideas and the energy of your own initiative. And so our entire organisation is designed to do just that.",
+        "We work with the relevant people to resolve specific issues. Since we often do this in small, targeted teams, you may sometimes get the impression that you’re working with a small organisation at Nedap. However, the extensive options and resources that you can find only in a large organisation will always be available to you. So, we’re actually big and small at the same time.",
+        "Working at Nedap is being part of a flock. You have the power to change your course and to inspire others to follow. We work together on our fantastic campus in Groenlo in various business units and teams, and we share a common ambition. Together we develop technology that helps people to be more productive and successful in their work.",
+        "<b>Choose Ambition, Choose Growth, Choose Excellence.</b>",
+        "Start your journey at: <a href=\"https://www.nedap.com/students\">https://www.nedap.com/students</a>"
       ],
       "title": "Nedap",
       "website": "https://nedap.com/",
@@ -21,7 +32,8 @@
     "quintor": {
       "image": "/img/partners/quintor.svg",
       "text": [
-        "Our guiding principle is: 'Cloud First'. Our experienced cloud developers, devops engineers and cloud architects support our customers with cloud migrations, cloud infrastructure, IT modernization and cloud native development."
+        "Quintor helps clients professionalize software development. We make software that goes into production. Software that works and that matters. We do this mainly in large and complex enterprise projects for top 250 organizations and (semi) governmental bodies. They often hire us for our proven expertise in cloud technology, Java and .Net, Agile analysis, platform engineering and security.",
+        "Quintor was founded in October 2005. We were convinced that we could better align software with our clients' business. With highly qualified professionals and the right technical choices as the foundation for success. In a relatively short time, we grew from four to 175 employees. Spread over offices in Groningen, Amersfoort, The Hague, Den Bosch and Deventer."
       ],
       "title": "Quintor",
       "website": "https://quintor.nl/",
@@ -31,7 +43,10 @@
       "image": "/img/partners/ns.svg",
       "header_image": "/img/partners/ns_header.png",
       "text": [
-        "From train company to mobility company, that is the transition that NS is undergoing. We expect the mobility market as a whole to grow and become more dynamic, with travelers expecting tailor-made solutions for their journey. This requires innovation."
+        "NS is active in the public transportation sector. We encourage the use of public transportation and keep the Netherlands moving. Our travellers are our 1st, 2nd and 3rd priority in all of our activities. We work closely together to keep the Netherlands accessible to everyone. We take our travelers to the right destination and provide them with every convenience and service. We do this by taking them to their destination on time, safely and in a clean train. But also by offering the possibility to park their bicycle, rent an OV-fiets and offer interesting shopping opportunities at the station. Thus, easy door-to-door travel. To achieve this, we are always looking for talent.",
+        "Perhaps you only think of trains and stations when you think of NS. But there is so much more. You will encounter many departments during a train journey. For example, IT is in the NS app on your mobile phone, but also in the entrance gates. Your subscription is Commerce. The train: all technology. And to stay financially healthy, Finance professionals are crucial. So many departments, so many possibilities.",
+        "We are one of the largest employers in the Netherlands with over 20,000 employees. With all the possibilities we have to offer our employees, we create freedom and opportunities for them. Opportunities to grow and develop. Our employees think ahead, make plans for the short and long term and have an impact on society. NS is an attractive, dynamic employer where employees experience freedom. Whatever role you have, your work matters.",
+        "Tomorrow's journey starts with you."
       ],
       "title": "NS",
       "website": "https://werkenbijns.nl/werkgebieden/it/",
@@ -49,7 +64,8 @@
     "anwb": {
       "image": "/img/partners/anwb.svg",
       "text": [
-        "We are working on carefree and affordable mobility for everyone, aiming for zero road deaths, zero emissions and zero traffic jams. The best information, products and services should ensure that our members can go out and about without any worries and enjoy unforgettable experiences. We are leading the way, but have never worked out. We are constantly working on our themes of mobility, road safety, getting out and about and vacation."
+        "At the ANWB we make it possible for everyone to travel carefree and with pleasure. That is the mission of ANWB and it has been our goal for more than 135 years. In those years we have adapted to developments in society and the changing wishes of our (potential) members. We bring our members and the Netherlands further in the areas of mobility, traffic safety, going out and vacations. And our technology and data help us to improve our products and services and to keep innovating. For example, our back-end developers are busy migrating to the cloud, our data specialists are making the roads safer thanks to predictive models and our front-end developers are ensuring an optimal user experience.",
+        "We challenge you to join us in building the membership organization of the future. We do not have all the answers. That is why we are looking for you. Your fresh look, guts and ambition will help our organization move forward. We give you the space and freedom to come up with innovative ideas. And to put them into practice. We offer you variety in your work of today and your function of tomorrow. We encourage your professional and personal development in an inspiring environment with committed colleagues."
       ],
       "title": "ANWB",
       "website": "https://www.werkenbijanwb.nl/Pages/nl-NL/Algemeen/Over-anwb",

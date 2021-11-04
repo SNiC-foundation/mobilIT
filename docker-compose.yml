@@ -19,7 +19,6 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    restart: unless-stopped
     depends_on:
       - mongodb
     environment:
