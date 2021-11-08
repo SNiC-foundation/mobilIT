@@ -418,12 +418,8 @@ block content
         hr
         #bronze-partners.card-group.my-5
           each id in partners.bronze
-            .card(data-bs-toggle='modal', data-bs-target='#' + id + '-partner-modal', style='cursor: pointer')
-              img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='100px')
-              .card-footer
-                a.btn.btn-primary.m-1(target="_blank" href=partners.partners[id].website)
-                  i.fas.fa-globe.me-2
-                  | Website
+            .card.card-no-pointer(data-bs-toggle='modal', data-bs-target='#' + id + '-partner-modal', style='cursor: pointer')
+              img.card-img-top.p-4(src=partners.partners[id].image, alt='image for ' + id, height='80px')
   section#about.py-5.snap.glitch4.brown.d-flex.align-items-center.position-relative(style='min-height: 85vh')
     .white.bar.position-absolute.rellax.d-none.d-md-block(data-rellax-horizontal-speed='2', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 2%; width: 25%; right: -10%; top: 3%')
     .brown.bar.position-absolute.rellax.d-none.d-md-block(data-rellax-horizontal-speed='-1.5', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 1%; width: 25%; left: -30%; top: 6%')

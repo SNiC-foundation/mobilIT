@@ -433,6 +433,10 @@ section {
   border: 0;
 }
 
+#partners .card-no-pointer {
+  cursor: default !important;
+}
+
 section,
 .container,
 main,

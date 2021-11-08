@@ -131,6 +131,6 @@
   },
   "goldp": ["anwb"],
   "gold": ["ns", "quintor", "nedap"],
-  "silver": ["chipsoft", "dsw", "picnic", "yer", "rijksoverheid"],
+  "silver": ["chipsoft", "dsw", "picnic", "yer", "rijksoverheid", "capgemini"],
   "bronze": ["asml"]
 }
