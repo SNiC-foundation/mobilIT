@@ -97,6 +97,12 @@
       "description": "",
       "image": "/img/partners/chipsoft.svg"
     },
+    "capgemini": {
+      "website": "https://www.capgemini.com/",
+      "text": [],
+      "description": "",
+      "image": "/img/partners/capgemini.svg"
+    },
     "asml": {
       "website": "https://asml.com/en",
       "image": "/img/partners/asml.svg"
