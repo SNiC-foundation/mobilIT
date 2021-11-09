@@ -19,7 +19,7 @@ for session, s_idx in timetable
                                     if speakers.speakers[event.speakerId].image
                                         img.modal-img.float-end.w-25.ms-5(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].bio
-                                        p.px-2= par
+                                        p.px-2!= par
                             button.btn.btn-primary.btn-lg(data-bs-dismiss="modal")
                                 i.fas.fa-arrow-left.me-2
                                 | Back to timetable
@@ -41,7 +41,7 @@ for session, s_idx in timetable
                                     if speakers.speakers[event.speakerId].image
                                         img.modal-img.float-end.w-25.ms-5(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].talk
-                                        p.px-2= par
+                                        p.px-2!= par
                             button.btn.btn-primary.btn-lg(data-bs-dismiss="modal")
                                 i.fas.fa-arrow-left.me-2
                                 | Back to timetable
