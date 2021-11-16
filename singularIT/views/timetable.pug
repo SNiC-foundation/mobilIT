@@ -24,7 +24,7 @@ block page-content
                             .card-body
                                 h5.card-title= event.title
                                 if event.content
-                                    p.card-text= event.content
+                                    p.card-text!= event.content
                                 else if event.speakerId
                                     p.card-text= speakers.speakers[event.speakerId].talk[0]
                             if event.speakerId
