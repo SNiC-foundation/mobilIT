@@ -523,7 +523,7 @@ block outside-flow
                 else
                   img.img-fluid.mb-4(src=content.image alt="logo for company")
                 article
-                  if content.logged_in & user
+                  if content.logged_in && user
                     each par in content.logged_in
                       p!= par
                   each par in content.text

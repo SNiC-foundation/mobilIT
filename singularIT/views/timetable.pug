@@ -46,7 +46,7 @@ block page-content
                                             | Enroll
                                 if event.speakerId && speakers.speakers[event.speakerId].limit !== undefined
                                     br
-                                    small.text-muted(id=event.speakerId + "-capacity")= "Capacity " + talkCapacity[event.speakerId] + "/" + speakers.speakers[event.speakerId].limit
+                                    small.text-muted(id=event.speakerId + "-capacity")= "Enrollments " + talkCapacity[event.speakerId] + "/" + speakers.speakers[event.speakerId].limit
                             if event.location
                                 .card-footer
                                     small.text-muted= event.location
