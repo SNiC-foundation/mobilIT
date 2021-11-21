@@ -79,6 +79,33 @@ router.post("/users/:id", adminAuth, function (req, res, next) {
   });
 });
 
+router.post("/sign-in", adminAuth, function (req, res, next) {
+  User.findOne({ ticket: req.body.ticket }, function (err, result) {
+    if (err) {
+      return next(err);
+    }
+
+    if (result.present === true) {
+      req.flash("error", "Person is already signed in");
+      return res.redirect("/users/");
+    }
+
+    result.present = true;
+
+    result.save(function (err) {
+      if (err) {
+        return next(err);
+      }
+
+      req.flash(
+        "success",
+        result.firstname + " " + req.surname + " has signed in"
+      );
+      return res.redirect("/users/");
+    });
+  });
+});
+
 router.get("/users/export-csv/all", adminAuth, async function (req, res) {
   var data = [
     [

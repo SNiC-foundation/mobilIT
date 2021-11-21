@@ -161,10 +161,10 @@ block sidebar
         a.nav-link.mt-5(data-bs-toggle="offcanvas" data-bs-target="#profile" aria-controls="profile" style="cursor: pointer") Profile
         a.nav-link(data-bs-toggle="offcanvas" data-bs-target="#timetable" style="cursor: pointer") Timetable
         if user.admin
-          a.nav-link.mt-5(href='/users') Scan tickets
+          a.nav-link.mt-5(href='/users') Scan snickets
           a.nav-link(href='/choices') Session choices
           a.nav-link(href='/diet') Diets
-          a.nav-link(href='/tickets') New tickets
+          a.nav-link(href='/tickets') New snickets
           a.nav-link.mt-3(href='/reload/timetable') Reload timetable
         a.nav-link.mt-5(href='/logout') Logout
       else
@@ -487,7 +487,7 @@ block content
           a.text-reset(href='https://stichting.snic.nl/', target='_blank') Stichting Nationaal informatica Congres
           br
           small
-            a.text-reset(href='/Privacy_Policy.pdf', target='_blank') Privacy statement
+            a.text-reset(href='/privacy-policy', target='_blank') Privacy policy
         .col-4.text-center
           img(src='img/icon-white.svg', alt='mobilit', height='75px')
         .col-4.text-end.lead

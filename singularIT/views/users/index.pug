@@ -3,8 +3,8 @@ extends ../normal_page
 
 block page-content
   .mb-5
-    h2 Sign in ticket
-    form(method='POST', action='/aanmelden')
+    h2 Sign in snicket
+    form(method='POST', action='/sign-in')
       .row
         .col-10
           input#ticketCode.form-control(type='text', name='ticket', placeholder='Ticket', autofocus)
@@ -20,7 +20,7 @@ block page-content
             option(selected) First name
             option Last name
             option Association
-            option Ticket
+            option Snicket
         .col-8#searchFieldsWrap
           input.form-control(type='text' name='email' placeholder='Email' style='display:none;')
           input.form-control(type='text' name='firstname' placeholder='First name')
@@ -38,7 +38,7 @@ block page-content
           th First name
           th Last name
           th Email
-          th Ticket
+          th Snicket
           th Association
           th Present
       tbody
