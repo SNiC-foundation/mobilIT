@@ -99,7 +99,7 @@ router.post("/sign-in", adminAuth, function (req, res, next) {
 
       req.flash(
         "success",
-        result.firstname + " " + req.surname + " has signed in"
+        result.firstname + " " + result.surname + " has signed in"
       );
       return res.redirect("/users/");
     });
