@@ -86,7 +86,10 @@ router.post("/sign-in", adminAuth, function (req, res, next) {
     }
 
     if (result.present === true) {
-      req.flash("error", "Person is already signed in");
+      req.flash(
+        "error",
+        result.firstname + " " + result.surname + " is already signed in"
+      );
       return res.redirect("/users/");
     }
 
