@@ -45,4 +45,8 @@ router.get("/connect/:id", auth, function (req, res, next) {
   });
 });
 
+router.get("/scan/:id", function (req, res) {
+  res.redirect("/connect/" + req.params.id);
+});
+
 module.exports = router;

@@ -17,6 +17,8 @@ block page-content
                             class=talks_session.length > 0?"choosable":"")
                             .card-header
                                 small.text-muted= session.startTime + " - " + session.endTime
+                                if event.speakerId && speakers.speakers[event.speakerId].slides
+                                    i.fas.fa-file-pdf.text-muted.py-1.float-end
                             if event.picture
                                 img.card-img-top(src=event.picture, alt="image for " + event.title, height="200px")
                             else if event_with_picture

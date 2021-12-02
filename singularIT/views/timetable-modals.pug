@@ -42,6 +42,10 @@ for session, s_idx in timetable
                                         img.modal-img.float-end.w-25.ms-5(src=speakers.speakers[event.speakerId].image alt="speaker photo")
                                     for par in speakers.speakers[event.speakerId].talk
                                         p.px-2!= par
+                            if speakers.speakers[event.speakerId].slides
+                                a.btn.btn-primary.btn-lg.mb-1(href=speakers.speakers[event.speakerId].slides target="_blank")
+                                    i.fas.fa-file-pdf.me-2
+                                    | Slides
                             button.btn.btn-primary.btn-lg(data-bs-dismiss="modal")
                                 i.fas.fa-arrow-left.me-2
                                 | Back to timetable
