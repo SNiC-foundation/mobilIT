@@ -120,25 +120,12 @@ block header
               rect.rellax.st1(data-rellax-horizontal-speed='2', data-rellax-vertical-scroll-axis='x', x='32.3', y='123.8', width='114.8', height='8.4')
               rect.rellax.st0(data-rellax-horizontal-speed='1.5', data-rellax-vertical-scroll-axis='x', x='613.8', y='74', width='114.8', height='8.4')
       .text-center.mb-4
-        if user
-          button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle="offcanvas" data-bs-target="#profile" aria-controls="profile")
-            i.fas.fa-user.me-2
-            | Profile
-          button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='offcanvas', data-bs-target='#timetable' aria-controls="timetable")
-            i.fas.fa-calendar-alt.me-2
-            | Timetable
-          if eventToday
-            a.btn.btn-primary.btn-lg.m-1(href='/ticket')
-              i.fas.fa-ticket-alt.me-2
-              | Your ticket
-        else
-          if ticketSalePossible
-            button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='modal', data-bs-target='#registration-modal')
-              i.fas.fa-ticket-alt.me-2
-              | Activate your ticket
-            a.btn.btn-primary.btn-lg.m-1(href='/login')
-              i.fas.fa-user.me-2
-              | Login
+        button.btn.btn-primary.btn-lg.m-1(type='button', data-bs-toggle='offcanvas', data-bs-target='#timetable' aria-controls="timetable")
+          i.fas.fa-calendar-alt.me-2
+          | Timetable
+        a.btn.btn-primary.btn-lg.m-1(href='#about')
+          i.fas.fa-address-book.me-2
+          | Contact
 
   .banner
     each content, name in partners.partners
@@ -211,16 +198,17 @@ block content
         article.col-12.col-md-6
           h2 Theme
           p
-            | The focus of this edition of SNiC will be on the IT of mobility. For the past years there have been major leaps
-            | forward in the use of computers and AI in vehicles - think self driving cars, the optimisation of fuel usage in
-            | aeroplanes, or apps that perform diagnostics on the engine of your motorcycle. But MobilIT can be extended to
-            | much more than that: we can analyse the organisation of public transportation, or take a closer look at the
-            | latest innovations in bionics and cybernetics - tech that will open up a future of mobility for everyone.
+            | The focus of the 2021 edition of SNiC has been on the IT of mobility. In recent times there have been
+            | major leaps forward in the use of computers and AI in vehicles - think self driving cars, the
+            | optimisation of fuel usage in aeroplanes, or apps that perform diagnostics on the engine of your
+            | motorcycle. But MobilIT can be extended to much more than that: we can analyse the organisation of public
+            | transportation, or take a closer look at the latest innovations in bionics and cybernetics - tech that
+            | will open up a future of mobility for everyone.
           p
-            | During SNiC 2020/2021 we will approach the future of mobility from a wide variety of angles: security is
-            | essential for high-tech transportation in an age of self driving cars and cyber-warfare; theoretical computing
-            | science is the core discipline behind route optimisation algorithms; Artificial limbs are almost completely
-            | computer driven; and of course Artificial Intelligence will play a starring role.
+            | During SNiC 2020/2021, we approached the future of mobility from a variety of angles: security is
+            | essential for high-tech transportation in an age of self driving cars and cyber-warfare; theoretical
+            | computing science is the core discipline behind route optimisation algorithms; artificial limbs are
+            | almost completely computer driven; and of course Artificial Intelligence will play a starring role.
   section#speakers.snap.py-5.brown.glitch2.d-flex.align-items-center.position-relative.fullscreen
     .white.bar.position-absolute.rellax.d-none.d-md-block(data-rellax-horizontal-speed='2', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 3%; width: 20%; right: -5%; top: 3%')
     .white.bar.position-absolute.rellax.d-none.d-md-block(data-rellax-horizontal-speed='1', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 3%; width: 20%; left: 3%; top: 3%')
@@ -259,18 +247,16 @@ block content
           .block.blue.p-5
             h2 Speakers
             p
-              | Our current society is a highly mobile one. MobilIT takes a look at how IT makes this society possible.
-              | Our speakers range from scientists to entrepreneurs that will all give a talk about how they facilitate
-              | or make use of this highly connected society.
+              | At MobilIT, our speakers have taken a look at how IT makes our modern, highly mobile society possible.
+              | From scientists to entrepreneurs: they have all given a talk about how they facilitate or make use of
+              | this highly connected society.
             p
-              | Aside from two keynote speakers there are three tracks that all focus on their own area of mobility.
-              | Organising mobility will focus on the logistics of a highly mobile society, Regaining mobility focuses
-              | on how IT can help people to stay mobile and finally Vehicular mobility is about the role of vehicles
-              | in our society.
-            p
-              | From these three tracks you can choose your own personal schedule to make this day your own from the
-              | 1st of November.
-            button#timetable-button.btn.btn-primary(type='button', data-bs-toggle='offcanvas', data-bs-target='#timetable') Check out the timetable
+              | Aside from the two keynote speakers, there were three parallel tracks visitors could choose from, in a
+              | variety of themes. The Organising Mobility track focused on the logistics of a highly mobile society,
+              | while Regaining Mobility highlighted how IT can help people to (re)gain personal mobility, and finally
+              | Vehicular Mobility discussed the role of vehicles in our society and the variety of technologies that
+              | come into play in that area.
+            button#timetable-button.btn.btn-primary(type='button', data-bs-toggle='offcanvas', data-bs-target='#timetable') Check out the full programme
         .col-12.col-md-6
           #speakers-carousel.carousel.slide.my-md-5.mx-md-3(data-bs-ride='carousel')
             .carousel-inner.ratio.ratio-4x3
@@ -317,10 +303,12 @@ block content
         article.col-12.col-md-6.pe-md-5
           h2 Location
           p
-            | This year we have the pleasure of hosting our event at Orpheus Apeldoorn. Orpheus has 3 beautiful halls
-            | where our speakers will give their talks. Their massive foyer has enough room for all the interesting
-            | stands our sponsors will facilitate. Furthermore, it is located in the middle of the Netherlands to make
-            | sure no single study association has a long travel time.
+            | We had the pleasure of hosting our event at Theatre Centre Orpheus in Apeldoorn. Throughout the day, our
+            | visitors were able to spread out across Orpheus’ three beautiful theatre halls to listen to our speakers;
+            | spending their breaks in the grand foyer, where they could visit the interesting stands of our partners.
+            | Visitors were also able to check out the actual real-life exoskeleton that stood on display in the lobby,
+            | courtesy of our partner DSW. At the end of the day, Orpheus’ strategic location in the middle of the
+            | Netherlands made sure that our visitors could be ferried to their home cities in time.
         .col-12.col-md-6
   section#corona.py-5.snap.white.d-flex.align-items-center.position-relative(style='min-height: 50vh')
     .brown.bar.position-absolute.rellax.d-none.d-md-block(data-rellax-horizontal-speed='2', data-rellax-horizontal-percentage='0.5', data-rellax-vertical-scroll-axis='x', style='height: 2%; width: 40%; right: 0; top: 6%')
@@ -352,22 +340,13 @@ block content
         article.col-12.col-md-6.ps-md-5.p-md-0
           h2 Corona
           p
-            | Like all events in recent times, the organisation of SNiC: MobilIT has been plagued by the corona virus.
-            | The original version was supposed to take place on 23 November 2020, but we decided to postpone this in
-            | the hope that we’d be able to do a full size physical edition in November 2021.
+            | Like all events in recent times, the organisation of SNiC: MobilIT had been plagued by the corona virus.
+            | The original version was supposed to take place on 23 November 2020, but eventually it was postponed in
+            | the hope that we would have been able to do a full size physical edition in November 2021.
           p
-            | This is indeed the case, as according to Dutch regulations events of our size are still allowed for now.
-            | We do have to take some things into account: most notably, everyone coming to MobilIT will need to have
-            | a valid QR code in the ‘CoronaCheck’ app.
-            | #[a(href="https://www.government.nl/topics/coronavirus-covid-19/covid-certificate/coronavirus-entry-pass/arranging-a-coronavirus-entry-pass" target="_blank") More information on this can be found here.].
-            | Furthermore, the event has been cut short by recent regulations and will have to end at 18 PM. As a
-            | result of this, the talks and the schedule will remain mostly the same, but the borrel at the end cannot
-            | take place. The dinner will be given to go, to be eaten during the bus journey back. Additionally, all
-            | food and drinks on the event will have to be consumed while seated in order to conform to government
-            | regulations.
-          p
-            | In spite of all this, we are happy that we can make a version of SNiC work. We hope you are understanding
-            | of these new measures, and we look forward to seeing you on the conference!
+            | This was in fact the case - although just barely, as events of our size were forbidden by the Dutch
+            | government later that November. Fortunately we got lucky, and we were still able to work within the
+            | present restrictions to organise a fun, full-size edition of SNiC that was safe for our visitors.
   section#quote.py-5.snap.glitch3.brown.d-flex.align-items-center.position-relative(style='min-height: 20vh')
     .container
       .text-center
@@ -450,18 +429,18 @@ block content
           p
             | Every year one of the associations of the foundation organizes a congress with an IT related subject. On
             time(datetime='2021-11-23') November 23rd in 2021
-            | , the congress will be organized by two study associations from the Radboud University in
+            | , the congress has been organized by two study associations from the Radboud University in
             | Nijmegen. These associations are Thalia (the study association for Computer Science and Information Science
             | students) and CognAC (the study association for Artificial Intelligence students).
           p
-            | Visitors are enthusiastic Computer Science and Artificial Intelligence bachelor and master students from all
+            | Visitors were enthusiastic Computer Science and Artificial Intelligence bachelor and master students from all
             | over the country. Over the past years the congress has grown considerably. Where in 2017 the congress was
             | visited by 450 students, we expect around 700 visitors in 2021.
-        .col-12.col-md-6
           p
-            | Various talks will be held at the congress by speakers from both the business world and the academic world.
-            | The students are challenged to dive into a specific topic from different perspectives. We want to inspire them
+            | Various talks have been held at the congress by speakers from both the business world and the academic world.
+            | The students were challenged to dive into a specific topic from different perspectives. We want to inspire them
             | and invite them to think further than their current views.
+        .col-12.col-md-6
           p
             | In addition, it is the chance for students to speak with many companies during the breaks and the drinks at
             | the company fair, to connect with potential employers or to find a thesis or internship spot.
@@ -475,7 +454,18 @@ block content
               br
               | The Netherlands
               br
+              br
+              | For questions about the 2021 edition of SNiC:
+              br
               a(href='mailto:committee@2020.snic.nl') committee@2020.snic.nl
+              br
+              | For questions about the 2022 edition of SNiC:
+              br
+              a(href='info@celerit.nl') info@celerit.nl
+              br
+              | For other inquiries:
+              br
+              a(href='bestuur@snic.nl') bestuur@snic.nl
               br
               a.btn.btn-primary.mt-1(href='mailto:committee@2020.snic.nl') Contact us
   footer.blue.snap-end.d-flex.align-items-center.position-relative(style='min-height: 15vh')
